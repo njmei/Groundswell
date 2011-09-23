@@ -1,0 +1,122 @@
+1.00
+Original version.  Includes Taylor Matlab Toolbox v1.06.
+
+
+
+
+
+1.00->1.01  (August 31, 2011)
+Updated to use TMT v1.10.
+
+
+
+
+
+1.01->1.02  (September 7, 2011)
+
+Made each trace have its own timeline.  This will be useful
+for, for example, looking at optical and electrical signals at the
+same time, since those often have very different sampling rates.  Also
+added the ability to load data from a .tcs file.
+
+
+
+
+
+1.02->1.03  (never completed)
+
+Plan is to add ability to calculate coherency, cohereograms, and TFs.
+This will require some way to select two traces that is asymmetric, in
+that one signal will be the test, and one the reference, signal.
+Think I will add a visual indication of the last signal selected.
+Aborted this one.  Doing coherences, etc. with different sampling
+rates is a royal pain, and I think not worth the effort.
+
+
+
+
+
+1.01->1.04  (September 9, 2011)
+
+Reverting to 1.01, starting from there.  Dealing with calculating
+cross-power spectra from signals on different time bases is a pain in
+the ass at best.  Also, it's arguably a bad idea, because then the user
+has to wonder about how the resampling is done.
+
+Changed selections so that selected axes are indicated by a
+boldface axis label.  I hope this makes it more apparent that the axes
+are the things selected, not a particular stretch of the data.
+
+Changed selections so that the most-recently-selected axes (which I
+call the "pivot") is indicated visually, but italicizing the axis
+label.  This also creates an asymmetry in the selection when two axes
+are selected, which enables the input and output signals to be
+specified when calculating coherency and TFs.
+
+Fixed a bug with selections.  Have to keep track of complete sequence
+of selection, so that the pivot one can change back to the previous
+one when you ctrl-select the pivot.
+
+Added ability to calculate coherency, cohereograms, and TFs.
+
+Added ability to set arbitrary y ranges on axes, and optimize the y
+ranges just on the selected axes.
+
+
+
+
+
+1.04->1.05 (September 13, 2011)
+
+Added the ability to read .tcs files.  This involves upsampling of
+signals to a common time base in some cases, which is warned about.
+
+Also changed the code that does resampling to the pixel grid, to
+eliminate use of blkproc(), which is deprecated.  Re-coded in JIT-able
+Matlab.  Is now ~2x faster.
+
+ 
+
+
+
+1.05->1.06 (September 20, 2011)
+
+Refactored the code so that there is a Groundswell_main class which
+implements the main Groundswell window.  This let me move the
+groundswell progam state into this object, and out of the figure,
+axes, etc. userdata fields.  This was always one the biggest
+weirdnesses with GUI programming in Matlab.
+
+Fixed bug where debugging messages about the resampling method went to
+the command window.
+
+Fixed bug where Groundswell_main.get_spectrogram_params() and
+Groundswell_main.get_spectrogram_params() didn't return enough args if
+user hit 'Cancel' or there was a problem with the params.
+
+Changed what Groundswell_main methods I could to static class methods.
+
+Fixed bug where errordlg() would sometimes cause the main figure
+contents to shrink.
+
+Made it so y axis labels all line up w/ each other.
+
+Deleted leading spaces from names & units on data load.
+
+
+
+
+
+1.06 -> 1.07  (September 21, 2011)
+
+Refactored code into some approximation of the MVC style.  I think
+this will make it easier to think about and maintain going forward.
+
+Put the test code into the groundswell directory, so that I can
+distribute the test code with the code proper.
+
+First code checked into Janelia internal Subversion repository.
+
+As with all versions since 1.01, groundswell 1.07 relies upon the 
+Taylor Matlab Toolbox, version 1.10.
+
