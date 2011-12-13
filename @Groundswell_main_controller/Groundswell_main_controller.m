@@ -9,9 +9,10 @@ classdef Groundswell_main_controller < handle
   end  % properties
   
   methods
-    function gsmc=Groundswell_main_controller(gsmm,gsmv)
-      gsmc.model=gsmm;
-      gsmc.view=gsmv;
+    function self=Groundswell_main_controller()
+      self.model=Groundswell_main_model();
+      self.view=Groundswell_main_view(self.model);
+      self.view.register_controller(self);
     end  % constructor
     function resize(gsmc)
       gsmc.view.resize();
