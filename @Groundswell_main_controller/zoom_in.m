@@ -1,9 +1,9 @@
-function zoom_in(gsmv)
+function zoom_in(self)
 
-n_signals=gsmv.model.get_n_signals();
-if n_signals>0
-  tl_view=gsmv.tl_view;
+n_chan=self.model.get_n_chan();
+if n_chan>0
+  tl_view=self.view.tl_view;
   tw=tl_view(2)-tl_view(1);
   tl_view_new=tl_view(1)+[0 tw/2];
-  gsmv.set_tl_view(tl_view_new);
+  self.set_tl_view(tl_view_new);
 end

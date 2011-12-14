@@ -20,6 +20,10 @@ tl=[t(1) t(end)];
 % delete any axes that currently exist
 delete(axes_hs);
 
+% make the callbacks
+axes_cb=@(src,evt)(self.draw_zoom_limits('start'));
+chan_label_cb=@(src,evt)(self.controller.handle_axes_selection(src));
+
 % make new axes
 axes_hs=zeros(n_chan,1);
 for i=1:n_chan
@@ -31,8 +35,7 @@ for i=1:n_chan
                   'Layer','Top',...
                   'visible','off',...
                   'color','w',...
-                  'ButtonDownFcn',...
-                    @(src,evt)(self.controller.draw_zoom_limits('start')));
+                  'ButtonDownFcn',axes_cb);
   if i<n_chan
     set(gca,'XTickLabel',{});
   else
@@ -66,7 +69,7 @@ for i=1:n_chan
                       'tag','y_axis_label',...
                       'verticalalignment','baseline',...
                       'units','pixels',...
-                      'buttondownfcn',@(src,evt)(self.controller.handle_axes_selection(src)));
+                      'buttondownfcn',chan_label_cb);
   n_sweeps=size(data_this,2);
   for j=1:n_sweeps
     line('Parent',axes_hs(i),...
@@ -77,7 +80,8 @@ for i=1:n_chan
          'visible','off');
   end
 end
-drawnow;
+drawnow('expose');
+drawnow('update');
 
 % nothing is selected, since everything is new
 self.i_selected=zeros(0,1);

@@ -161,7 +161,9 @@ end
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch'); drawnow;
+set(groundswell_figure_h,'pointer','watch');
+drawnow('update');
+drawnow('expose');
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -208,7 +210,7 @@ data_short_cent_windowed=...
 blue=[0 0 1];
 light_blue=[0.8 0.8 1];
 label=name;
-figure('name',sprintf('Power spectrum of %s',label));
+figure('name',sprintf('Power spectrum of %s',label),'color','w');
 line(f,Pxx_ci(:,1),'color',light_blue);
 line(f,Pxx_ci(:,2),'color',light_blue);
 line(f,Pxx,'color',blue);
@@ -222,4 +224,6 @@ title(sprintf('Power spectrum of %s',label),'interpreter','none');
 box on;
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow'); drawnow;
+set(groundswell_figure_h,'pointer','arrow');
+drawnow('update');
+drawnow('expose');

@@ -35,7 +35,8 @@ if ~isempty(i_selected_new)
 end
 
 % update the display
-drawnow;  
+drawnow('update');
+drawnow('expose');
 
 % store stuff in the figure
 gsmv.i_selected=i_selected_new;

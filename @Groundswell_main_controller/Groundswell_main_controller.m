@@ -11,12 +11,8 @@ classdef Groundswell_main_controller < handle
   methods
     function self=Groundswell_main_controller()
       self.model=Groundswell_main_model();
-      self.view=Groundswell_main_view();
-      self.view.register_controller(self);
+      self.view=Groundswell_main_view(self);
     end  % constructor
-    function resize(self)
-      self.view.resize();
-    end
     function center(self)
       self.model.center(self.view.i_selected);
       % update the view

@@ -61,7 +61,9 @@ p_FFT_extra=params.p_FFT_extra;
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch'); drawnow;
+set(groundswell_figure_h,'pointer','watch');
+drawnow('update');
+drawnow('expose');
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -93,14 +95,18 @@ dt_window_want=T_window_want/n_steps_per_window_want;
 N_window=round(T_window_want/dt);  % number of samples per window
 di_window=round(dt_window_want/dt);
 if N_window<=1
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow');
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
             'the data) will result in one or fewer spectrogram windows.'],...
            'Error');
   return;
 end
 if di_window<1
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow');
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration and number of steps per ' ...
             'window (and the sampling rate of ' ...
             'the data) will result in a step size of less than one ' ...
@@ -109,7 +115,9 @@ if di_window<1
   return;
 end
 if ~(2*NW<N_window)
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow');
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
             'the data) results in a window size less than or equal to ' ...
             '2*NW.'],...
@@ -132,6 +140,9 @@ h=figure_powgram(t,f,P,...
                  title_str,...
                  units);
 set(h,'name',title_str);
+set(h,'color','w');          
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow'); drawnow;
+set(groundswell_figure_h,'pointer','arrow');
+drawnow('update');
+drawnow('expose');

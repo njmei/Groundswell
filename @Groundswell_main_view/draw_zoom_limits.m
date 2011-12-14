@@ -16,7 +16,7 @@ switch(action)
   case 'start'
     axes_h=axes_h_init;
     fig_h=get(axes_h,'parent');
-    axes_hs=self.view.axes_hs;
+    axes_hs=self.axes_hs;
     cp=get(axes_h,'CurrentPoint');
     point=cp(1,1:2);
     anchor=point;
@@ -67,8 +67,8 @@ switch(action)
     % now do the zoom
     if anchor(1)~=point(1)
       xl_view_new=[anchor(1) point(1)];
-      tl_view_new=self.view.t_from_x(xl_view_new);
-      self.set_tl_view(tl_view_new);
+      tl_view_new=self.t_from_x(xl_view_new);
+      self.controller.set_tl_view(tl_view_new);
     end
     % clear the persistents
     fig_h=[];

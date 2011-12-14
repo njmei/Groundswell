@@ -1,9 +1,9 @@
-function zoom_out(gsmv)
+function zoom_out(self)
 
-n_signals=gsmv.model.get_n_signals();
-if n_signals>0
-  tl=gsmv.model.get_tl();
-  tl_view=gsmv.tl_view;
+n_chan=self.model.get_n_chan();
+if n_chan>0
+  tl=self.model.get_tl();
+  tl_view=self.view.tl_view;
   tw=tl_view(2)-tl_view(1);
   t0=tl(1);  tf=tl(2);
   if tl_view(2)~=tf
@@ -24,7 +24,7 @@ if n_signals>0
     tl_view_new=tl_view;
   end
   % even if there's no change, we set the viewport, since sometimes
-  % gsmv.tl_view gets out of sync with the xlim of the axeses, 
+  % self.tl_view gets out of sync with the xlim of the axeses, 
   % especially if you click the zoom out button really fast
-  gsmv.set_tl_view(tl_view_new);  
+  self.set_tl_view(tl_view_new);  
 end

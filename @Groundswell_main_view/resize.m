@@ -1,4 +1,4 @@
-function resize(gsmv)
+function resize(self)
 
 % IMPORTANT: Need to make sure we save the current
 % main figure units, set them to pels, then set them back at the end
@@ -7,16 +7,16 @@ function resize(gsmv)
 % causes the figure to get messed-up
 
 % get current units, save; set units to pels
-units_before=get(gsmv.fig_h,'units');
-set(gsmv.fig_h,'units','pixels');
+units_before=get(self.fig_h,'units');
+set(self.fig_h,'units','pixels');
 
 % get basic dims
-pos=get(gsmv.fig_h,'position');
+pos=get(self.fig_h,'position');
 figure_width=pos(3);
 figure_height=pos(4);
 
 % get number of axes
-axes_hs=gsmv.axes_hs;
+axes_hs=self.axes_hs;
 n=length(axes_hs);
 
 % spec out sizes, given the figure width and height
@@ -66,7 +66,7 @@ button_tags={'to_start_button_h' ...
              'zoom_out_button_h' ...
              'zoom_in_button_h'}';
 for i=1:length(button_tags)
-  eval(sprintf('%s=findobj(gsmv.fig_h,''tag'',''%s'');',...
+  eval(sprintf('%s=findobj(self.fig_h,''tag'',''%s'');',...
                button_tags{i},...
                button_tags{i}));
 end
@@ -165,14 +165,14 @@ end
 
 % put in the y-axis labels
 if n>0
-  units_pre=get(gsmv.axes_hs(1),'units');
-  set(gsmv.axes_hs(1),'units','pixels');
-  pos=get(gsmv.axes_hs(1),'position');
-  set(gsmv.axes_hs(1),'units',units_pre);  
+  units_pre=get(self.axes_hs(1),'units');
+  set(self.axes_hs(1),'units','pixels');
+  pos=get(self.axes_hs(1),'position');
+  set(self.axes_hs(1),'units',units_pre);  
   axis_height=pos(4);
   y_pos=axis_height/2;
   for i=1:n
-    y_label_h=get(gsmv.axes_hs(i),'ylabel');
+    y_label_h=get(self.axes_hs(i),'ylabel');
     set(y_label_h,'position',[-y_label_offset_width y_pos 1]);
     % this works because the units property of y_label_h is set to
     % 'pixels'
@@ -180,4 +180,4 @@ if n>0
 end
 
 % restore fig units
-set(gsmv.fig_h,'units',units_before);
+set(self.fig_h,'units',units_before);

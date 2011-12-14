@@ -67,7 +67,9 @@ alpha_thresh=params.alpha_thresh;
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch'); drawnow;
+set(groundswell_figure_h,'pointer','watch');
+drawnow('update');
+drawnow('expose');
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -95,14 +97,18 @@ dt_window_want=T_window_want/n_steps_per_window_want;
 N_window=round(T_window_want/dt);  % number of samples per window
 di_window=round(dt_window_want/dt);
 if N_window<=1
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow'); 
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
             'the data) will result in one or fewer spectrogram windows.'],...
            'Error');
   return;
 end
 if di_window<1
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow');
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration and number of steps per ' ...
             'window (and the sampling rate of ' ...
             'the data) will result in a step size of less than one ' ...
@@ -111,7 +117,9 @@ if di_window<1
   return;
 end
 if ~(2*NW<N_window)
-  set(groundswell_figure_h,'pointer','arrow'); drawnow;
+  set(groundswell_figure_h,'pointer','arrow');
+  drawnow('update');
+  drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
             'the data) results in a window size less than or equal to ' ...
             '2*NW.'],...
@@ -138,9 +146,10 @@ Cyx_mag_thresh=coh_mt_control_analytical(R,K,alpha_thresh);
 % plot a better "colorbar"---do this first, so it's on the bottom
 fig_name_str=...
   sprintf('Color wheel for coherogram of %s relative to %s',name_y,name_x);
-figure('name',fig_name_str);
+figure('name',fig_name_str,'color','w');
 plot_coh2l75_border_legend(Cyx_mag_thresh);
-drawnow;
+drawnow('update');
+drawnow('expose');
 
 % plot coherogram
 title_str=sprintf('Coherogram of %s relative to %s',name_y,name_x);
@@ -149,7 +158,11 @@ h=figure_cohgram(t,f,Cyx_mag,Cyx_phase,...
                  title_str,...
                  Cyx_mag_thresh);
 set(h,'name',title_str);
-drawnow;
+set(h,'color','w');
+drawnow('update');
+drawnow('expose');
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow'); drawnow;
+set(groundswell_figure_h,'pointer','arrow');
+drawnow('update');
+drawnow('expose');

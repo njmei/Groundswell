@@ -188,7 +188,9 @@ end
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch'); drawnow;
+set(groundswell_figure_h,'pointer','watch');
+drawnow('update');
+drawnow('expose');
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -260,9 +262,13 @@ title_str=sprintf('Coherency of %s relative to %s',name_y,name_x);
              Cyx_mag_thresh);
 fig_border_label=sprintf('Coherency of %s relative to %s',name_y,name_x);
 set(h_fig_coh,'name',fig_border_label);
+set(h_fig_coh,'color','w');
 set(get(h_mag_axes  ,'ylabel'),'String','Magnitude');
 set(get(h_phase_axes,'ylabel'),'String','Phase (deg)');
-drawnow;
+drawnow('update');
+drawnow('expose');
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow'); drawnow;
+set(groundswell_figure_h,'pointer','arrow');
+drawnow('update');
+drawnow('expose');

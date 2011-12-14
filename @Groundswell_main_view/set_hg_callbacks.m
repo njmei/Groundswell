@@ -1,12 +1,4 @@
-function register_controller(self,controller)
-
-% let the view know who's its controller is
-self.controller=controller;
-
-% set all the figure callbacks to methods of the controller
-set(self.fig_h,'ResizeFcn',@(src,event)(controller.resize()));
-% now that the fig has a resize handler, allow resizing.
-set(self.fig_h,'Resize','on');
+function set_hg_callbacks(self,controller)
 
 % file menu
 set(self.open_menu_h,'Callback',@(src,event)(controller.load_data()));

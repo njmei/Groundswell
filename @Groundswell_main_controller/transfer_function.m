@@ -167,7 +167,9 @@ end
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch'); drawnow;
+set(groundswell_figure_h,'pointer','watch');
+drawnow('update');
+drawnow('expose');
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -234,11 +236,15 @@ title_str=sprintf('Transfer function of %s from %s',name_y,name_x);
             Hyx_mag_ci,Hyx_phase_ci,...
             f_lim,Hyx_mag_lim,Hyx_phase_lim,...
             title_str);
+set(h_fig_tf,'color','w');          
 fig_border_label=sprintf('Transfer function of %s from %s',name_y,name_x);
 set(h_fig_tf,'name',fig_border_label);
 set(get(h_mag_axes  ,'ylabel'),'String','Magnitude');
 set(get(h_phase_axes,'ylabel'),'String','Phase (deg)');
-drawnow;
+drawnow('update');
+drawnow('expose');
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow'); drawnow;
+set(groundswell_figure_h,'pointer','arrow');
+drawnow('update');
+drawnow('expose');

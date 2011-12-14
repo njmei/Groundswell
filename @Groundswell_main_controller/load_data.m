@@ -16,7 +16,8 @@ end
 
 % might take a while...
 set(groundswell_figure_h,'pointer','watch');
-drawnow;
+drawnow('update');
+drawnow('expose');
 
 % load the data
 len=length(filename);
@@ -26,7 +27,8 @@ if strcmp(filename(len-3:len),'.abf')
     [t,data,names,units]=load_abf(full_filename);
   catch exception
     set(groundswell_figure_h,'pointer','arrow');
-    drawnow;
+    drawnow('update');
+    drawnow('expose');
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -71,4 +73,5 @@ self.view.renew(self.model);
 
 % ok, we're done
 set(groundswell_figure_h,'pointer','arrow');
-drawnow;
+drawnow('update');
+drawnow('expose');
