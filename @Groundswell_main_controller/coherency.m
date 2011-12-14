@@ -18,8 +18,8 @@ if n_selected~=2
 end
 
 % get indices of signals
-i_x=i_selected(1);  % the non-pivot is the the input/reference signal
-i_y=i_selected(2);  % the pivot is the output/test signal
+i_y=i_selected(1);  % the non-pivot is the output/test signal
+i_x=i_selected(2);  % the pivot is the input/reference signal
 
 % extract the data we need
 n_t=length(t);
