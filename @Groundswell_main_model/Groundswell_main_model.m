@@ -4,15 +4,18 @@ classdef Groundswell_main_model < handle
 % in the main window of the groundswell application.
 
   properties
-    t=[];
-    data=[];
-    names=[];
-    units=[];
+    t;
+    data;
+    names;
+    units;
   end  % properties
   
   methods
-    function gsmm=Groundswell_main_model()
-      % nothing to do here
+    function self=Groundswell_main_model()
+      self.t=[];
+      self.data=[];
+      self.names=[];
+      self.units=[];
     end  % function
   end
 

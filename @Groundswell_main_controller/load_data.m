@@ -1,7 +1,7 @@
-function load_data(gsmc)
+function load_data(self)
 
 % get the figure handle
-groundswell_figure_h=gsmc.view.fig_h;
+groundswell_figure_h=self.view.fig_h;
 
 % throw up the dialog box
 [filename,pathname]=...
@@ -64,10 +64,10 @@ names=strtrim(names);
 units=strtrim(units);
 
 % store all the data-related stuff in the model
-gsmc.model.set_t_data_names_units(t,data,names,units);
+self.model.set_t_data_names_units(t,data,names,units);
 
 % make the view reflect the modified model
-gsmc.view.renew();
+self.view.renew(self.model);
 
 % ok, we're done
 set(groundswell_figure_h,'pointer','arrow');

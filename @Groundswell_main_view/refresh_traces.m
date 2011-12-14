@@ -1,23 +1,23 @@
-function refresh_traces(gsmv,force_resample)
+function refresh_traces(self,model,force_resample)
 
 % args
-if nargin<2 || isempty(force_resample)
+if nargin<3 || isempty(force_resample)
   force_resample=false;
 end
 
 % get the figure handle
-groundswell_figure_h=gsmv.fig_h;
+groundswell_figure_h=self.fig_h;
 
 % get vars we need
-axes_hs=gsmv.axes_hs;
-t=gsmv.model.t;
-data=gsmv.model.data;
-[n_t,n_signals,n_sweeps]=size(data);
-r=gsmv.r;
-t_sub=gsmv.t_sub;
-data_sub_min=gsmv.data_sub_min;
-data_sub_max=gsmv.data_sub_max;
-tl_view=gsmv.tl_view;
+axes_hs=self.axes_hs;
+t=model.t;
+data=model.data;
+[n_t,n_chan,n_sweeps]=size(data);
+r=self.r;
+t_sub=self.t_sub;
+data_sub_min=self.data_sub_min;
+data_sub_max=self.data_sub_max;
+tl_view=self.tl_view;
 
 % figure out what the subsampling _should_ be
 t0=t(1);
@@ -45,10 +45,10 @@ if r~=r_new || force_resample
     t_sub=[];
     data_sub_min=[];
     data_sub_max=[];
-    gsmv.r=r;
-    gsmv.t_sub=t_sub;
-    gsmv.data_sub_min=data_sub_min;
-    gsmv.data_sub_max=data_sub_max;
+    self.r=r;
+    self.t_sub=t_sub;
+    self.data_sub_min=data_sub_min;
+    self.data_sub_max=data_sub_max;
   else
     % subsample
     r=r_new;
@@ -64,10 +64,10 @@ if r~=r_new || force_resample
     % "if mod(i,r)==0" for each element of data
     %disp('by hand, v2');
     %tic
-    data_sub_max=zeros(n_t_sub,n_signals,n_sweeps);
-    data_sub_min=zeros(n_t_sub,n_signals,n_sweeps);
+    data_sub_max=zeros(n_t_sub,n_chan,n_sweeps);
+    data_sub_min=zeros(n_t_sub,n_chan,n_sweeps);
     for k=1:n_sweeps
-      for j=1:n_signals
+      for j=1:n_chan
         i=1;
         for i_sub=1:(n_t_sub-1)
           mx=-inf; 
@@ -105,10 +105,10 @@ if r~=r_new || force_resample
     end      
     %toc  
     
-    gsmv.r=r;
-    gsmv.t_sub=t_sub;
-    gsmv.data_sub_min=data_sub_min;
-    gsmv.data_sub_max=data_sub_max;
+    self.r=r;
+    self.t_sub=t_sub;
+    self.data_sub_min=data_sub_min;
+    self.data_sub_max=data_sub_max;
     %toc
     set(groundswell_figure_h,'pointer','arrow');  drawnow;
   end
@@ -129,10 +129,10 @@ if r==1
   t_short=t(j0:jf);
   data_short=data(j0:jf,:,:);
   % change all the lines and axis limits
-  x_short=gsmv.x_from_t(t_short);
-  xl_view_new=gsmv.x_from_t(tl_view);
+  x_short=self.x_from_t(t_short);
+  xl_view_new=self.x_from_t(tl_view);
   [x_tick,x_tick_label]=Groundswell_main_view.x_tick_from_xl(xl_view_new);
-  for i=1:n_signals
+  for i=1:n_chan
     h=findobj(axes_hs(i),'tag','trace');
     for j=1:n_sweeps
       set(h(j),'xdata',x_short,...
@@ -142,7 +142,7 @@ if r==1
   end
   set(axes_hs,'xlim',xl_view_new);
   set(axes_hs,'xtick',x_tick);
-  set(axes_hs(n_signals),'xticklabel',x_tick_label);    
+  set(axes_hs(n_chan),'xticklabel',x_tick_label);    
 else
   % data is subsampled  
   % get subset of the data that will be in view
@@ -163,15 +163,15 @@ else
   t_sub_short_draw=nan(2*n_t_sub_short,1);
   t_sub_short_draw(1:2:end)=t_sub_short;
   t_sub_short_draw(2:2:end)=t_sub_short;
-  data_sub_short_draw=nan(2*n_t_sub_short,n_signals,n_sweeps);
+  data_sub_short_draw=nan(2*n_t_sub_short,n_chan,n_sweeps);
   data_sub_short_draw(1:2:end,:,:)=data_sub_max_short;
   data_sub_short_draw(2:2:end,:,:)=data_sub_min_short;
   % change all the lines and axis limits
   x_sub_short_draw=...
-    gsmv.x_from_t(t_sub_short_draw);
-  xl_view_new=gsmv.x_from_t(tl_view);
+    self.x_from_t(t_sub_short_draw);
+  xl_view_new=self.x_from_t(tl_view);
   [x_tick,x_tick_label]=Groundswell_main_view.x_tick_from_xl(xl_view_new);
-  for i=1:n_signals
+  for i=1:n_chan
     h=findobj(axes_hs(i),'tag','trace');
     for j=1:n_sweeps
       set(h(j),'xdata',x_sub_short_draw,...
@@ -181,7 +181,7 @@ else
   end
   set(axes_hs,'xlim',xl_view_new);
   set(axes_hs,'xtick',x_tick);
-  set(axes_hs(n_signals),'xticklabel',x_tick_label);  
+  set(axes_hs(n_chan),'xticklabel',x_tick_label);  
 end
 
 % update the figure

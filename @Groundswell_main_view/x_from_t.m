@@ -1,7 +1,7 @@
-function x=x_from_t(gsmv,t)
+function x=x_from_t(self,t)
 
-plot_x_axis=gsmv.plot_x_axis;
-switch plot_x_axis
+x_units=self.x_units;
+switch x_units
   case 'time_s',
     x=t;
   case 'time_ms',
@@ -11,5 +11,5 @@ switch plot_x_axis
   case 'time_hr',
     x=t/3600;
   otherwise,
-    error('unknown plot_x_axis');
+    error('unknown x_units');
 end

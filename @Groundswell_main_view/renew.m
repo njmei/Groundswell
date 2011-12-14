@@ -1,16 +1,19 @@
-function renew(gsmv)
+function renew(self,model)
 
 % set the view limits to the full time range
-gsmv.tl_view=gsmv.model.get_tl();
+self.tl_view=model.get_tl();
+
+% get the number of channels
+self.n_chan=size(model.data,2);
 
 % renew the axes
-gsmv.renew_axes();
+self.renew_axes(model);
 
 % call resize() to draw the axes
-gsmv.resize();
+self.resize();
 
 % plot the traces with subsetting and subsampling
-gsmv.refresh_traces();
+self.refresh_traces(model);
 
 % enable controls as necessary
-gsmv.update_enablement_of_controls();
+self.update_enablement_of_controls();

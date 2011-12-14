@@ -4,9 +4,11 @@ classdef Groundswell_main_view < handle
 % the groundswell application.
 
   properties
-    model;
+    %model;
     controller=[];
 
+    n_chan=[];
+    
     tl_view=[];
     
     r=1;
@@ -20,7 +22,7 @@ classdef Groundswell_main_view < handle
     axes_hs=[];
     
     colors=[];
-    plot_x_axis='time_s';
+    x_units='time_s';
     
     % keep handles for all the widgets
     file_menu_h
@@ -63,9 +65,9 @@ classdef Groundswell_main_view < handle
   end  % properties
   
   methods
-    function gsmv=Groundswell_main_view(gsmm)
+    function gsmv=Groundswell_main_view()
       % set the model
-      gsmv.model=gsmm;
+      %gsmv.model=gsmm;
       
       % get the screen size so we can position the figure window
       root_units=get(0,'Units');

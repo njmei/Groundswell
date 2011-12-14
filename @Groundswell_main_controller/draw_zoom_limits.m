@@ -1,4 +1,4 @@
-function draw_zoom_limits(gsmv,action,axes_h_init)
+function draw_zoom_limits(self,action,axes_h_init)
 
 persistent fig_h;
 persistent axes_h;
@@ -16,7 +16,7 @@ switch(action)
   case 'start'
     axes_h=axes_h_init;
     fig_h=get(axes_h,'parent');
-    axes_hs=gsmv.axes_hs;
+    axes_hs=self.view.axes_hs;
     cp=get(axes_h,'CurrentPoint');
     point=cp(1,1:2);
     anchor=point;
@@ -43,9 +43,9 @@ switch(action)
     end
     % set the callbacks for the drag
     set(fig_h,'WindowButtonMotionFcn',...
-              @(src,evt)(gsmv.draw_zoom_limits('move')));
+              @(src,evt)(self.draw_zoom_limits('move')));
     set(fig_h,'WindowButtonUpFcn',...
-              @(src,evt)(gsmv.draw_zoom_limits('stop')));
+              @(src,evt)(self.draw_zoom_limits('stop')));
   case 'move'
     cp=get(axes_h,'CurrentPoint');
     point=cp(1,1:2);
@@ -67,8 +67,8 @@ switch(action)
     % now do the zoom
     if anchor(1)~=point(1)
       xl_view_new=[anchor(1) point(1)];
-      tl_view_new=gsmv.t_from_x(xl_view_new);
-      gsmv.set_tl_view(tl_view_new);
+      tl_view_new=self.view.t_from_x(xl_view_new);
+      self.set_tl_view(tl_view_new);
     end
     % clear the persistents
     fig_h=[];

@@ -1,17 +1,17 @@
-function update_enablement_of_controls(gsmv)
+function update_enablement_of_controls(self)
 
 % this enables/disables all elements of the main window to properly 
 % reflect the current state of the view object
 
 % get the figure handle
-groundswell_figure_h=gsmv.fig_h;
+groundswell_figure_h=self.fig_h;
 
 % get vars we need
-n_signals=gsmv.model.get_n_signals();
-i_selected=gsmv.i_selected;
+n_chan=self.n_chan;
+i_selected=self.i_selected;
 n_selected=length(i_selected);
 
-if n_signals==0
+if n_chan==0
   % x axis menu
   set(findobj(groundswell_figure_h,'tag','time_ms_menu_h'),'enable','off');
   set(findobj(groundswell_figure_h,'tag','time_s_menu_h'),'enable','off');

@@ -1,30 +1,30 @@
-function renew_axes(gsmv)
+function renew_axes(self,model)
 
 % called when the number of signals has changed, and the number of axes 
 % needs to be changed to reflect this
-% we assume all the gsmv data-related instance vars are up-to-date and 
-% consistemt
+% we assume all the self data-related instance vars are up-to-date and 
+% consistent
 
 % get instance vars we need
-axes_hs=gsmv.axes_hs;
-colors=gsmv.colors;
-t=gsmv.model.t;
-data=gsmv.model.data;
-names=gsmv.model.names;
-units=gsmv.model.units;
+axes_hs=self.axes_hs;
+colors=self.colors;
+t=model.t;
+data=model.data;
+names=model.names;
+units=model.units;
 
 % get dims
-[n_t,n_signals,n_sweeps]=size(data);
+[n_t,n_chan,n_sweeps]=size(data);
 tl=[t(1) t(end)];
 
 % delete any axes that currently exist
 delete(axes_hs);
 
 % make new axes
-axes_hs=zeros(n_signals,1);
-for i=1:n_signals
+axes_hs=zeros(n_chan,1);
+for i=1:n_chan
   tag=sprintf('axes_hs(%d)',i);
-  axes_hs(i)=axes('Parent',gsmv.fig_h,...
+  axes_hs(i)=axes('Parent',self.fig_h,...
                   'Tag',tag,...
                   'Units','pixels',...
                   'Box','on',...
@@ -32,8 +32,8 @@ for i=1:n_signals
                   'visible','off',...
                   'color','w',...
                   'ButtonDownFcn',...
-                    @(src,evt)(gsmv.draw_zoom_limits('start')));
-  if i<n_signals
+                    @(src,evt)(self.controller.draw_zoom_limits('start')));
+  if i<n_chan
     set(gca,'XTickLabel',{});
   else
     xlabel('Time (s)','tag','x_axis_label')
@@ -41,11 +41,11 @@ for i=1:n_signals
 end
 
 % store the axes in the object
-gsmv.axes_hs=axes_hs;
+self.axes_hs=axes_hs;
 
 % put dummy signals in the axes
-y_label_h=zeros(n_signals,1);
-for i=1:n_signals
+y_label_h=zeros(n_chan,1);
+for i=1:n_chan
   set(axes_hs(i),'XLim',tl);
   data_this=reshape(data(:,i,:),[n_t n_sweeps]);
   y_min=min(min(data_this));  y_max=max(max(data_this));
@@ -55,7 +55,7 @@ for i=1:n_signals
   end
   y_lo=y_mid-1.1*y_radius;  y_hi=y_mid+1.1*y_radius;
   set(axes_hs(i),'YLim',[y_lo y_hi]);
-  set(gsmv.fig_h,'currentaxes',axes_hs(i));
+  set(self.fig_h,'currentaxes',axes_hs(i));
   if isempty(units{i})
     label_str=names{i};
   else
@@ -66,7 +66,7 @@ for i=1:n_signals
                       'tag','y_axis_label',...
                       'verticalalignment','baseline',...
                       'units','pixels',...
-                      'buttondownfcn',@(src,evt)(gsmv.controller.handle_axes_selection(src)));
+                      'buttondownfcn',@(src,evt)(self.controller.handle_axes_selection(src)));
   n_sweeps=size(data_this,2);
   for j=1:n_sweeps
     line('Parent',axes_hs(i),...
@@ -80,10 +80,10 @@ end
 drawnow;
 
 % nothing is selected, since everything is new
-gsmv.i_selected=zeros(0,1);
+self.i_selected=zeros(0,1);
 
 % set to subsampling-related instance vars to "undefined"
-gsmv.r=1;
-gsmv.t_sub=[];
-gsmv.data_sub_min=[];
-gsmv.data_sub_max=[];
+self.r=1;
+self.t_sub=[];
+self.data_sub_min=[];
+self.data_sub_max=[];
