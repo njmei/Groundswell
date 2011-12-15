@@ -90,11 +90,13 @@ else
   if n_selected==2
     % analysis menu
     set(findobj(groundswell_figure_h,'tag','coherency_menu_h'),'enable','on');
+    set(self.coherency_at_f_probe_menu_h,'enable','on');
     set(findobj(groundswell_figure_h,'tag','coherogram_menu_h'),'enable','on');
     set(findobj(groundswell_figure_h,'tag','transfer_function_menu_h'),'enable','on');
   else
     % analysis menu
     set(findobj(groundswell_figure_h,'tag','coherency_menu_h'),'enable','off');
+    set(self.coherency_at_f_probe_menu_h,'enable','off');
     set(findobj(groundswell_figure_h,'tag','coherogram_menu_h'),'enable','off');
     set(findobj(groundswell_figure_h,'tag','transfer_function_menu_h'),'enable','off');
   end    

@@ -20,6 +20,7 @@ set(self.rectify_menu_h,'Callback',@(src,event)(controller.rectify()));
 set(self.power_spectrum_menu_h,'Callback',@(src,event)(controller.power_spectrum()));
 set(self.spectrogram_menu_h,'Callback',@(src,event)(controller.spectrogram()));
 set(self.coherency_menu_h,'Callback',@(src,event)(controller.coherency()));
+set(self.coherency_at_f_probe_menu_h,'Callback',@(src,event)(controller.coherency_at_f_probe()));
 set(self.coherogram_menu_h,'Callback',@(src,event)(controller.coherogram()));
 set(self.transfer_function_menu_h,'Callback',@(src,event)(controller.transfer_function()));
 % scroll buttons

@@ -1,5 +1,5 @@
 % add toolbox to path
-addpath(genpath('~/packages/taylor_matlab_toolbox/tags/release_1.10'));
+addpath(genpath('~/packages/taylor_matlab_toolbox/trunk'));
 % % add local toolbox
 % addpath(sprintf('%s/toolbox',pwd));
 
