@@ -1,13 +1,8 @@
-function set_selected_axes(gsmv,...
-                           i_selected_new)
-
-% get the figure handle
-groundswell_figure_h=gsmv.fig_h;
+function set_selected_axes(self,i_selected_new)
 
 % get stuff from the figure                                   
-axes_hs=gsmv.axes_hs;
-i_selected_old=gsmv.i_selected;
-%selected_old=gsmv.get_selected_axes();
+axes_hs=self.axes_hs;
+i_selected_old=self.i_selected;
 
 % which have axes have changed their selection state?
 i_changed=setxor(i_selected_old,i_selected_new);
@@ -17,8 +12,12 @@ for i=i_changed
   y_label_h=get(axes_hs(i),'ylabel');  % handle of text object
   if any(i==i_selected_new)
     set(y_label_h,'fontweight','bold');
+    set(y_label_h,'backgroundcolor','w');
+    set(y_label_h,'edgecolor','k');
   else
     set(y_label_h,'fontweight','normal');
+    set(y_label_h,'backgroundcolor','none');
+    set(y_label_h,'edgecolor','none');
   end
 end
 
@@ -26,12 +25,14 @@ end
 if ~isempty(i_selected_old)
   i_selected_last_old=i_selected_old(end);
   y_label_h=get(axes_hs(i_selected_last_old),'ylabel');  % handle of text object
-  set(y_label_h,'fontangle','normal');
+  %set(y_label_h,'fontangle','normal');
+  set(y_label_h,'linewidth',1);
 end
 if ~isempty(i_selected_new)
   i_selected_last_new=i_selected_new(end);
   y_label_h=get(axes_hs(i_selected_last_new),'ylabel');  % handle of text object
-  set(y_label_h,'fontangle','italic');
+  %set(y_label_h,'fontangle','italic');
+  set(y_label_h,'linewidth',2);
 end
 
 % update the display
@@ -39,7 +40,7 @@ drawnow('update');
 drawnow('expose');
 
 % store stuff in the figure
-gsmv.i_selected=i_selected_new;
+self.i_selected=i_selected_new;
 
 % enable/disable controls
-gsmv.update_enablement_of_controls();
+self.update_enablement_of_controls();
