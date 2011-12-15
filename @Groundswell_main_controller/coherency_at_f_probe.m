@@ -9,26 +9,27 @@ t=self.model.t;
 data=self.model.data;
 names=self.model.names;
 
-% are there exactly two signals selected?
+% are there at least two signals selected?
 n_selected=length(i_selected);
-if n_selected~=2
-  errordlg('Can only calculate coherency between two signals at a time.',...
+if n_selected<2
+  errordlg('Can only calculate coherency between two or more signals.',...
            'Error');
   return;
 end
 
 % get indices of signals
-i_y=i_selected(1);  % the non-pivot is the output/test signal
-i_x=i_selected(2);  % the pivot is the input/reference signal
+i_y=i_selected(1:end-1);  % the non-pivots are the test signals
+i_x=i_selected(end);  % the pivot is the reference signal
+n_y=length(i_y);
 
 % extract the data we need
 n_t=length(t);
 n_sweeps=size(data,3);
 x=reshape(data(:,i_x,:),[n_t n_sweeps]);
-name_x=names{i_x};  %#ok
+name_x=names{i_x};
 %units_x=units{i_x};
-y=reshape(data(:,i_y,:),[n_t n_sweeps]);
-name_y=names{i_y};
+y_all=permute(reshape(data(:,i_y,:),[n_t n_y n_sweeps]),[1 3 2]);
+name_y=names(i_y);  % cell array, n_y x 1
 %units_y=units{i_y};
 clear data;
 
@@ -192,8 +193,9 @@ set(groundswell_figure_h,'pointer','watch');
 drawnow('update');
 drawnow('expose');
 
-% % to test
-% data(:,1)=cos(2*pi*1*t);
+%
+% get x ready
+%
 
 % get just the data in view
 tl=self.model.get_tl();
@@ -205,15 +207,12 @@ jl(2)= ceil(jl(2));
 jl(1)=max(1,jl(1));
 jl(2)=min(N,jl(2));
 x_short=x(jl(1):jl(2),:);
-y_short=y(jl(1):jl(2),:);
-clear t x y;
+clear t x;
 N=size(x_short,1);
 
 % center the data
 x_short_mean=mean(x_short,1);
 x_short_cent=x_short-repmat(x_short_mean,[N 1]);
-y_short_mean=mean(y_short,1);
-y_short_cent=y_short-repmat(y_short_mean,[N 1]);
 
 % determine window size
 N_window=floor(N/n_windows);
@@ -222,51 +221,92 @@ N_window=floor(N/n_windows);
 % want N to be integer multiple of N_window
 N=N_window*n_windows;
 x_short_cent=x_short_cent(1:N,:);
-y_short_cent=y_short_cent(1:N,:);
-%T=dt*N;
 
 % put windows into the second index
 x_short_cent_windowed=...
   reshape(x_short_cent,[N_window n_windows*n_sweeps]);
-y_short_cent_windowed=...
-  reshape(y_short_cent,[N_window n_windows*n_sweeps]);
 
 % figure out the highest frequency we'll need to get f_probe
 N_fft=2^(ceil(log2(N_window))+p_FFT_extra);
 df=f_samp/N_fft;
 F_keep=df*(ceil(f_probe/df)+1);  % +1 just to be sure...
 
-% calc the coherency, using multitaper routine
-[f,Cyx_mag,Cyx_phase,...
- N_fft,f_res_diam,~,...
- Cyx_mag_ci,Cyx_phase_ci]=...
-  coh_mt(dt,y_short_cent_windowed,x_short_cent_windowed,...
-         NW,K,F_keep,...
-         p_FFT_extra,conf_level);  %#ok
-%n_f=length(f);
+%
+% now do stuff for each of the y signals in turn
+%
+Cyx_mag_probe=zeros(n_y,1);
+Cyx_phase_probe=zeros(n_y,1);
+Cyx_mag_ci_probe=zeros(n_y,2);
+Cyx_phase_ci_probe=zeros(n_y,2);
+for k=1:n_y
+  y=y_all(:,:,k);
+
+  % get just the data in view
+  y_short=y(jl(1):jl(2),:);
+  clear y;
+
+  % center the data
+  y_short_mean=mean(y_short,1);
+  y_short_cent=y_short-repmat(y_short_mean,[N 1]);
+
+  % want N to be integer multiple of N_window
+  y_short_cent=y_short_cent(1:N,:);
+  %T=dt*N;
+
+  % put windows into the second index
+  y_short_cent_windowed=...
+    reshape(y_short_cent,[N_window n_windows*n_sweeps]);
+
+  % calc the coherency, using multitaper routine
+  [f,Cyx_mag,Cyx_phase,...
+   N_fft,f_res_diam,~,...
+   Cyx_mag_ci,Cyx_phase_ci]=...
+    coh_mt(dt,y_short_cent_windowed,x_short_cent_windowed,...
+           NW,K,F_keep,...
+           p_FFT_extra,conf_level);  %#ok
+
+  % interpolate to get C at the probe freq
+  Cyx_mag_probe_this=interp1(f,Cyx_mag,f_probe,'*linear');
+  Cyx_phase_probe_this=interp1(f,Cyx_phase,f_probe,'*linear');
+  Cyx_mag_ci_probe_this=interp1(f,Cyx_mag_ci,f_probe,'*linear');
+  Cyx_phase_ci_probe_this=interp1(f,Cyx_phase_ci,f_probe,'*linear');
+         
+  % store the coherency at the probe freq
+  Cyx_mag_probe(k)=Cyx_mag_probe_this;
+  Cyx_phase_probe(k)=Cyx_phase_probe_this;
+  Cyx_mag_ci_probe(k,:)=Cyx_mag_ci_probe_this;
+  Cyx_phase_ci_probe(k,:)=Cyx_phase_ci_probe_this;
+end
 
 % calc the significance threshold, quick
 R=n_windows*n_sweeps;  % number of samples of each process
 %alpha_thresh=0.05;
 Cyx_mag_thresh=coh_mt_control_analytical(R,K,alpha_thresh);
 
-% interpolate to get C at the probe freq
-Cyx_mag_probe=interp1(f,Cyx_mag,f_probe,'*linear');
-Cyx_phase_probe=interp1(f,Cyx_phase,f_probe,'*linear');
-Cyx_mag_ci_probe=interp1(f,Cyx_mag_ci,f_probe,'*linear');
-Cyx_phase_ci_probe=interp1(f,Cyx_phase_ci,f_probe,'*linear');
-
 % plot coherency at the probe f
-% title_str=sprintf('Coherency of %s relative to %s, at f=%f Hz',...
-%                   name_y,name_x,f_probe);
-figure_coh_polar(Cyx_mag_probe,Cyx_phase_probe,...
-                 Cyx_mag_ci_probe,Cyx_phase_ci_probe,...
-                 1,{name_y},...
-                 0,Cyx_mag_thresh,...
-                 1,...
-                 'l75_border_of_r_theta',[0 0 0]);    
-h_fig_coh=gcf;
-%set(h_fig_coh,'name',fig_border_label);
+if length(name_y)==1
+  title_str=sprintf('Coherency of %s relative to %s, at f=%f Hz',...
+                    name_y{1},name_x,f_probe);
+else
+  title_str=sprintf('Coherency of multiple signals relative to %s, at f=%f Hz',...
+                    name_x,f_probe);
+end  
+% h_fig_coh=...
+%   figure_coh_polar(Cyx_mag_probe,Cyx_phase_probe,...
+%                    Cyx_mag_ci_probe,Cyx_phase_ci_probe,...
+%                    (1:n_y)',name_y,...
+%                    0,Cyx_mag_thresh,...
+%                    1,...
+%                    'l75_border_of_r_theta',[0 0 0]);    
+clr=self.view.colors(i_y,:);
+h_fig_coh=...
+  figure_coh_polar(Cyx_mag_probe,Cyx_phase_probe,...
+                   Cyx_mag_ci_probe,Cyx_phase_ci_probe,...
+                   (1:n_y)',name_y,...
+                   0,Cyx_mag_thresh,...
+                   1,...
+                   clr,[0 0 0]);    
+set(h_fig_coh,'name',title_str);
 set(h_fig_coh,'color','w');
 drawnow('update');
 drawnow('expose');
