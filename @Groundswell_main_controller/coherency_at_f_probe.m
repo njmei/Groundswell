@@ -328,17 +328,17 @@ for k=1:n_y
 end
 clipboard('copy',txt_clipboard);
 
-% put it in a file, also
-file_name='export_from_groundswell.csv';
-fid=fopen(file_name,'wt');
-if fid>0
-  try
-    fprintf(fid,txt_clipboard);
-    fclose(fid);
-  catch err
-    % ignore any errors
-  end
-end
+%% put it in a file, also
+%file_name='export_from_groundswell.csv';
+%fid=fopen(file_name,'wt');
+%if fid>0
+%  try
+%    fprintf(fid,txt_clipboard);
+%    fclose(fid);
+%  catch err
+%    % ignore any errors
+%  end
+%end
 
 % set pointer back
 set(groundswell_figure_h,'pointer','arrow');
