@@ -1,16 +1,16 @@
-function spectrogram(gsmc)
+function spectrogram(self)
 
 % get the figure handle
-groundswell_figure_h=gsmc.view.fig_h;
+fig_h=self.view.fig_h;
 
 % get stuff we'll need
-selected=gsmc.view.get_selected_axes();
-t=gsmc.model.t;
-data=gsmc.model.data;
-names=gsmc.model.names;
-units=gsmc.model.units;
+selected=self.view.get_selected_axes();
+t=self.model.t;
+data=self.model.data;
+names=self.model.names;
+units=self.model.units;
 n_sweeps=size(data,3);
-tl_view=gsmc.view.tl_view;
+tl_view=self.view.tl_view;
 
 % check number of signals selected
 n_selected=sum(selected);
@@ -61,7 +61,7 @@ p_FFT_extra=params.p_FFT_extra;
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch');
+set(fig_h,'pointer','watch');
 drawnow('update');
 drawnow('expose');
 
@@ -95,7 +95,7 @@ dt_window_want=T_window_want/n_steps_per_window_want;
 N_window=round(T_window_want/dt);  % number of samples per window
 di_window=round(dt_window_want/dt);
 if N_window<=1
-  set(groundswell_figure_h,'pointer','arrow');
+  set(fig_h,'pointer','arrow');
   drawnow('update');
   drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
@@ -104,7 +104,7 @@ if N_window<=1
   return;
 end
 if di_window<1
-  set(groundswell_figure_h,'pointer','arrow');
+  set(fig_h,'pointer','arrow');
   drawnow('update');
   drawnow('expose');
   errordlg(['The requested window duration and number of steps per ' ...
@@ -115,7 +115,7 @@ if di_window<1
   return;
 end
 if ~(2*NW<N_window)
-  set(groundswell_figure_h,'pointer','arrow');
+  set(fig_h,'pointer','arrow');
   drawnow('update');
   drawnow('expose');
   errordlg(['The requested window duration (and the sampling rate of ' ...
@@ -126,23 +126,30 @@ if ~(2*NW<N_window)
 end 
 
 % calc spectrogram
-[f,t,~,P]=...
+[f,t,~,P,~,~,N_fft,f_res_diam]=...
   powgram_mt(dt,data_short_cent,...
              T_window_want,dt_window_want,...
              NW,K,F_keep,...
              p_FFT_extra);
+t=t+t_short(1);  % powgram_mt only knows dt, so have to do this           
 
 % plot spectrogram
 title_str=sprintf('Spectrogram of %s',name);
-h=figure_powgram(t,f,P,...
-                 tl_view,[0 F_keep],[],...
-                 'power',[],...
-                 title_str,...
-                 units);
+[h,h_a]=figure_powgram(t,f,P,...
+                       tl_view,[0 F_keep],[],...
+                       'power',[],...
+                       title_str,...
+                       units);
 set(h,'name',title_str);
 set(h,'color','w');          
+text(1,1.005,sprintf('f_res: %0.3f Hz\nN_fft: %d',f_res_diam,N_fft),...
+     'parent',h_a,...
+     'units','normalized',...
+     'horizontalalignment','right',...
+     'verticalalignment','bottom',...
+     'interpreter','none');
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow');
+set(fig_h,'pointer','arrow');
 drawnow('update');
 drawnow('expose');

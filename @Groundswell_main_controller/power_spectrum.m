@@ -1,15 +1,15 @@
-function power_spectrum(gsmc)
+function power_spectrum(self)
 
 % get the figure handle
-groundswell_figure_h=gsmc.view.fig_h;
+groundswell_figure_h=self.view.fig_h;
 
 % get stuff we'll need
-selected=gsmc.view.get_selected_axes();
-t=gsmc.model.t;
-data=gsmc.model.data;
+selected=self.view.get_selected_axes();
+t=self.model.t;
+data=self.model.data;
 N=size(data,1);
-names=gsmc.model.names;
-units=gsmc.model.units;
+names=self.model.names;
+units=self.model.units;
 
 % get the selected signal
 n_signals=sum(selected);
@@ -169,7 +169,7 @@ drawnow('expose');
 % data(:,1)=cos(2*pi*1*t);
 
 % get just the data in view
-tl_view=gsmc.view.tl_view;
+tl_view=self.view.tl_view;
 jl=interp1([t(1) t(end)],[1 N],tl_view,'linear','extrap');
 jl(1)=floor(jl(1));
 jl(2)= ceil(jl(2));
@@ -211,6 +211,7 @@ blue=[0 0 1];
 light_blue=[0.8 0.8 1];
 label=name;
 figure('name',sprintf('Power spectrum of %s',label),'color','w');
+axes;
 line(f,Pxx_ci(:,1),'color',light_blue);
 line(f,Pxx_ci(:,2),'color',light_blue);
 line(f,Pxx,'color',blue);
@@ -222,6 +223,11 @@ else
 end
 title(sprintf('Power spectrum of %s',label),'interpreter','none');
 box on;
+text(1,1.005,sprintf('f_res: %0.3f Hz\nN_fft: %d',f_res_diam,N_fft),...
+     'units','normalized',...
+     'horizontalalignment','right',...
+     'verticalalignment','bottom',...
+     'interpreter','none');
 
 % set pointer back
 set(groundswell_figure_h,'pointer','arrow');
