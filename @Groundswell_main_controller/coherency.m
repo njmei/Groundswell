@@ -181,6 +181,11 @@ end
 % all parameters are converted, and are in-bounds
 %
 
+% Should we generate a warning if K==1 and R==1 ?
+% This will yield a coherency of unit magnitude for all f, 
+% just like a sample correlation coefficient for two points is 
+% always equal to one...
+% ALT, 2011-12-28
 
 
 %
