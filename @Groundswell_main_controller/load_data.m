@@ -88,7 +88,7 @@ elseif strcmp(filename(len-3:len),'.wav')
   end
 elseif strcmp(filename(len-3:len),'.txt')
   full_filename=fullfile(pathname,filename);
-  %try
+  try
     is_bayley_style_p= ...
       Groundswell_main_controller.is_bayley_style(full_filename);
     if is_bayley_style_p
@@ -102,13 +102,13 @@ elseif strcmp(filename(len-3:len),'.txt')
     else
       data=load(full_filename);
     end
-%   catch exception
-%     set(groundswell_figure_h,'pointer','arrow');
-%     drawnow('update');
-%     drawnow('expose');
-%     errordlg(sprintf('Unable to open file %s',filename));  
-%     return;
-%   end
+  catch exception
+    set(groundswell_figure_h,'pointer','arrow');
+    drawnow('update');
+    drawnow('expose');
+    errordlg(sprintf('Unable to open file %s',filename));  
+    return;
+  end
   [n_t,n_chan]=size(data);
   if ~is_bayley_style_p
     % For plain=old text files, we assume the data is sampled at 1 kHz, for
