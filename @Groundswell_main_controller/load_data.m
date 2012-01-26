@@ -4,12 +4,14 @@ function load_data(self)
 groundswell_figure_h=self.view.fig_h;
 
 % throw up the dialog box
-[filename,pathname]=...
+i_bayley_25=6;  % index of Bayley-style file at 2.5 um/pel
+[filename,pathname,i_filter]=...
   uigetfile({'*.abf' 'Axon binary format file (*.abf)';...
              '*.tcs' 'Traces file (*.tcs)';
              '*.wav' 'Microsoft waveform audio file (*.wav)';
              '*.txt' 'Text file (*.txt)';
-             '*.txt' 'Bayley-style text file (*.txt)';
+             '*.txt' 'Bayley-style text file, 5.0 um/pel (*.txt)';
+             '*.txt' 'Bayley-style text file, 2.5 um/pel (*.txt)';
              '*.*'   'All files (*.*)'},...
             'Load data from file...');
 if isnumeric(filename) || isnumeric(pathname)
@@ -86,36 +88,41 @@ elseif strcmp(filename(len-3:len),'.wav')
   end
 elseif strcmp(filename(len-3:len),'.txt')
   full_filename=fullfile(pathname,filename);
-  try
+  %try
     is_bayley_style_p= ...
       Groundswell_main_controller.is_bayley_style(full_filename);
     if is_bayley_style_p
-      [t,data,names]= ...
-        Groundswell_main_controller.load_txt_bayley(full_filename);
+      if i_filter==i_bayley_25        
+        [t,data,names,units]= ...
+          Groundswell_main_controller.load_txt_bayley(full_filename,2.5);
+      else
+        [t,data,names,units]= ...
+          Groundswell_main_controller.load_txt_bayley(full_filename,5.0);
+      end        
     else
       data=load(full_filename);
     end
-  catch exception
-    set(groundswell_figure_h,'pointer','arrow');
-    drawnow('update');
-    drawnow('expose');
-    errordlg(sprintf('Unable to open file %s',filename));  
-    return;
-  end
+%   catch exception
+%     set(groundswell_figure_h,'pointer','arrow');
+%     drawnow('update');
+%     drawnow('expose');
+%     errordlg(sprintf('Unable to open file %s',filename));  
+%     return;
+%   end
   [n_t,n_chan]=size(data);
   if ~is_bayley_style_p
-    % We assume the data is sampled at 1 kHz, for lack of a better
-    % assumption.
+    % For plain=old text files, we assume the data is sampled at 1 kHz, for
+    % lack of a better assumption.
     dt=0.001;  % s
     t=dt*(0:(n_t-1))';  % s
     names=cell(n_chan,1);
     for i=1:n_chan
       names{i}=sprintf('x%d',i);
     end
-  end
-  units=cell(n_chan,1);
-  for i=1:n_chan
-    units{i}=sprintf('?',i);
+    units=cell(n_chan,1);
+    for i=1:n_chan
+      units{i}=sprintf('?',i);
+    end
   end
 else
   errordlg('Don''t know how to open a file with that extension');
