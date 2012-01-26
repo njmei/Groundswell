@@ -9,6 +9,7 @@ groundswell_figure_h=self.view.fig_h;
              '*.tcs' 'Traces file (*.tcs)';
              '*.wav' 'Microsoft waveform audio file (*.wav)';
              '*.txt' 'Text file (*.txt)';
+             '*.txt' 'Bayley-style text file (*.txt)';
              '*.*'   'All files (*.*)'},...
             'Load data from file...');
 if isnumeric(filename) || isnumeric(pathname)
@@ -86,7 +87,14 @@ elseif strcmp(filename(len-3:len),'.wav')
 elseif strcmp(filename(len-3:len),'.txt')
   full_filename=fullfile(pathname,filename);
   try
-    data=load(full_filename);
+    is_bayley_style_p= ...
+      Groundswell_main_controller.is_bayley_style(full_filename);
+    if is_bayley_style_p
+      [t,data,names]= ...
+        Groundswell_main_controller.load_txt_bayley(full_filename);
+    else
+      data=load(full_filename);
+    end
   catch exception
     set(groundswell_figure_h,'pointer','arrow');
     drawnow('update');
@@ -94,14 +102,16 @@ elseif strcmp(filename(len-3:len),'.txt')
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
-  % We assume the data is sampled at 1 kHz, for lack of a better
-  % assumption.
-  dt=0.001;  % s
   [n_t,n_chan]=size(data);
-  t=dt*(0:(n_t-1))';  % s
-  names=cell(n_chan,1);
-  for i=1:n_chan
-    names{i}=sprintf('x%d',i);
+  if ~is_bayley_style_p
+    % We assume the data is sampled at 1 kHz, for lack of a better
+    % assumption.
+    dt=0.001;  % s
+    t=dt*(0:(n_t-1))';  % s
+    names=cell(n_chan,1);
+    for i=1:n_chan
+      names{i}=sprintf('x%d',i);
+    end
   end
   units=cell(n_chan,1);
   for i=1:n_chan

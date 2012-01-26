@@ -35,6 +35,8 @@ classdef Groundswell_main_controller < handle
     retval=get_spectrogram_params(tl,dt)
     result=all_on_same_time_base(t_each)
     [t,data]=upsample_to_common(t_each,data_each)
+    [t,data,trace_name]=load_txt_bayley(filename)
+    p=is_bayley_style(filename)
   end  % methods (Static)
   
 end  % classdef
