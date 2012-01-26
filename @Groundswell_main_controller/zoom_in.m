@@ -1,6 +1,6 @@
 function zoom_in(self)
 
-n_chan=self.model.get_n_chan();
+n_chan=self.model.n_chan;
 if n_chan>0
   tl_view=self.view.tl_view;
   tw=tl_view(2)-tl_view(1);

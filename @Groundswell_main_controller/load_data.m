@@ -126,8 +126,12 @@ end
 names=strtrim(names);
 units=strtrim(units);
 
-% store all the data-related stuff in the model
-self.model.set_t_data_names_units(t,data,names,units);
+% store all the data-related stuff in a newly-created model
+self.model=Groundswell_main_model(t,data,names,units);
+
+% set fs_str
+fs=(length(t)-1)/(t(end)-t(1));  % Hz
+self.fs_str=sprintf('%0.16g',fs);
 
 % make the view reflect the modified model
 self.view.renew(self.model);

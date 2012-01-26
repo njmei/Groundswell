@@ -1,7 +1,7 @@
 function page_right(self)
 
 if ~isempty(self.view.axes_hs)
-  tl=self.model.get_tl();
+  tl=self.model.tl;
   tl_view=self.view.tl_view;
   tw=tl_view(2)-tl_view(1);
   tf=tl(2);

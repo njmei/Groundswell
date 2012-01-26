@@ -6,11 +6,13 @@ classdef Groundswell_main_controller < handle
   properties
     model;
     view;
+    fs_str;  % string holding the sampling rate, in Hz
   end  % properties
   
   methods
     function self=Groundswell_main_controller()
-      self.model=Groundswell_main_model();
+      fs_str=[];
+      self.model=[];
       self.view=Groundswell_main_view(self);
     end  % constructor
     function center(self)

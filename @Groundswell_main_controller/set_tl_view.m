@@ -12,7 +12,7 @@ end
 tl_view_new_want_srt=sort(tl_view_new_want); 
 
 % limit to data bounds
-tl=self.model.get_tl();
+tl=self.model.tl;
 t0=tl(1);
 tf=tl(2);
 tl_view_new_want_srt_constrained(1)=...

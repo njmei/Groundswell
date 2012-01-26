@@ -28,6 +28,7 @@ if n_chan==0
   set(self.zoom_out_button_h,'enable','off');
   set(self.zoom_in_button_h,'enable','off');
   % mutation menu
+  set(self.change_fs_menu_h,'enable','off');
   set(self.center_menu_h,'enable','off');
   set(self.rectify_menu_h,'enable','off');
   % analysis menu
@@ -52,6 +53,8 @@ else
   set(self.zoom_way_out_button_h,'enable','on');
   set(self.zoom_out_button_h,'enable','on');
   set(self.zoom_in_button_h,'enable','on');
+  % mutation menu
+  set(self.change_fs_menu_h,'enable','on');
   if n_selected==0
     % y axis menu
     set(self.edit_y_bounds_menu_h,'enable','off');

@@ -1,10 +1,10 @@
 function renew(self,model)
 
 % set the view limits to the full time range
-self.tl_view=model.get_tl();
+self.tl_view=model.tl;
 
 % get the number of channels
-self.n_chan=size(model.data,2);
+self.n_chan=model.n_chan;
 
 % renew the axes
 self.renew_axes(model);

@@ -201,9 +201,9 @@ drawnow('expose');
 % data(:,1)=cos(2*pi*1*t);
 
 % get just the data in view
-tl=self.model.get_tl();
+tl=self.model.tl;
 tl_view=self.view.tl_view;
-N=self.model.get_n_t();
+N=self.model.n_t;
 jl=interp1(tl,[1 N],tl_view,'linear','extrap');
 jl(1)=floor(jl(1));
 jl(2)= ceil(jl(2));

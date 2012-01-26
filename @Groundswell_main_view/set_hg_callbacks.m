@@ -14,6 +14,7 @@ set(self.edit_y_bounds_menu_h,'Callback',@(src,event)(controller.edit_y_bounds()
 set(self.optimize_selected_y_menu_h,'Callback',@(src,event)(controller.optimize_selected_y_axis_ranges()));
 set(self.optimize_all_y_menu_h,'Callback',@(src,event)(controller.optimize_all_y_axis_ranges()));
 % the mutation menu
+set(self.change_fs_menu_h,'Callback',@(src,event)(controller.change_fs()));
 set(self.center_menu_h,'Callback',@(src,event)(controller.center()));
 set(self.rectify_menu_h,'Callback',@(src,event)(controller.rectify()));
 % the analysis menu
