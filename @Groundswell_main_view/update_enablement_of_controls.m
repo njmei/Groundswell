@@ -34,6 +34,12 @@ if n_chan==0
   % analysis menu
   set(self.spectra_menu_h,'enable','off');  
   set(self.spectrograms_menu_h,'enable','off');  
+  set(self.power_spectrum_menu_h,'enable','off');
+  set(self.coherency_menu_h,'enable','off');
+  set(self.coherogram_menu_h,'enable','off');
+  set(self.transfer_function_menu_h,'enable','off');
+  set(self.coherency_at_f_probe_menu_h,'enable','off');
+  set(self.play_as_audio_menu_h,'enable','off');
 else
   % x axis menu
   set(self.time_ms_menu_h,'enable','on');
@@ -74,16 +80,19 @@ else
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','on');
     set(self.spectrogram_menu_h,'enable','on');  
+    set(self.play_as_audio_menu_h,'enable','on');
   else
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','off');
     set(self.spectrogram_menu_h,'enable','off');  
+    set(self.play_as_audio_menu_h,'enable','off');
   end    
   if n_selected==2
     % analysis menu
     set(self.coherency_menu_h,'enable','on');
     set(self.coherogram_menu_h,'enable','on');
     set(self.transfer_function_menu_h,'enable','on');
+    set(self.play_as_audio_menu_h,'enable','off');
   else
     % analysis menu
     set(self.coherency_menu_h,'enable','off');
@@ -92,6 +101,7 @@ else
   end
   if n_selected>=2
     set(self.coherency_at_f_probe_menu_h,'enable','on');
+    set(self.play_as_audio_menu_h,'enable','off');
   else
     set(self.coherency_at_f_probe_menu_h,'enable','off');
   end  

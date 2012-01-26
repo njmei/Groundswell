@@ -11,7 +11,7 @@ classdef Groundswell_main_controller < handle
   
   methods
     function self=Groundswell_main_controller()
-      fs_str=[];
+      self.fs_str='';
       self.model=[];
       self.view=Groundswell_main_view(self);
     end  % constructor

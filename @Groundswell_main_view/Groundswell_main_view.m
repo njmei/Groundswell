@@ -52,6 +52,7 @@ classdef Groundswell_main_view < handle
     coherency_at_f_probe_menu_h
     coherogram_menu_h
     transfer_function_menu_h
+    play_as_audio_menu_h
     % scroll buttons
     to_start_button_h
     page_left_button_h
@@ -245,6 +246,9 @@ classdef Groundswell_main_view < handle
              'Label','Transfer function...',...
              'Enable','off',...
              'Tag','transfer_function_menu_h');
+      self.play_as_audio_menu_h=uimenu(self.analysis_menu_h,...
+             'Label','Play as audio',...
+             'Enable','off');
 
 
 

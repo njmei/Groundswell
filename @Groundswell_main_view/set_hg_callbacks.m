@@ -24,6 +24,7 @@ set(self.coherency_menu_h,'Callback',@(src,event)(controller.coherency()));
 set(self.coherency_at_f_probe_menu_h,'Callback',@(src,event)(controller.coherency_at_f_probe()));
 set(self.coherogram_menu_h,'Callback',@(src,event)(controller.coherogram()));
 set(self.transfer_function_menu_h,'Callback',@(src,event)(controller.transfer_function()));
+set(self.play_as_audio_menu_h,'Callback',@(src,event)(controller.play_as_audio()));
 % scroll buttons
 set(self.to_start_button_h,'Callback',@(src,event)(controller.to_start()));
 set(self.page_left_button_h,'Callback',@(src,event)(controller.page_left()));
@@ -35,3 +36,5 @@ set(self.to_end_button_h,'Callback',@(src,event)(controller.to_end()));
 set(self.zoom_way_out_button_h,'Callback',@(src,event)(controller.zoom_way_out()));
 set(self.zoom_out_button_h,'Callback',@(src,event)(controller.zoom_out()));
 set(self.zoom_in_button_h,'Callback',@(src,event)(controller.zoom_in()));
+
+end
