@@ -40,7 +40,7 @@ dt=(t(end)-t(1))/(N-1);
 %T=N*dt;
 
 % throw up the dialog box, check params
-params=Groundswell_main_controller.get_spectrogram_params(tl_view,dt);
+params=Controller.get_spectrogram_params(tl_view,dt);
 
 % check for error exit
 if isempty(params)

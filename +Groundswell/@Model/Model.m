@@ -1,4 +1,4 @@
-classdef Groundswell_main_model < handle
+classdef Model < handle
 
 % This is Groundswell_main, a class to represent the underlying data
 % in the main window of the groundswell application.
@@ -23,7 +23,7 @@ classdef Groundswell_main_model < handle
   end
   
   methods
-    function self=Groundswell_main_model(t,data,names,units)
+    function self=Model(t,data,names,units)
       n_t=size(data,1);
       if n_t==0
         t0=nan;

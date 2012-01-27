@@ -45,7 +45,7 @@ clear data;
 dt=(t(end)-t(1))/(length(t)-1);
 
 % throw up the dialog box, check params
-params=Groundswell_main_controller.get_coherogram_params(tl_view,dt);
+params=Controller.get_coherogram_params(tl_view,dt);
 
 % check for error exit
 if isempty(params)

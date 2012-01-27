@@ -48,7 +48,7 @@ elseif strcmp(filename(len-3:len),'.tcs')
   end
   % have to upsample data_each onto a common timeline, unless they're
   % already like that
-  if ~Groundswell_main_controller.all_on_same_time_base(t_each)
+  if ~Controller.all_on_same_time_base(t_each)
     button=questdlg(['All signals not on same time base.  ' ...
                      'Limit time range and upsample slow signals?'],...
                     'Limit time range and upsample?',...
@@ -60,7 +60,7 @@ elseif strcmp(filename(len-3:len),'.tcs')
     end
   end
   [t,data]=...
-    Groundswell_main_controller.upsample_to_common(t_each,data_each);
+    Controller.upsample_to_common(t_each,data_each);
 elseif strcmp(filename(len-3:len),'.wav')
   full_filename=fullfile(pathname,filename);
   try
@@ -90,14 +90,14 @@ elseif strcmp(filename(len-3:len),'.txt')
   full_filename=fullfile(pathname,filename);
   try
     is_bayley_style_p= ...
-      Groundswell_main_controller.is_bayley_style(full_filename);
+      Controller.is_bayley_style(full_filename);
     if is_bayley_style_p
       if i_filter==i_bayley_25        
         [t,data,names,units]= ...
-          Groundswell_main_controller.load_txt_bayley(full_filename,2.5);
+          Controller.load_txt_bayley(full_filename,2.5);
       else
         [t,data,names,units]= ...
-          Groundswell_main_controller.load_txt_bayley(full_filename,5.0);
+          Controller.load_txt_bayley(full_filename,5.0);
       end        
     else
       data=load(full_filename);
@@ -134,7 +134,7 @@ names=strtrim(names);
 units=strtrim(units);
 
 % store all the data-related stuff in a newly-created model
-self.model=Groundswell_main_model(t,data,names,units);
+self.model=Groundswell.Model(t,data,names,units);
 
 % set fs_str
 fs=(length(t)-1)/(t(end)-t(1));  % Hz

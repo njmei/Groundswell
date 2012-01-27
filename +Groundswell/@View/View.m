@@ -1,6 +1,6 @@
-classdef Groundswell_main_view < handle
+classdef View < handle
 
-% This is Groundswell_main_view, a class to represent the main window of
+% This is View, a class to represent the main window of
 % the groundswell application.
 
   properties
@@ -67,7 +67,7 @@ classdef Groundswell_main_view < handle
   end  % properties
   
   methods
-    function self=Groundswell_main_view(controller)      
+    function self=View(controller)      
       self.controller=controller;
       
       % get the screen size so we can position the figure window
@@ -314,7 +314,7 @@ classdef Groundswell_main_view < handle
                   'Tag','zoom_in_button_h');
 
       % set up the instance variables that are non-trivial to init
-      self.colors=Groundswell_main_view.make_color_sequence();
+      self.colors=Groundswell.View.make_color_sequence();
       
       % register the callbacks
       self.set_hg_callbacks(controller);
