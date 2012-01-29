@@ -11,6 +11,7 @@ properties
   line_ci2;
   ylabel;
   title;
+
   menu_y_axis;
   item_y_power;
   item_y_amplitude;
@@ -21,6 +22,10 @@ properties
   item_y_unit_area;
   item_y_wn_unit;
   
+  menu_x_axis;
+  item_x_linear;
+  item_x_log10;
+
   % model stuff
   f;
   S_log;
@@ -34,6 +39,7 @@ properties
   mode_pa='power';  % power, amplitude
   mode_ll='linear';  % linear, log10, decibels
   mode_rn='raw';  % raw, unit_area (==Z-scored), WN is unity
+  mode_ll_x='linear';  % x-axis scale: linear, log10
 end  % properties
 
 methods
@@ -78,7 +84,18 @@ methods
                  'verticalalignment','bottom', ...
                  'interpreter','none');
        
-    % add custom menus
+    % add X axis menu
+    self.menu_x_axis=uimenu(self.fig,'label','X axis');
+    self.item_x_linear= ...
+      uimenu(self.menu_x_axis, ...
+             'label','Linear', ...
+             'Callback',@(~,~)(self.set_mode_ll_x('linear')));
+    self.item_x_log10= ...
+      uimenu(self.menu_x_axis, ...
+             'label','Logarithmic', ...
+             'Callback',@(~,~)(self.set_mode_ll_x('log10')));
+           
+    % add Y axis menu
     self.menu_y_axis=uimenu(self.fig,'label','Y axis');
     self.item_y_power= ...
       uimenu(self.menu_y_axis, ...
@@ -114,12 +131,7 @@ methods
       uimenu(self.menu_y_axis, ...
              'label','White noise implies unit density', ...
              'Callback',@(~,~)(self.set_mode_rn('wn_unity')));
-     
-%     % default modes
-%     self.mode_pa='power';
-%     self.mode_ll='linear';
-%     self.mode_rn='raw';
-    
+
     % store stuff
     self.f=f;
     self.S_log=S_log;
@@ -150,6 +162,11 @@ methods
     self.sync_view();    
   end
 
+  function set.mode_ll_x(self,mode_new)
+    self.mode_ll_x=mode_new;
+    self.sync_view();    
+  end
+
   % this exists only because "self.set_mode_pa(whatever)" can be used
   % inside an anon function, but "self.mode_pa=whatever" can't
   function set_mode_pa(self,mode_new)
@@ -162,6 +179,10 @@ methods
 
   function set_mode_rn(self,mode_new)
     self.mode_rn=mode_new;
+  end
+
+  function set_mode_ll_x(self,mode_new)
+    self.mode_ll_x=mode_new;
   end
 
   function sync_view(self)
@@ -188,13 +209,13 @@ methods
       y=0.5*y;
       y_ci=0.5*y_ci;
     end
-    if strcmp(self.mode_ll,'linear')
+    if strcmp(self.mode_ll,'linear') || strcmp(self.mode_ll,'log10')
       y=exp(y);
       y_ci=exp(y_ci);
-    elseif strcmp(self.mode_ll,'log10')
-      % convert nat log to log10
-      y=y./log(10);
-      y_ci=y_ci./log(10);
+    %elseif strcmp(self.mode_ll,'log10')
+    %  % convert nat log to log10
+    %  y=y./log(10);
+    %  y_ci=y_ci./log(10);
     elseif strcmp(self.mode_ll,'db')
       % convert nat log to log10
       y=10*y./log(10);
@@ -202,15 +223,31 @@ methods
     end
 
     % figure out y axis limits
-    y_max=max(max(y),max(max(y_ci)));
     switch self.mode_ll
       case 'linear'
+        y_max=max(max(y),max(max(y_ci)));
         yl=[0 1.05*y_max];
-      otherwise
+      case 'log10'
+        y_max=max(max(log10(y)),max(max(log10(y_ci))));
+        y_min=min(min(log10(y)),min(min(log10(y_ci))));
+        y_mid=(y_max+y_min)/2;
+        y_radius=(y_max-y_min)/2;
+        yl=y_mid+1.05*y_radius*[-1 +1];
+        yl=10.^yl;
+      case 'db'
+        y_max=max(max(y),max(max(y_ci)));
         y_min=min(min(y),min(min(y_ci)));
         y_mid=(y_max+y_min)/2;
         y_radius=(y_max-y_min)/2;
         yl=y_mid+1.05*y_radius*[-1 +1];
+    end
+
+    % figure out x axis limits
+    switch self.mode_ll_x
+      case 'linear'
+        xl=[0 self.F_keep];
+      otherwise
+        xl=[self.f_res_diam/2 self.F_keep];
     end
     
     % build the units string for the spectrum
@@ -241,21 +278,40 @@ methods
     end
     
     % build y-axis label
-    if strcmp(self.mode_pa,'power') && ~strcmp(self.mode_ll,'log10')
+    if strcmp(self.mode_pa,'power')
       y_str=sprintf('Power density (%s)',units_str);
-    elseif strcmp(self.mode_pa,'amplitude') && ~strcmp(self.mode_ll,'log10')
+    elseif strcmp(self.mode_pa,'amplitude')
       y_str=sprintf('Amplitude density (%s)',units_str);
-    elseif strcmp(self.mode_pa,'power') && strcmp(self.mode_ll,'log10')
-      y_str=sprintf('log_{10} power density (%s)',units_str);
-    elseif strcmp(self.mode_pa,'amplitude') && strcmp(self.mode_ll,'log10')
-      y_str=sprintf('log_{10} amplitude density (%s)',units_str);
+    end
+    %if strcmp(self.mode_pa,'power') && ~strcmp(self.mode_ll,'log10')
+    %  y_str=sprintf('Power density (%s)',units_str);
+    %elseif strcmp(self.mode_pa,'amplitude') && ~strcmp(self.mode_ll,'log10')
+    %  y_str=sprintf('Amplitude density (%s)',units_str);
+    %elseif strcmp(self.mode_pa,'power') && strcmp(self.mode_ll,'log10')
+    %  y_str=sprintf('log_{10} power density (%s)',units_str);
+    %elseif strcmp(self.mode_pa,'amplitude') && strcmp(self.mode_ll,'log10')
+    %  y_str=sprintf('log_{10} amplitude density (%s)',units_str);
+    %end
+    
+    % set the y-axis scale
+    if strcmp(self.mode_ll,'linear') || strcmp(self.mode_ll,'db')
+      set(self.plot,'yscale','linear');
+    elseif strcmp(self.mode_ll,'log10')
+      set(self.plot,'yscale','log');
+    end
+
+    % set the x-axis scale
+    if strcmp(self.mode_ll_x,'linear')
+      set(self.plot,'xscale','linear');
+    elseif strcmp(self.mode_ll_x,'log10')
+      set(self.plot,'xscale','log');
     end
     
     % sync each plot object
     set(self.line,'xdata',f,'ydata',y);
     set(self.line_ci1,'xdata',f,'ydata',y_ci(:,1));
     set(self.line_ci2,'xdata',f,'ydata',y_ci(:,2));
-    set(self.plot,'xlim',[0 self.F_keep]);
+    set(self.plot,'xlim',xl);
     set(self.plot,'ylim',yl);
     set(self.ylabel,'string',y_str);
     
@@ -295,6 +351,14 @@ methods
         set(self.item_y_raw,'checked','off');
         set(self.item_y_unit_area,'checked','off');
         set(self.item_y_wn_unit,'checked','on');
+    end
+    switch self.mode_ll_x
+      case 'linear'
+        set(self.item_x_linear,'checked','on');
+        set(self.item_x_log10,'checked','off');
+      case 'log10'
+        set(self.item_x_linear,'checked','off');
+        set(self.item_x_log10,'checked','on');
     end
     
   end
