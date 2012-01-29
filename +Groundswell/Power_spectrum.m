@@ -16,6 +16,7 @@ properties
   item_y_amplitude;
   item_y_linear;
   item_y_log10;
+  item_y_db;
   item_y_raw;
   item_y_unit_area;
   item_y_wn_unit;
@@ -31,7 +32,7 @@ properties
   f_res_diam;
   N_fft;
   mode_pa='power';  % power, amplitude
-  mode_ll='linear';  % linear, log10
+  mode_ll='linear';  % linear, log10, decibels
   mode_rn='raw';  % raw, unit_area (==Z-scored), WN is unity
 end  % properties
 
@@ -96,6 +97,10 @@ methods
       uimenu(self.menu_y_axis, ...
              'label','Logarithmic', ...
              'Callback',@(~,~)(self.set_mode_ll('log10')));
+    self.item_y_db= ...
+      uimenu(self.menu_y_axis, ...
+             'label','Decibels (dB)', ...
+             'Callback',@(~,~)(self.set_mode_ll('db')));
     self.item_y_raw= ...
       uimenu(self.menu_y_axis, ...
              'label','Raw', ...
@@ -190,6 +195,10 @@ methods
       % convert nat log to log10
       y=y./log(10);
       y_ci=y_ci./log(10);
+    elseif strcmp(self.mode_ll,'db')
+      % convert nat log to log10
+      y=10*y./log(10);
+      y_ci=10*y_ci./log(10);
     end
 
     % figure out y axis limits
@@ -197,7 +206,7 @@ methods
     switch self.mode_ll
       case 'linear'
         yl=[0 1.05*y_max];
-      case 'log10'
+      otherwise
         y_min=min(min(y),min(min(y_ci)));
         y_mid=(y_max+y_min)/2;
         y_radius=(y_max-y_min)/2;
@@ -227,11 +236,14 @@ methods
         units_str=[units_str '^{0.5}'];
       end
     end
+    if strcmp(self.mode_ll,'db')
+      units_str=[units_str ', dB'];
+    end
     
     % build y-axis label
-    if strcmp(self.mode_pa,'power') && strcmp(self.mode_ll,'linear')
+    if strcmp(self.mode_pa,'power') && ~strcmp(self.mode_ll,'log10')
       y_str=sprintf('Power density (%s)',units_str);
-    elseif strcmp(self.mode_pa,'amplitude') && strcmp(self.mode_ll,'linear')
+    elseif strcmp(self.mode_pa,'amplitude') && ~strcmp(self.mode_ll,'log10')
       y_str=sprintf('Amplitude density (%s)',units_str);
     elseif strcmp(self.mode_pa,'power') && strcmp(self.mode_ll,'log10')
       y_str=sprintf('log_{10} power density (%s)',units_str);
@@ -260,9 +272,15 @@ methods
       case 'linear'
         set(self.item_y_linear,'checked','on');
         set(self.item_y_log10,'checked','off');
+        set(self.item_y_db,'checked','off');
       case 'log10'
         set(self.item_y_linear,'checked','off');
         set(self.item_y_log10,'checked','on');
+        set(self.item_y_db,'checked','off');
+      case 'db'
+        set(self.item_y_linear,'checked','off');
+        set(self.item_y_log10,'checked','off');
+        set(self.item_y_db,'checked','on');
     end
     switch self.mode_rn
       case 'raw'
