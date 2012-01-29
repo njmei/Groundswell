@@ -17,8 +17,8 @@ properties
   item_y_linear;
   item_y_log10;
   item_y_raw;
-  item_y_normed;
-  %item_y_wn_unit;
+  item_y_unit_area;
+  item_y_wn_unit;
   
   % model stuff
   f;
@@ -26,17 +26,18 @@ properties
   S_log_ci;
   name;
   units;
+  fs;
   F_keep;
   f_res_diam;
   N_fft;
   mode_pa='power';  % power, amplitude
   mode_ll='linear';  % linear, log10
-  mode_rn='raw';  % raw, normed
+  mode_rn='raw';  % raw, unit_area (==Z-scored), WN is unity
 end  % properties
 
 methods
   function self=Power_spectrum(f,S_log,S_log_ci,name,units, ...
-                               F_keep,f_res_diam,N_fft)
+                               fs,F_keep,f_res_diam,N_fft)
     % define colors
     blue=[0 0 1];
     light_blue=[0.8 0.8 1];
@@ -100,14 +101,14 @@ methods
              'label','Raw', ...
              'separator','on', ...
              'Callback',@(~,~)(self.set_mode_rn('raw')));
-    self.item_y_normed= ...
+    self.item_y_unit_area= ...
       uimenu(self.menu_y_axis, ...
-             'label','Z-scored', ...
-             'Callback',@(~,~)(self.set_mode_rn('normed')));
-%     self.item_y_wn_unit= ...
-%       uimenu(self.menu_y_axis, ...
-%              'label','WN is unit density', ...
-%              'Callback',@(~,~)(self.set_mode_rn('wn_unit')));
+             'label','Area under power density is one', ...
+             'Callback',@(~,~)(self.set_mode_rn('unit_area')));
+    self.item_y_wn_unit= ...
+      uimenu(self.menu_y_axis, ...
+             'label','White noise implies unit density', ...
+             'Callback',@(~,~)(self.set_mode_rn('wn_unity')));
      
 %     % default modes
 %     self.mode_pa='power';
@@ -120,6 +121,7 @@ methods
     self.S_log_ci=S_log_ci;
     self.name=name;
     self.units=units;
+    self.fs=fs;
     self.F_keep=F_keep;
     self.f_res_diam=f_res_diam;
     self.N_fft=N_fft;
@@ -162,12 +164,18 @@ methods
     f=self.f;
     y=self.S_log;
     y_ci=self.S_log_ci;
-    if strcmp(self.mode_rn,'normed')
+    if ~strcmp(self.mode_rn,'raw')
       df=(f(end)-f(1))/(length(f)-1);
       S=exp(self.S_log);
       S_int=df*sum(S);
-      offset=-log(S_int);
-        % adding this in log-space == dividing by S_int
+      if strcmp(self.mode_rn,'unit_area')
+        % unit_area, i.e. Z-scored, i.e. unit area under curve
+        offset=-log(S_int);
+          % adding this in log-space == dividing by S_int
+      else
+        % white noise is unity, means area under curve is fs/2
+        offset=log(self.fs/2)-log(S_int);
+      end        
       y=y+offset;
       y_ci=y_ci+offset;
     end
@@ -203,17 +211,21 @@ methods
     else
       units_str=units;
     end
-    if strcmp(self.mode_rn,'normed')
-      units_str='1';
+    if strcmp(self.mode_rn,'wn_unity')
+      units_str='pure';
     else
-      % raw
-      if strcmp(self.mode_pa,'power')
-        units_str=[units_str '^2'];
+      if strcmp(self.mode_rn,'unit_area')
+        units_str='1';
+      else
+        % raw
+        if strcmp(self.mode_pa,'power')
+          units_str=[units_str '^2'];
+        end
       end
-    end
-    units_str=[units_str '/Hz'];
-    if strcmp(self.mode_pa,'amplitude')
-      units_str=[units_str '^{0.5}'];
+      units_str=[units_str '/Hz'];
+      if strcmp(self.mode_pa,'amplitude')
+        units_str=[units_str '^{0.5}'];
+      end
     end
     
     % build y-axis label
@@ -255,10 +267,16 @@ methods
     switch self.mode_rn
       case 'raw'
         set(self.item_y_raw,'checked','on');
-        set(self.item_y_normed,'checked','off');
-      case 'normed'
+        set(self.item_y_unit_area,'checked','off');
+        set(self.item_y_wn_unit,'checked','off');
+      case 'unit_area'
         set(self.item_y_raw,'checked','off');
-        set(self.item_y_normed,'checked','on');
+        set(self.item_y_unit_area,'checked','on');
+        set(self.item_y_wn_unit,'checked','off');
+      case 'wn_unity'
+        set(self.item_y_raw,'checked','off');
+        set(self.item_y_unit_area,'checked','off');
+        set(self.item_y_wn_unit,'checked','on');
     end
     
   end

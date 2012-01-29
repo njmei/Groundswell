@@ -209,7 +209,7 @@ data_short_cent_windowed=...
 
 % make power spectrum object
 Groundswell.Power_spectrum(f,Pxx_log,Pxx_log_ci,name,units, ...
-                           W_keep,f_res_diam,N_fft);
+                           f_samp,W_keep,f_res_diam,N_fft);
 
 % set pointer back
 set(groundswell_figure_h,'pointer','arrow');
