@@ -314,7 +314,7 @@ classdef View < handle
                   'Tag','zoom_in_button_h');
 
       % set up the instance variables that are non-trivial to init
-      self.colors=Groundswell.View.make_color_sequence();
+      self.colors=Groundswell.make_color_sequence();
       
       % register the callbacks
       self.set_hg_callbacks(controller);
@@ -324,11 +324,6 @@ classdef View < handle
 
   methods (Access=private)
     set_hg_callbacks(self,controller);
-  end
-  
-  methods (Static)
-    color_sequence = make_color_sequence()
-    [x_tick,x_tick_label]=x_tick_from_xl(xl)
-  end  % methods (Static)
+  end  % methods
   
 end  % classdef

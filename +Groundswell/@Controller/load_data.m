@@ -30,7 +30,7 @@ if strcmp(filename(len-3:len),'.abf')
   full_filename=fullfile(pathname,filename);
   try
     [t,data,names,units]=load_abf(full_filename);
-  catch exception
+  catch  %#ok
     set(groundswell_figure_h,'pointer','arrow');
     drawnow('update');
     drawnow('expose');
@@ -41,14 +41,14 @@ elseif strcmp(filename(len-3:len),'.tcs')
   full_filename=fullfile(pathname,filename);
   try
     [names,t_each,data_each,units]=read_tcs(full_filename);
-  catch exception
+  catch %#ok
     set(groundswell_figure_h,'pointer','arrow');
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
   % have to upsample data_each onto a common timeline, unless they're
   % already like that
-  if ~Controller.all_on_same_time_base(t_each)
+  if ~Groundswell.all_on_same_time_base(t_each)
     button=questdlg(['All signals not on same time base.  ' ...
                      'Limit time range and upsample slow signals?'],...
                     'Limit time range and upsample?',...
@@ -60,12 +60,12 @@ elseif strcmp(filename(len-3:len),'.tcs')
     end
   end
   [t,data]=...
-    Controller.upsample_to_common(t_each,data_each);
+    Groundswell.upsample_to_common(t_each,data_each);
 elseif strcmp(filename(len-3:len),'.wav')
   full_filename=fullfile(pathname,filename);
   try
     [data,fs]=wavread(full_filename);
-  catch exception
+  catch %#ok
     set(groundswell_figure_h,'pointer','arrow');
     drawnow('update');
     drawnow('expose');
@@ -81,34 +81,34 @@ elseif strcmp(filename(len-3:len),'.wav')
   end
   units=cell(n_chan,1);
   for i=1:n_chan
-    units{i}=sprintf('V',i);
+    units{i}='V';
       % it's surprisingly hard to find out how to convert, say, a 16-bit
       % audio sample (as on a CD) to a line-level voltage.  But I think
       % this is correct.  I.e. -2^15 = -32768 => -1 V
   end
 elseif strcmp(filename(len-3:len),'.txt')
   full_filename=fullfile(pathname,filename);
-  %try
+  try
     is_bayley_style_p= ...
-      Groundswell.Controller.is_bayley_style(full_filename);
+      Groundswell.is_bayley_style(full_filename);
     if is_bayley_style_p
       if i_filter==i_bayley_25        
         [t,data,names,units]= ...
-          Groundswell.Controller.load_txt_bayley(full_filename,2.5);
+          Groundswell.load_txt_bayley(full_filename,2.5);
       else
         [t,data,names,units]= ...
-          Groundswell.Controller.load_txt_bayley(full_filename,5.0);
+          Groundswell.load_txt_bayley(full_filename,5.0);
       end        
     else
       data=load(full_filename);
     end
-%   catch exception
-%     set(groundswell_figure_h,'pointer','arrow');
-%     drawnow('update');
-%     drawnow('expose');
-%     errordlg(sprintf('Unable to open file %s',filename));  
-%     return;
-%   end
+  catch exception  %#ok
+    set(groundswell_figure_h,'pointer','arrow');
+    drawnow('update');
+    drawnow('expose');
+    errordlg(sprintf('Unable to open file %s',filename));  
+    return;
+  end
   [n_t,n_chan]=size(data);
   if ~is_bayley_style_p
     % For plain=old text files, we assume the data is sampled at 1 kHz, for
@@ -121,7 +121,7 @@ elseif strcmp(filename(len-3:len),'.txt')
     end
     units=cell(n_chan,1);
     for i=1:n_chan
-      units{i}=sprintf('?',i);
+      units{i}='?';
     end
   end
 else
