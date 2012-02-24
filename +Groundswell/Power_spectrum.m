@@ -33,8 +33,8 @@ properties
   name;
   units;
   fs;
-  F_keep;
-  f_res_diam;
+  f_max_keep;
+  W_smear_fw;
   N_fft;
   mode_pa='power';  % power, amplitude
   mode_ll='linear';  % linear, log10, decibels
@@ -44,7 +44,7 @@ end  % properties
 
 methods
   function self=Power_spectrum(f,S_log,S_log_ci,name,units, ...
-                               fs,F_keep,f_res_diam,N_fft)
+                               fs,f_max_keep,W_smear_fw,N_fft)
     % define colors
     blue=[0 0 1];
     light_blue=[0.8 0.8 1];
@@ -72,7 +72,7 @@ methods
                      sprintf('Spectrum of %s',name), ...
                      'interpreter','none');  %#ok
     text(1,1.005, ...
-         sprintf('f_res: %0.3f Hz',f_res_diam), ...
+         sprintf('W_smear_fw: %0.3f Hz',W_smear_fw), ...
                  'units','normalized', ...
                  'horizontalalignment','right', ...
                  'verticalalignment','bottom', ...
@@ -139,8 +139,8 @@ methods
     self.name=name;
     self.units=units;
     self.fs=fs;
-    self.F_keep=F_keep;
-    self.f_res_diam=f_res_diam;
+    self.f_max_keep=f_max_keep;
+    self.W_smear_fw=W_smear_fw;
     self.N_fft=N_fft;
      
     % initial sync of the figure
@@ -245,9 +245,9 @@ methods
     % figure out x axis limits
     switch self.mode_ll_x
       case 'linear'
-        xl=[0 self.F_keep];
+        xl=[0 self.f_max_keep];
       otherwise
-        xl=[self.f_res_diam/2 self.F_keep];
+        xl=[self.W_smear_fw/2 self.f_max_keep];
     end
     
     % build the units string for the spectrum

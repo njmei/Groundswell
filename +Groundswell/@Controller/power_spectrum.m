@@ -26,8 +26,7 @@ units=units{selected};
 
 % calc sampling rate
 dt=(t(end)-t(1))/(length(t)-1);
-f_samp=1/dt;
-f_nyquist=0.5*f_samp;
+fs=1/dt;
 
 % throw up the dialog box
 param_str=inputdlg({ 'Number of windows:' , ...
@@ -41,7 +40,7 @@ param_str=inputdlg({ 'Number of windows:' , ...
                    { '1' , ...
                      '4' , ...
                      '7' , ...
-                     sprintf('%0.3f',f_nyquist) , ...
+                     sprintf('%0.3f',fs/2) , ...
                      '2' , ...
                      '0.95' },...
                    'off');
@@ -53,7 +52,7 @@ end
 n_windows_str=param_str{1};
 NW_str=param_str{2};
 K_str=param_str{3};
-W_keep_str=param_str{4};
+f_max_keep_str=param_str{4};
 p_FFT_extra_str=param_str{5};
 conf_level_str=param_str{6};
 
@@ -102,19 +101,19 @@ if K>2*NW-1
   return;
 end
 
-% W_keep
-W_keep=str2double(W_keep_str);
-if isempty(W_keep)
+% f_max_keep
+f_max_keep=str2double(f_max_keep_str);
+if isempty(f_max_keep)
   errordlg('Maximum frequency not valid','Error');
   return;
 end
-if W_keep<0
+if f_max_keep<0
   errordlg('Maximum frequency must be >= 0','Error');
   return;
 end
-if W_keep>f_nyquist
+if f_max_keep>fs/2
   errordlg(sprintf(['Maximum frequency must be <= half the ' ...
-                    'sampling frequency (%0.3f Hz)'],f_samp),...
+                    'sampling frequency (%0.3f Hz)'],fs),...
            'Error');
   return;
 end
@@ -200,16 +199,16 @@ data_short_cent_windowed=...
 
 % calc the power spectrum, using multitaper routine
 [f,~,...
- N_fft,f_res_diam,~,...
+ N_fft,W_smear_fw,~,...
  ~,...
  Pxx_log,~,Pxx_log_ci]=...
   pow_mt(dt,data_short_cent_windowed,...
-         NW,K,W_keep,p_FFT_extra,conf_level);
+         NW,K,f_max_keep,p_FFT_extra,conf_level);
 %n_f=length(f);
 
 % make power spectrum object
 Groundswell.Power_spectrum(f,Pxx_log,Pxx_log_ci,name,units, ...
-                           f_samp,W_keep,f_res_diam,N_fft);
+                           fs,f_max_keep,W_smear_fw,N_fft);
 
 % set pointer back
 set(groundswell_figure_h,'pointer','arrow');

@@ -77,7 +77,9 @@ end
 
 % play the sound, scaled
 player=audioplayer(data,fs);
+tic
 player.playblocking();
+toc
 
 % % block while sound plays
 % while player.isplaying()

@@ -32,7 +32,7 @@ T_window_want_str=param_str{1};
 n_steps_per_window_want_str=param_str{2};
 NW_str=param_str{3};
 K_str=param_str{4};
-F_keep_str=param_str{5};
+f_max_keep_str=param_str{5};
 p_FFT_extra_str=param_str{6};
 
 %
@@ -108,21 +108,21 @@ if K>2*NW-1
   return;
 end
 
-% F_keep
-F_keep=str2double(F_keep_str);
-if isempty(F_keep)
+% f_max_keep
+f_max_keep=str2double(f_max_keep_str);
+if isempty(f_max_keep)
   errordlg('Maximum frequency not valid','Error');
   retval=struct([]);
   return;
 end
-if F_keep<0
+if f_max_keep<0
   errordlg('Maximum frequency must be >= 0','Error');
   retval=struct([]);
   return;
 end
-if F_keep>fs/2
+if f_max_keep>fs/2
   errordlg(sprintf(['Maximum frequency must be <= half the ' ...
-                    'sampling frequency (%0.3f Hz)'],f_samp),...
+                    'sampling frequency (%0.3f Hz)'],fs),...
            'Error');
   retval=struct([]);
   return;
@@ -151,5 +151,5 @@ retval=struct('T_window_want',T_window_want,...
               'n_steps_per_window_want',n_steps_per_window_want,...
               'NW',NW,...
               'K',K,...
-              'F_keep',F_keep,...
+              'f_max_keep',f_max_keep,...
               'p_FFT_extra',p_FFT_extra);

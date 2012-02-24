@@ -32,8 +32,7 @@ clear data;
 
 % calc sampling rate
 dt=(t(end)-t(1))/(length(t)-1);
-f_samp=1/dt;
-f_nyquist=0.5*f_samp;
+fs=1/dt;
 
 % throw up the dialog box
 param_str=inputdlg({ 'Number of windows:' , ...
@@ -47,7 +46,7 @@ param_str=inputdlg({ 'Number of windows:' , ...
                    { '1' , ...
                      '4' , ...
                      '7' , ...
-                     sprintf('%0.3f',f_nyquist) , ...
+                     sprintf('%0.3f',fs/2) , ...
                      '2' , ...
                      '0.95' },...
                    'off');
@@ -59,7 +58,7 @@ end
 n_windows_str=param_str{1};
 NW_str=param_str{2};
 K_str=param_str{3};
-F_keep_str=param_str{4};
+f_max_keep_str=param_str{4};
 p_FFT_extra_str=param_str{5};
 conf_level_str=param_str{6};
 
@@ -108,19 +107,19 @@ if K>2*NW-1
   return;
 end
 
-% F_keep
-F_keep=str2double(F_keep_str);
-if isempty(F_keep)
+% f_max_keep
+f_max_keep=str2double(f_max_keep_str);
+if isempty(f_max_keep)
   errordlg('Maximum frequency not valid','Error');
   return;
 end
-if F_keep<0
+if f_max_keep<0
   errordlg('Maximum frequency must be >= 0','Error');
   return;
 end
-if F_keep>f_nyquist
+if f_max_keep>fs/2
   errordlg(sprintf(['Maximum frequency must be <= half the ' ...
-                    'sampling frequency (%0.3f Hz)'],f_samp),...
+                    'sampling frequency (%0.3f Hz)'],fs),...
            'Error');
   return;
 end
@@ -211,10 +210,10 @@ y_short_cent_windowed=...
 
 % calc the coherency, using multitaper routine
 [f,Hyx_mag,Hyx_phase,...
- N_fft,f_res_diam,~,...
+ N_fft,W_smear_fw,~,...
  Hyx_mag_ci,Hyx_phase_ci]=...
   tf_mt(dt,y_short_cent_windowed,x_short_cent_windowed,...
-        NW,K,F_keep,...
+        NW,K,f_max_keep,...
         p_FFT_extra,conf_level);
 n_f=length(f);
 
@@ -224,7 +223,7 @@ n_f=length(f);
 % Hyx_mag_thresh=coh_mt_control_analytical(R,K,alpha_thresh);
 
 % plot TF
-f_lim=[0 F_keep];
+f_lim=[0 f_max_keep];
 Hyx_mag_lim=[];
 Hyx_phase_lim=[];
 title_str=sprintf('Transfer function of %s from %s',name_y,name_x);
@@ -241,7 +240,7 @@ fig_border_label=sprintf('Transfer function of %s from %s',name_y,name_x);
 set(h_fig_tf,'name',fig_border_label);
 set(get(h_mag_axes  ,'ylabel'),'String','Magnitude');
 set(get(h_phase_axes,'ylabel'),'String','Phase (deg)');
-text(1,1.01,sprintf('f_res: %0.3f Hz\nN_fft: %d',f_res_diam,N_fft),...
+text(1,1.01,sprintf('W_smear_fw: %0.3f Hz\nN_fft: %d',W_smear_fw,N_fft),...
      'parent',h_mag_axes,...
      'units','normalized',...
      'horizontalalignment','right',...
