@@ -12,7 +12,7 @@ methods
   function self=Controller()
     self.fs_str='';
     self.model=[];
-    self.view=Groundswell.View(self);
+    self.view=groundswell.View(self);
   end  % constructor
   function center(self)
     self.model.center(self.view.i_selected);

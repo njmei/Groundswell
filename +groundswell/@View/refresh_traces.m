@@ -135,7 +135,7 @@ if r==1
   % change all the lines and axis limits
   x_short=self.x_from_t(t_short);
   xl_view_new=self.x_from_t(tl_view);
-  [x_tick,x_tick_label]=Groundswell.x_tick_from_xl(xl_view_new);
+  [x_tick,x_tick_label]=groundswell.x_tick_from_xl(xl_view_new);
   for i=1:n_chan
     h=findobj(axes_hs(i),'tag','trace');
     for j=1:n_sweeps
@@ -174,7 +174,7 @@ else
   x_sub_short_draw=...
     self.x_from_t(t_sub_short_draw);
   xl_view_new=self.x_from_t(tl_view);
-  [x_tick,x_tick_label]=Groundswell.x_tick_from_xl(xl_view_new);
+  [x_tick,x_tick_label]=groundswell.x_tick_from_xl(xl_view_new);
   for i=1:n_chan
     h=findobj(axes_hs(i),'tag','trace');
     for j=1:n_sweeps

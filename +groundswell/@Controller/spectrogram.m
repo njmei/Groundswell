@@ -39,7 +39,7 @@ dt=(t(end)-t(1))/(N-1);
 %T=N*dt;
 
 % throw up the dialog box, check params
-params=Groundswell.get_spectrogram_params(tl_view,dt);
+params=groundswell.get_spectrogram_params(tl_view,dt);
 
 % check for error exit
 if isempty(params)

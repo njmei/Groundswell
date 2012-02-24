@@ -3,6 +3,6 @@ function groundswell()
 % electrophysiology data.
 
 % make the groundswell controller
-Groundswell.Controller();
+groundswell.Controller();
 
 end

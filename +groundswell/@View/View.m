@@ -314,7 +314,7 @@ classdef View < handle
                   'Tag','zoom_in_button_h');
 
       % set up the instance variables that are non-trivial to init
-      self.colors=Groundswell.make_color_sequence();
+      self.colors=groundswell.make_color_sequence();
       
       % register the callbacks
       self.set_hg_callbacks(controller);

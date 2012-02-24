@@ -1,6 +1,6 @@
 classdef Model < handle
 
-% This is Groundswell_main, a class to represent the underlying data
+% This is groundswell_main, a class to represent the underlying data
 % in the main window of the groundswell application.
 
   properties

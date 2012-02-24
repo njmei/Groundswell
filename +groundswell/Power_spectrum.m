@@ -1,6 +1,6 @@
 classdef Power_spectrum < handle
 % This is a class to represent a window showing a power spectrum in
-% Groundswell.  It is controller, model, and view all rolled into one.
+% groundswell.  It is controller, model, and view all rolled into one.
   
 properties
   % HG handles
