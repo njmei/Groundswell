@@ -23,6 +23,7 @@ try
     roving.roi_list_to_stack(roi_list,n_row,n_col);
 
   % calc the ROI dF/Fs
+  % this could be faster
   roi_mean=roving.mean_over_roi(optical,roi_stack);
 
   % save to .tcs file
