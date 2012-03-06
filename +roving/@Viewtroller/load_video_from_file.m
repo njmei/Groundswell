@@ -1,7 +1,11 @@
 function load_video_from_file(self)
 
 % throw up the dialog box
-[filename,pathname]=uigetfile('*.tif','Load video from file...');
+[filename,pathname]= ...
+  uigetfile({'*.tif','Multi-image TIFF files (*.tif)'; ...
+             '*.ipl','Photometrics format (*.ipl)'; ...
+             '*.mat','Matlab .mat with single variable in it (*.mat)'}, ...
+            'Load video from file...');
 if isnumeric(filename) || isnumeric(pathname)
   % this happens if user hits Cancel
   return;
@@ -12,7 +16,17 @@ file_name_full=fullfile(pathname,filename);
 set(self.figure_h,'pointer','watch');
 drawnow('update');  drawnow('expose');
 try
-  data_raw=load_multi_image_tiff_file(file_name_full);
+  [dummy,dummy,ext]=fileparts(filename);  %#ok
+  switch ext
+    case '.tif'
+      data_raw=load_multi_image_tiff_file(file_name_full);
+    case '.ipl'
+      data_raw=roving.load_ipl_file(file_name_full);      
+    case '.mat'
+      data_raw=load_anonymous(file_name_full);      
+    otherwise
+      error('unable to load that file type');
+  end  
 catch  %#ok
   set(self.figure_h,'pointer','arrow');
   drawnow('update');  drawnow('expose');

@@ -4,17 +4,21 @@ function handle_colorbar_menus(self,tag)
 switch(tag)
   case 'min_max'
     data=self.model.data;
+    self.hourglass();
     d_min=min(data(:));
     d_max=max(data(:));
+    self.unhourglass();
     cb_min_string=sprintf('%.4e',d_min);
     cb_max_string=sprintf('%.4e',d_max);
     self.set_colorbar_bounds(cb_min_string,cb_max_string);     
   case 'five_95'
     data=self.model.data;
+    self.hourglass();
     data=data(:);
     n_bins=1000;
     [h,t]=hist(data,n_bins);
     ch=cumsum(h);
+    self.unhourglass();
     % figure; plot(t,ch);
     cb_min=crossing_times(t,ch,0.05*ch(n_bins));
     cb_max=crossing_times(t,ch,0.95*ch(n_bins));
@@ -23,13 +27,16 @@ switch(tag)
     self.set_colorbar_bounds(cb_min_string,cb_max_string);
   case 'abs_max'
     data=self.model.data;
+    self.hourglass();
     cb_max=max(abs(data(:)));
+    self.unhourglass();
     cb_min_string=sprintf('%.4e',-cb_max);
     cb_max_string=sprintf('%.4e',+cb_max);
     self.set_colorbar_bounds(cb_min_string,cb_max_string);     
   case 'ninety_symmetric'
     % need to fix this, since what it does now is useless
     data=self.model.data;
+    self.hourglass();
     data=abs(data(:));
     n_bins=1000;
     [h,t]=hist(data,n_bins);
@@ -37,6 +44,7 @@ switch(tag)
     % figure; plot(t,ch);
     cb_max=crossing_times(t,ch,0.9*ch(n_bins));
     cb_min=-cb_max;
+    self.unhourglass();
     cb_min_string=sprintf('%.4e',cb_min);
     cb_max_string=sprintf('%.4e',cb_max);
     self.set_colorbar_bounds(cb_min_string,cb_max_string);

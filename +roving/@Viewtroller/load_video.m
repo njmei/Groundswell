@@ -100,6 +100,8 @@ set(self.stop_button_h,'enable','on');
 set(self.frame_forward_button_h,'enable','on');
 set(self.play_forward_button_h,'enable','on');
 set(self.to_end_button_h,'enable','on');
+set(self.mutation_menu_h,'enable','on');
+set(self.motion_correct_menu_h,'enable','on');
 
 
 %
