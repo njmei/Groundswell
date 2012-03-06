@@ -83,7 +83,7 @@ classdef Viewtroller < handle
   end
   
   methods
-    function self=Viewtroller()
+    function self=Viewtroller(vid)
       % Leave the model empty until we load data
       self.model=[];
 
@@ -529,7 +529,7 @@ classdef Viewtroller < handle
       self.open_video_menu_h= ...
         uimenu(self.file_menu_h,...
                'Label','Open video...',...
-               'Callback',@(~,~)(self.load_video()));
+               'Callback',@(~,~)(self.load_video_from_file()));
       self.open_rois_menu_h= ...
         uimenu(self.file_menu_h,...
                'Label','Open ROI file...',...
@@ -709,6 +709,11 @@ classdef Viewtroller < handle
       % where the window appears causes an error at startup
       set(self.figure_h,'WindowButtonMotionFcn', ...
                         @(src,event)(self.update_pointer()));
+                      
+      % load the data, if given an arg
+      if nargin>=1
+        self.load_video(vid);
+      end
     end  % constructor
     
 %     function roi_list=get.roi_list(self)
