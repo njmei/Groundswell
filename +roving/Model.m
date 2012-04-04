@@ -7,7 +7,8 @@ classdef Model < handle
         % dependent for real with no change in object semantics.  But we
         % keep it around for speed, because it's used frequently.
         % It's always equal to t0+dt*(0:(size(data,1)-1)' 
-    data;
+    data;  % Data in native units.  Always a double array, but
+           % typically not with pels on [0,1].
     roi;  % n_roi x 1 struct with fields border and label
   end  % properties
   
