@@ -35,6 +35,14 @@ catch  %#ok
   return;
 end
 
+% set the figure title
+if isempty(filename)
+  title_string='roving';
+else
+  title_string=sprintf('Roving - %s',filename);
+end
+set(self.figure_h,'name',title_string);
+
 % OK, now actually store the data in ourselves
 self.load_video(data_raw);
 

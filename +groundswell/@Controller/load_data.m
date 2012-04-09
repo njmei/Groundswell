@@ -1,8 +1,5 @@
 function load_data(self)
 
-% get the figure handle
-groundswell_figure_h=self.view.fig_h;
-
 % throw up the dialog box
 i_bayley_25=6;  % index of Bayley-style file at 2.5 um/pel
 [filename,pathname,i_filter]=...
@@ -20,9 +17,7 @@ if isnumeric(filename) || isnumeric(pathname)
 end
 
 % might take a while...
-set(groundswell_figure_h,'pointer','watch');
-drawnow('update');
-drawnow('expose');
+self.view.set_pointer('watch');
 
 % load the data
 len=length(filename);
@@ -55,7 +50,7 @@ elseif strcmp(filename(len-3:len),'.tcs')
                     'Upsample','Cancel',...
                     'Upsample');
     if strcmp(button,'Cancel')
-      set(groundswell_figure_h,'pointer','arrow');
+      self.view.set_pointer('arrow');
       return;
     end
   end
@@ -66,9 +61,7 @@ elseif strcmp(filename(len-3:len),'.wav')
   try
     [data,fs]=wavread(full_filename);
   catch %#ok
-    set(groundswell_figure_h,'pointer','arrow');
-    drawnow('update');
-    drawnow('expose');
+    self.view.set_pointer('arrow');
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -103,9 +96,7 @@ elseif strcmp(filename(len-3:len),'.txt')
       data=load(full_filename);
     end
   catch exception  %#ok
-    set(groundswell_figure_h,'pointer','arrow');
-    drawnow('update');
-    drawnow('expose');
+    self.view.set_pointer('arrow');
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -143,7 +134,10 @@ self.fs_str=sprintf('%0.16g',fs);
 % make the view reflect the modified model
 self.view.renew(self.model);
 
+% set the filename shown in the view
+self.view.set_filename(filename);
+
 % ok, we're done
-set(groundswell_figure_h,'pointer','arrow');
-drawnow('update');
-drawnow('expose');
+self.view.set_pointer('arrow');
+
+end
