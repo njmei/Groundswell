@@ -21,23 +21,50 @@ try
     case '.tif'
       data_raw=load_multi_image_tiff_file(file_name_full);
     case '.ipl'
-      data_raw=roving.load_ipl_file(file_name_full);      
+      data_raw=load_ipl_file(file_name_full);      
     case '.mat'
       data_raw=load_anonymous(file_name_full);      
     otherwise
       error('unable to load that file type');
   end  
-catch  %#ok
-  set(self.figure_h,'pointer','arrow');
-  drawnow('update');  drawnow('expose');
-  errordlg(sprintf('Unable to open file %s',filename),...
-           'File Error');
-  return;
+catch err
+  self.unhourglass();
+  if strcmp(err.identifier,'MATLAB:imagesci:imfinfo:whatFormat')
+    errordlg(sprintf('Unable to determine file format of %s',filename),...
+             'File Error');
+    return;
+  elseif strcmp(err.identifier,'MATLAB:load:notBinaryFile')
+    errordlg(sprintf('%s does not seem to be a binary file.',filename),...
+             'File Error');
+    return;
+  elseif strcmp(err.identifier,'TMT:load_anonymous:too_few_variables')
+    errordlg(sprintf('No variables in %s.',filename),...
+             'File Error');
+    return;
+  elseif strcmp(err.identifier,'TMT:load_anonymous:too_many_variables')
+    errordlg(sprintf('Too many variables in %s.',filename),...
+             'File Error');
+    return;
+  elseif isempty(err.identifier)
+    errordlg(sprintf('Unable to read %s, and error lacks identifier.',filename),...
+             'File Error');
+    return;
+  elseif strcmp(err.identifier,'TMT:load_ipl_file:header_error')
+    errordlg(sprintf('Error reading header of %s.',filename),...
+             'File Error');
+    return;
+  elseif strcmp(err.identifier,'TMT:load_ipl_file:frame_error')
+    errordlg(sprintf('Error reading some frame of %s.',filename),...
+             'File Error');
+    return;
+  else
+    rethrow(err);
+  end
 end
 
 % set the figure title
 if isempty(filename)
-  title_string='roving';
+  title_string='Roving';
 else
   title_string=sprintf('Roving - %s',filename);
 end
