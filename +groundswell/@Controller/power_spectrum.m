@@ -1,8 +1,5 @@
 function power_spectrum(self)
 
-% get the figure handle
-groundswell_figure_h=self.view.fig_h;
-
 % get stuff we'll need
 selected=self.view.get_selected_axes();
 t=self.model.t;
@@ -160,9 +157,7 @@ end
 %
 
 % may take a while
-set(groundswell_figure_h,'pointer','watch');
-drawnow('update');
-drawnow('expose');
+self.view.hourglass();
 
 % % to test
 % data(:,1)=cos(2*pi*1*t);
@@ -211,6 +206,6 @@ groundswell.Power_spectrum(f,Pxx_log,Pxx_log_ci,name,units, ...
                            fs,f_max_keep,W_smear_fw,N_fft);
 
 % set pointer back
-set(groundswell_figure_h,'pointer','arrow');
-drawnow('update');
-drawnow('expose');
+self.view.unhourglass()
+
+end

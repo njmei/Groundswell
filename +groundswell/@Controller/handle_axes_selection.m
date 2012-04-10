@@ -26,18 +26,18 @@ switch selection_type
       n_selected=length(i_selected);
       if n_selected==1
         % if axes is the only one already selected, deselect it
-        selected(i)=false;
+        %selected(i)=false;
         i_selected=zeros(1,0);
       else
         % if axes i is one of several selected axes, select only it
-        selected=false(size(selected));
-        selected(i)=true;
+        %selected=false(size(selected));
+        %selected(i)=true;
         i_selected=i;
       end
     else
       % if axes i is not already selected, select it
-      selected=false(size(selected));
-      selected(i)=true;
+      %selected=false(size(selected));
+      %selected(i)=true;
       i_selected=i;
     end      
   case 'extend',
@@ -45,7 +45,7 @@ switch selection_type
     n_selected=length(i_selected);
     if n_selected==0
       % if nothing selected, select just i
-      selected(i)=true;
+      %selected(i)=true;
       i_selected=i;
     else
       % if some axes are already selected
@@ -55,7 +55,7 @@ switch selection_type
       else
         i_to_add=(i_selected_last:i);
       end
-      selected(i_to_add)=true;
+      %selected(i_to_add)=true;
       i_to_add_new=setdiff_preserve_order(i_to_add,i_selected);
       i_selected=[i_selected i_to_add_new];
     end
@@ -63,11 +63,11 @@ switch selection_type
     % on windows or GNOME, ctrl-clicking
     if selected(i)
       % if axes i is already selected, remove it
-      selected(i)=false;
+      %selected(i)=false;
       i_selected(i_selected==i)=[];
     else
       % if axes i is not already selected, add it
-      selected(i)=true;
+      %selected(i)=true;
       i_selected=[i_selected i];
     end
 end
