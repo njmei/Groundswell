@@ -9,6 +9,7 @@ properties
   line;
   line_ci1;
   line_ci2;
+  xlabel;
   ylabel;
   title;
 
@@ -68,6 +69,7 @@ methods
                    'ydata',[],...
                    'color',blue);  %#ok
     self.ylabel=ylabel(self.plot,'');  %#ok
+    self.xlabel=xlabel(self.plot,'');  %#ok
     self.title=title(self.plot,...
                      sprintf('Spectrum of %s',name), ...
                      'interpreter','none');  %#ok
@@ -306,6 +308,14 @@ methods
     elseif strcmp(self.mode_ll_x,'log10')
       set(self.plot,'xscale','log');
     end
+
+    % build x-axis label
+    switch self.mode_ll_x
+      case 'linear'
+        x_str='Frequency (Hz)';
+      otherwise
+        x_str='Frequency (Hz)';
+    end
     
     % sync each plot object
     set(self.line,'xdata',f,'ydata',y);
@@ -314,6 +324,7 @@ methods
     set(self.plot,'xlim',xl);
     set(self.plot,'ylim',yl);
     set(self.ylabel,'string',y_str);
+    set(self.xlabel,'string',x_str);
     
     % sync the checkboxes to the model mode variables
     switch self.mode_pa

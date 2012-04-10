@@ -17,7 +17,7 @@ if isnumeric(filename) || isnumeric(pathname)
 end
 
 % might take a while...
-self.view.set_pointer('watch');
+self.view.hourglass();
 
 % load the data
 len=length(filename);
@@ -50,7 +50,7 @@ elseif strcmp(filename(len-3:len),'.tcs')
                     'Upsample','Cancel',...
                     'Upsample');
     if strcmp(button,'Cancel')
-      self.view.set_pointer('arrow');
+      self.view.unhourglass();
       return;
     end
   end
@@ -61,7 +61,7 @@ elseif strcmp(filename(len-3:len),'.wav')
   try
     [data,fs]=wavread(full_filename);
   catch %#ok
-    self.view.set_pointer('arrow');
+    self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -96,7 +96,7 @@ elseif strcmp(filename(len-3:len),'.txt')
       data=load(full_filename);
     end
   catch exception  %#ok
-    self.view.set_pointer('arrow');
+    self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -138,6 +138,6 @@ self.view.renew(self.model);
 self.view.set_filename(filename);
 
 % ok, we're done
-self.view.set_pointer('arrow');
+self.view.unhourglass();
 
 end
