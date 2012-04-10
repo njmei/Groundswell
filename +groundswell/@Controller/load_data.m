@@ -26,9 +26,7 @@ if strcmp(filename(len-3:len),'.abf')
   try
     [t,data,names,units]=load_abf(full_filename);
   catch  %#ok
-    set(groundswell_figure_h,'pointer','arrow');
-    drawnow('update');
-    drawnow('expose');
+    self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end
@@ -37,7 +35,7 @@ elseif strcmp(filename(len-3:len),'.tcs')
   try
     [names,t_each,data_each,units]=read_tcs(full_filename);
   catch %#ok
-    set(groundswell_figure_h,'pointer','arrow');
+    self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename));  
     return;
   end

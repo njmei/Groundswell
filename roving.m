@@ -1,10 +1,6 @@
-function roving(vid)
+function roving(varargin)
 
 % create the Viewtroller instance
-if nargin<1
-  roving.Viewtroller();
-else
-  roving.Viewtroller(vid);
-end
+roving.Viewtroller(varargin{:});
 
 end

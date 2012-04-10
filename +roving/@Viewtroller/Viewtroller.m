@@ -86,7 +86,7 @@ classdef Viewtroller < handle
   end
   
   methods
-    function self=Viewtroller(vid)
+    function self=Viewtroller(varargin)
       % Leave the model empty until we load data
       self.model=[];
 
@@ -726,7 +726,13 @@ classdef Viewtroller < handle
                       
       % load the data, if given an arg
       if nargin>=1
-        self.load_video(vid);
+        if ischar(varargin{1})
+          file_name=varargin{1};
+          self.load_video_from_file(file_name);
+        else
+          % Assume the argument is a 3D array
+          self.load_video(varargin{1});
+        end
       end
     end  % constructor
     
