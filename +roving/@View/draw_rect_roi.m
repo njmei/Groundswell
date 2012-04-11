@@ -48,7 +48,7 @@ switch(action)
     figure_h=[];
     image_axes_h=[];
     % now add the roi to the list
-    self.controller.add_roi(rect_h);
+    self.controller.add_roi_given_line_gh(rect_h);
 end  % switch
 
 

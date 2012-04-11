@@ -10,13 +10,14 @@ switch(mode)
     self.draw_elliptic_roi('start');
   case 'select'
     roi_index=self.find_roi(gcbo);
-    if ~isempty(roi_index)
-      if roi_index==self.selected_roi_index
-        self.unselect_selected_roi();
-      else
+    if isempty(roi_index)
+      self.unselect_selected_roi();
+    else 
+      if isempty(self.selected_roi_index) || ...
+         roi_index~=self.selected_roi_index
         self.select_roi(roi_index);
-        self.move_roi('start',roi_index);
       end
+      self.move_roi('start',roi_index);
     end
   case 'zoom'
     sel_type=get(self.figure_h,'SelectionType');

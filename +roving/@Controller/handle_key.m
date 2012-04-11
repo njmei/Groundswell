@@ -8,7 +8,7 @@ elseif strcmp(event.Character,'.') || strcmp(event.Character,'>')
 elseif strcmp(event.Character,'p')    
   self.play(+1);
 elseif strcmp(event.Key,'delete') || strcmp(event.Key,'backspace')
-  self.delete_selected_roi();
+  self.delete_selected_roi();  
 end
 
 end

@@ -69,7 +69,7 @@ switch(action)
     figure_h=[];
     image_axes_h=[];
     % now add the roi to the list
-    self.controller.add_roi(ellipse_h);
+    self.controller.add_roi_given_line_gh(ellipse_h);
 end  % switch
 
 end
