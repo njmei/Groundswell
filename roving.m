@@ -1,6 +1,6 @@
 function roving(varargin)
 
-% create the Viewtroller instance
-roving.Viewtroller(varargin{:});
+% create the Controller instance
+roving.Controller(varargin{:});
 
 end

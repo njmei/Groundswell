@@ -18,6 +18,7 @@ classdef Model < handle
     n_col;
     n_frame;  % number of time samples
     tl;  % 2x1 matrix holding min, max time
+    n_roi;
   end
   
   methods
@@ -55,6 +56,10 @@ classdef Model < handle
     
     function n_frame=get.n_frame(self)
       n_frame=size(self.data,3);
+    end
+    
+    function n_roi=get.n_roi(self)
+      n_roi=length(self.roi);
     end
 
     function tl=get.tl(self)
@@ -104,6 +109,11 @@ classdef Model < handle
                       'label',cell(n_roi,1));
       [self.roi.border]=deal(border{:});
       [self.roi.label]=deal(label{:});
+    end
+    
+    function in_use=label_in_use(self,label_test)
+      labels={self.roi.label};
+      in_use=any(strcmp(label_test,labels));
     end
     
   end  % methods
