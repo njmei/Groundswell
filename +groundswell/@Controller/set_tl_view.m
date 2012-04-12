@@ -1,8 +1,5 @@
 function set_tl_view(self,tl_view_new_want)
 
-% get the figure handle
-groundswell_figure_h=self.view.fig_h;
-
 % if tl_view_new_want is empty, do nothing
 if isempty(tl_view_new_want)
   return;
@@ -28,4 +25,6 @@ end
 % if we get here, tl_view_new_want_srt_constrained is valid
 
 % set the new tl in the view
-self.view.set_tl_view(tl_view_new_want_srt_constrained,self.model);
+self.view.set_tl_view(tl_view_new_want_srt_constrained);
+
+end

@@ -17,6 +17,7 @@ set(self.optimize_all_y_menu_h,'Callback',@(src,event)(controller.optimize_all_y
 set(self.change_fs_menu_h,'Callback',@(src,event)(controller.change_fs()));
 set(self.center_menu_h,'Callback',@(src,event)(controller.center()));
 set(self.rectify_menu_h,'Callback',@(src,event)(controller.rectify()));
+set(self.dx_over_x_menu_h,'Callback',@(src,event)(controller.dx_over_x()));
 % the analysis menu
 set(self.power_spectrum_menu_h,'Callback',@(src,event)(controller.power_spectrum()));
 set(self.spectrogram_menu_h,'Callback',@(src,event)(controller.spectrogram()));

@@ -1,5 +1,7 @@
 function set_selected_axes(self,i_selected_new)
 
+% Set which axes are currently selected.
+
 % get stuff from the figure                                   
 axes_hs=self.axes_hs;
 i_selected_old=self.i_selected;
@@ -39,8 +41,10 @@ end
 drawnow('update');
 drawnow('expose');
 
-% store stuff in the figure
+% store stuff in self
 self.i_selected=i_selected_new;
 
 % enable/disable controls
 self.update_enablement_of_controls();
+
+end

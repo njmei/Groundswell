@@ -4,7 +4,7 @@ function update_enablement_of_controls(self)
 % reflect the current state of the view object
 
 % get vars we need
-n_chan=self.n_chan;
+n_chan=self.model.n_chan;
 i_selected=self.i_selected;
 n_selected=length(i_selected);
 
@@ -68,6 +68,7 @@ else
     % mutation menu
     set(self.center_menu_h,'enable','off');
     set(self.rectify_menu_h,'enable','off');
+    set(self.dx_over_x_menu_h,'enable','off');
   else    
     % y axis menu
     set(self.edit_y_bounds_menu_h,'enable','on');
@@ -75,6 +76,7 @@ else
     % mutation menu
     set(self.center_menu_h,'enable','on');
     set(self.rectify_menu_h,'enable','on');
+    set(self.dx_over_x_menu_h,'enable','on');
   end
   if n_selected==1
     % analysis menu

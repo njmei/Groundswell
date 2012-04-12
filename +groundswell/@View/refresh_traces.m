@@ -1,7 +1,7 @@
-function refresh_traces(self,model,force_resample)
+function refresh_traces(self,force_resample)
 
 % args
-if nargin<3 || isempty(force_resample)
+if nargin<2 || isempty(force_resample)
   force_resample=false;
 end
 
@@ -10,8 +10,8 @@ groundswell_figure_h=self.fig_h;
 
 % get vars we need
 axes_hs=self.axes_hs;
-t=model.t;
-data=model.data;
+t=self.model.t;
+data=self.model.data;
 [n_t,n_chan,n_sweeps]=size(data);
 r=self.r;
 t_sub=self.t_sub;

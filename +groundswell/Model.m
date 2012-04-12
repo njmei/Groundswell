@@ -10,7 +10,7 @@ classdef Model < handle
         % dependent for real with no change in object semantics.  But we
         % keep it around for speed, because it's used frequently.
         % It's always equal to t0+dt*(0:(size(data,1)-1)' 
-    data;
+    data;  % n_t x n_signals x n_sweeps
     names;
     units;
   end  % properties
@@ -98,6 +98,18 @@ classdef Model < handle
       % rectify the selected signals
       for i=i_to_change
         gsmm.data(:,i,:)=abs(gsmm.data(:,i,:));
+      end
+    end  % function
+
+    function dx_over_x(gsmm,i_to_change)
+      % i_to_change can be a vector
+      % Subtract that time-average of each signal from the signal, then
+      % divide out the time-average, then convert to a percentage
+      for i=i_to_change
+        d_hat=mean(gsmm.data(:,i,:),1);
+        gsmm.data(:,i,:)=bsxfun(@rdivide,gsmm.data(:,i,:),d_hat);
+        gsmm.data(:,i,:)=100*(gsmm.data(:,i,:)-1);
+        units{i}='%';
       end
     end  % function
 

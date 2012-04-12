@@ -5,8 +5,9 @@ classdef View < handle
 
   properties
     controller=[];
+    model=[];
     
-    n_chan=[];
+    %n_chan=[];
     
     tl_view=[];
     
@@ -46,6 +47,7 @@ classdef View < handle
     change_fs_menu_h
     center_menu_h
     rectify_menu_h
+    dx_over_x_menu_h
     % the analysis menu
     analysis_menu_h
     power_spectrum_menu_h
@@ -71,6 +73,7 @@ classdef View < handle
   methods
     function self=View(controller)      
       self.controller=controller;
+      self.model=[];
       
       % get the screen size so we can position the figure window
       root_units=get(0,'Units');
@@ -221,6 +224,10 @@ classdef View < handle
                            'Tag','rectify_menu_h',...
                            'Label','Rectify',...
                            'Enable','off');
+      self.dx_over_x_menu_h=uimenu(self.mutation_menu_h,...
+                                  'Tag','dx_over_x_menu_h',...
+                                  'Label','Delta over mean (%)',...
+                                  'Enable','off');
 
       % the analysis menu
       self.analysis_menu_h=uimenu(self.fig_h,...

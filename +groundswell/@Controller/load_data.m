@@ -130,7 +130,7 @@ fs=(length(t)-1)/(t(end)-t(1));  % Hz
 self.fs_str=sprintf('%0.16g',fs);
 
 % make the view reflect the modified model
-self.view.renew(self.model);
+self.view.completely_new_model(self.model);
 
 % set the filename shown in the view
 self.view.set_filename(filename);

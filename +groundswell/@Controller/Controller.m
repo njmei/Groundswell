@@ -18,13 +18,19 @@ methods
     self.model.center(self.view.i_selected);
     % update the view
     force_resample=true;
-    self.view.refresh_traces(self.model,force_resample);
+    self.view.refresh_traces(force_resample);
   end 
   function rectify(self)
     self.model.rectify(self.view.i_selected);
     % update the view
     force_resample=true;
-    self.view.refresh_traces(self.model,force_resample);
+    self.view.refresh_traces(force_resample);
+  end
+  function dx_over_x(self)
+    self.model.dx_over_x(self.view.i_selected);
+    % update the view
+    force_resample=true;
+    self.view.refresh_traces(force_resample);
   end
   function quit(self)
     close(self.view.fig_h);

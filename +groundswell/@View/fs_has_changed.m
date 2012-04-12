@@ -1,7 +1,7 @@
-function fs_has_changed(self,model)
+function fs_has_changed(self)
 
 % set the view limits to the full time range
-self.tl_view=model.tl;
+self.tl_view=self.model.tl;
 
 % % get the number of channels
 % self.n_chan=model.n_chan;
@@ -13,7 +13,7 @@ self.tl_view=model.tl;
 % self.resize();
 
 % plot the traces with subsetting and subsampling
-self.refresh_traces(model);
+self.refresh_traces();
 
 % % enable controls as necessary
 % self.update_enablement_of_controls();

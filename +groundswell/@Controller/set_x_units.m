@@ -4,5 +4,5 @@ function set_x_units(self,new_x_units)
 self.view.set_x_units(new_x_units);
 
 % refresh the traces
-self.view.set_tl_view(self.view.tl_view,self.model);
+self.view.set_tl_view(self.view.tl_view);
 

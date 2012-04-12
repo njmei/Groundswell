@@ -1,4 +1,4 @@
-function renew_axes(self,model)
+function renew_axes(self)
 
 % called when the number of signals has changed, and the number of axes 
 % needs to be changed to reflect this
@@ -8,10 +8,10 @@ function renew_axes(self,model)
 % get instance vars we need
 axes_hs=self.axes_hs;
 colors=self.colors;
-t=model.t;
-data=model.data;
-names=model.names;
-units=model.units;
+t=self.model.t;
+data=self.model.data;
+names=self.model.names;
+units=self.model.units;
 
 % get dims
 [n_t,n_chan,n_sweeps]=size(data);
