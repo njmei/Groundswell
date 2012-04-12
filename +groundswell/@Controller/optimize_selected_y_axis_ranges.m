@@ -1,7 +1,6 @@
 function optimize_selected_y_axis_ranges(self)
 
 % get stuff we'll need
-axes_hs=self.view.axes_hs;
 i_selected=self.view.i_selected;
 t=self.model.t;
 data=self.model.data;

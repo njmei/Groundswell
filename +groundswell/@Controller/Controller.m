@@ -29,6 +29,8 @@ methods
   function dx_over_x(self)
     self.model.dx_over_x(self.view.i_selected);
     % update the view
+    self.view.units_changed();
+    self.optimize_selected_y_axis_ranges();  % re-optimize range.
     force_resample=true;
     self.view.refresh_traces(force_resample);
   end

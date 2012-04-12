@@ -37,9 +37,9 @@ if ~isempty(i_selected_new)
   set(y_label_h,'linewidth',2);
 end
 
-% update the display
-drawnow('update');
-drawnow('expose');
+% % update the display
+% drawnow('update');
+% drawnow('expose');
 
 % store stuff in self
 self.i_selected=i_selected_new;

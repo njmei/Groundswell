@@ -53,9 +53,7 @@ if r~=r_new || force_resample
     % subsample
     r=r_new;
     % subsample the data in a fancy way
-    set(groundswell_figure_h,'pointer','watch');
-    drawnow('update');
-    drawnow('expose');
+    self.hourglass();
     %tic
     t_sub=t(1:r:end);
     n_t_sub=length(t_sub);
@@ -112,9 +110,7 @@ if r~=r_new || force_resample
     self.data_sub_min=data_sub_min;
     self.data_sub_max=data_sub_max;
     %toc
-    set(groundswell_figure_h,'pointer','arrow');
-    drawnow('update');
-    drawnow('expose');
+    self.unhourglass();
   end
 end
 
@@ -188,8 +184,8 @@ else
   set(axes_hs(n_chan),'xticklabel',x_tick_label);  
 end
 
-% update the figure
-drawnow('update');
-drawnow('expose');
+% % update the figure
+% drawnow('update');
+% drawnow('expose');
 
 end  % function

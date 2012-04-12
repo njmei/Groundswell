@@ -80,8 +80,8 @@ for i=1:n_chan
          'visible','off');
   end
 end
-drawnow('expose');
-drawnow('update');
+%drawnow('expose');
+%drawnow('update');
 
 % nothing is selected, since everything is new
 self.i_selected=zeros(0,1);
