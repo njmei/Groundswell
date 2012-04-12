@@ -13,7 +13,10 @@ self.tl_view=self.model.tl;
 % self.resize();
 
 % plot the traces with subsetting and subsampling
-self.refresh_traces();
+force_resample=true;
+self.refresh_traces(force_resample);
 
 % % enable controls as necessary
 % self.update_enablement_of_controls();
+
+end

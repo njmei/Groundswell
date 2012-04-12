@@ -81,6 +81,7 @@ classdef Model < handle
 
     function set.fs(self,fs)
       self.dt=1/fs;
+      self.sync_t();
     end
     
     function center(self,i_to_change)

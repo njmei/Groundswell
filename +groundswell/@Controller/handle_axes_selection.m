@@ -1,7 +1,7 @@
-function handle_axes_selection(gsmc,y_axis_label_h)
+function handle_axes_selection(self,y_axis_label_h)
 
 % get the figure handle
-groundswell_figure_h=gsmc.view.fig_h;
+groundswell_figure_h=self.view.fig_h;
 
 % get the handle of the single axes that was clicked on
 axes_h=get(y_axis_label_h,'parent');
@@ -10,9 +10,9 @@ axes_h=get(y_axis_label_h,'parent');
 selection_type=get(groundswell_figure_h,'selectiontype');
 
 % get instance vars
-i_selected=gsmc.view.i_selected;
-axes_hs=gsmc.view.axes_hs;
-selected=gsmc.view.get_selected_axes();
+i_selected=self.view.i_selected;
+axes_hs=self.view.axes_hs;
+selected=self.view.get_selected_axes();
 
 % get the index of the axes that was just clicked on
 i=find(axes_hs==axes_h);
@@ -73,7 +73,7 @@ switch selection_type
 end
 
 % update the view to reflect the change
-gsmc.view.set_selected_axes(i_selected);
+self.view.set_selected_axes(i_selected);
 
 end  % function
 

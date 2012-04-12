@@ -5,9 +5,6 @@ if nargin<2 || isempty(force_resample)
   force_resample=false;
 end
 
-% get the figure handle
-groundswell_figure_h=self.fig_h;
-
 % get vars we need
 axes_hs=self.axes_hs;
 t=self.model.t;

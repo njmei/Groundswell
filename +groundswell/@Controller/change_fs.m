@@ -20,7 +20,7 @@ if ~isempty(fs_str_new)
        (fs_new>0) )
      self.fs_str=fs_str_new;
      self.model.fs=fs_new;
-     self.view.fs_has_changed(self.model);
+     self.view.fs_has_changed();
   end
 end
 
