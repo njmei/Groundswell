@@ -25,6 +25,7 @@ else
   % gray the rename, delete roi menus
   set(self.rename_roi_menu_h,'Enable','off');
   set(self.delete_roi_menu_h,'Enable','off');
+  set(self.cut_menu_h,'Enable','off');
   set(self.copy_menu_h,'Enable','off');
   % no ROI selected anymore
   self.selected_roi_index=zeros(0,1);

@@ -47,6 +47,7 @@ self.label_roi_h=label_h;
 % no ROI is selected, so disable some menus
 set(self.delete_roi_menu_h,'Enable','off');
 set(self.rename_roi_menu_h,'Enable','off');
+set(self.cut_menu_h,'Enable','off');
 set(self.copy_menu_h,'Enable','off');
 
 % modify ancillary crap

@@ -22,6 +22,7 @@ if ~isempty(selected_roi_index)
     % gray the rename, delete roi menus
     set(self.delete_roi_menu_h,'Enable','off');
     set(self.rename_roi_menu_h,'Enable','off');
+    set(self.cut_menu_h,'Enable','off');    
     set(self.copy_menu_h,'Enable','off');    
     % set the state
     selected_roi_index=zeros(0,1);
