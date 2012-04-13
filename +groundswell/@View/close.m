@@ -1,13 +1,13 @@
 function close(self)
 
-fpj=get(handle(self.figure_h),'JavaFrame');
+fpj=get(handle(self.fig_h),'JavaFrame');
 jw=fpj.fHG1Client.getWindow;
 jcb=handle(jw,'CallbackProperties');
 set(jcb,'WindowGainedFocusCallback',[]);  % have to do this, or else
                                           % the MVC objects hang around
 clear fpj jw jcb;
 
-delete(self.figure_h);
-self.figure_h=[];
+delete(self.fig_h);
+self.fig_h=[];
 
 end

@@ -180,11 +180,17 @@ classdef View < handle
                'CloseRequestFcn',@(src,event)(controller.quit()));
       %         'Color',[236 233 216]/255,...
 
-      % have to do this last, otherwise having the pointer in the place
-      % where the window appears causes an error at startup
-      %        'WindowButtonMotionFcn','roving.update_pointer');
-
-      %plotedit(self.figure_h,'hidetoolsmenu');
+      % Want to know when we get/lose focus, so have to do some hacking.
+      drawnow('update');
+      drawnow('expose');
+      fpj=get(handle(self.figure_h),'JavaFrame');
+      jw=fpj.fHG1Client.getWindow;
+      jcb=handle(jw,'CallbackProperties');
+      set(jcb,'WindowGainedFocusCallback', ...
+          @(src,event)(controller.handle_focus_gained()));
+      %set(jcb,'WindowLostFocusCallback', ...
+      %    @(src,event)(controller.handle_focus_lost()));
+      clear fpj jw jcb;
 
       % figure out the colorbar min and colorbar max
       colorbar_min_string='0';

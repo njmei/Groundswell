@@ -18,58 +18,63 @@ selected=self.view.get_selected_axes();
 i=find(axes_hs==axes_h);
 
 % change the selected set, and the order, as needed
-switch selection_type
-  case 'normal',
-    % clicking without modifier key
-    if selected(i)
-      % if axes i is already selected
-      n_selected=length(i_selected);
-      if n_selected==1
-        % if axes is the only one already selected, deselect it
-        %selected(i)=false;
-        i_selected=zeros(1,0);
-      else
-        % if axes i is one of several selected axes, select only it
-        %selected=false(size(selected));
-        %selected(i)=true;
-        i_selected=i;
-      end
+% Matlab, as of R2012a, doesn't map a command-click to
+% selection_type=='alt', which is lame.  So we have to hack it in
+% ourselves, at least for now.
+if strcmp(selection_type,'normal') && ...
+   ( ispc || ( ismac && ~self.command_depressed ) )
+  % clicking without modifier key
+  if selected(i)
+    % if axes i is already selected
+    n_selected=length(i_selected);
+    if n_selected==1
+      % if axes is the only one already selected, deselect it
+      %selected(i)=false;
+      i_selected=zeros(1,0);
     else
-      % if axes i is not already selected, select it
+      % if axes i is one of several selected axes, select only it
       %selected=false(size(selected));
       %selected(i)=true;
       i_selected=i;
-    end      
-  case 'extend',
-    % on windows or GNOME, shift-clicking
-    n_selected=length(i_selected);
-    if n_selected==0
-      % if nothing selected, select just i
-      %selected(i)=true;
-      i_selected=i;
-    else
-      % if some axes are already selected
-      i_selected_last=i_selected(end);
-      if i<i_selected_last
-        i_to_add=(i_selected_last:-1:i);
-      else
-        i_to_add=(i_selected_last:i);
-      end
-      %selected(i_to_add)=true;
-      i_to_add_new=setdiff_preserve_order(i_to_add,i_selected);
-      i_selected=[i_selected i_to_add_new];
     end
-  case 'alt',
-    % on windows or GNOME, ctrl-clicking
-    if selected(i)
-      % if axes i is already selected, remove it
-      %selected(i)=false;
-      i_selected(i_selected==i)=[];
+  else
+    % if axes i is not already selected, select it
+    %selected=false(size(selected));
+    %selected(i)=true;
+    i_selected=i;
+  end      
+elseif strcmp(selection_type,'extend')
+  % on windows or GNOME or Mac, shift-clicking
+  n_selected=length(i_selected);
+  if n_selected==0
+    % if nothing selected, select just i
+    %selected(i)=true;
+    i_selected=i;
+  else
+    % if some axes are already selected
+    i_selected_last=i_selected(end);
+    if i<i_selected_last
+      i_to_add=(i_selected_last:-1:i);
     else
-      % if axes i is not already selected, add it
-      %selected(i)=true;
-      i_selected=[i_selected i];
+      i_to_add=(i_selected_last:i);
     end
+    %selected(i_to_add)=true;
+    i_to_add_new=setdiff_preserve_order(i_to_add,i_selected);
+    i_selected=[i_selected i_to_add_new];
+  end
+elseif ( ispc && strcmp(selection_type,'alt') ) || ...
+       ( ismac && strcmp(selection_type,'normal') && self.command_depressed )
+  % on windows or GNOME, ctrl-clicking
+  % on mac, command-clicking
+  if selected(i)
+    % if axes i is already selected, remove it
+    %selected(i)=false;
+    i_selected(i_selected==i)=[];
+  else
+    % if axes i is not already selected, add it
+    %selected(i)=true;
+    i_selected=[i_selected i];
+  end
 end
 
 % update the view to reflect the change
