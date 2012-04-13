@@ -28,11 +28,18 @@ switch(action)
                  @(src,event)(self.draw_rect_roi('stop')));
   case 'move'
     cp=get(image_axes_h,'CurrentPoint');
-    point=cp(1,1:2); 
+    point=cp(1,1:2);
+    w=(point(1)-anchor(1));
+    h=(point(2)-anchor(2));
+    if self.controller.shift_depressed
+      s=max(w,h);
+      w=s;
+      h=s;
+    end
     set(rect_h,...
-        'XData',[anchor(1) anchor(1) point(1) point(1)  anchor(1)]);
+        'XData',anchor(1)+[0 w w 0 0]);
     set(rect_h,...
-        'YData',[anchor(2) point(2)  point(2) anchor(2) anchor(2)]);
+        'YData',anchor(2)+[0 0 h h 0]);
   case 'stop'
     % change the move and buttonup calbacks
     set(figure_h,'WindowButtonMotionFcn',@(src,event)(self.update_pointer()));
@@ -40,10 +47,17 @@ switch(action)
     % now do the stuff we'd do for a move also
     cp=get(image_axes_h,'CurrentPoint');
     point=cp(1,1:2); 
+    w=(point(1)-anchor(1));
+    h=(point(2)-anchor(2));
+    if self.controller.shift_depressed
+      s=max(w,h);
+      w=s;
+      h=s;
+    end
     set(rect_h,...
-        'XData',[anchor(1) anchor(1) point(1) point(1)  anchor(1)]);
+        'XData',anchor(1)+[0 w w 0 0]);
     set(rect_h,...
-        'YData',[anchor(2) point(2)  point(2) anchor(2) anchor(2)]);
+        'YData',anchor(2)+[0 0 h h 0]);
     % clear the persistents
     figure_h=[];
     image_axes_h=[];

@@ -46,8 +46,15 @@ switch(action)
   case 'move'
     cp=get(image_axes_h,'CurrentPoint');
     point=cp(1,1:2); 
-    center=(point+anchor)/2;
-    a=abs(point(1)-anchor(1))/2; b=abs(point(2)-anchor(2))/2;
+    a=(point(1)-anchor(1)); 
+    b=(point(2)-anchor(2));
+    if self.controller.shift_depressed
+      r=max(a,b);
+      a=r;
+      b=r;
+    end
+    %center=anchor+[a b];
+    center=anchor;    
     dx=a*costheta;
     dy=b*sintheta;
     set(ellipse_h,'XData',center(1)+dx);
@@ -59,8 +66,15 @@ switch(action)
     % now do the stuff we'd do for a move also
     cp=get(image_axes_h,'CurrentPoint');
     point=cp(1,1:2); 
-    center=(point+anchor)/2;
-    a=abs(point(1)-anchor(1))/2; b=abs(point(2)-anchor(2))/2;
+    a=(point(1)-anchor(1)); 
+    b=(point(2)-anchor(2));
+    if self.controller.shift_depressed
+      r=max(a,b);
+      a=r;
+      b=r;
+    end
+    %center=anchor+[a b];
+    center=anchor;
     dx=a*costheta;
     dy=b*sintheta;
     set(ellipse_h,'XData',center(1)+dx);
