@@ -41,7 +41,9 @@ elseif strcmp(filename(len-3:len),'.tcs')
   end
   % have to upsample data_each onto a common timeline, unless they're
   % already like that
-  if ~groundswell.all_on_same_time_base(t_each)
+  if groundswell.all_on_same_time_base(t_each)
+    [data,t]=groundswell.common_from_each_trivial(t_each,data_each);
+  else
     button=questdlg(['All signals not on same time base.  ' ...
                      'Limit time range and upsample slow signals?'],...
                     'Limit time range and upsample?',...
@@ -51,9 +53,10 @@ elseif strcmp(filename(len-3:len),'.tcs')
       self.view.unhourglass();
       return;
     end
+    [t,data]=...
+      groundswell.upsample_to_common(t_each,data_each);
   end
-  [t,data]=...
-    groundswell.upsample_to_common(t_each,data_each);
+  clear t_each data_each;
 elseif strcmp(filename(len-3:len),'.wav')
   full_filename=fullfile(pathname,filename);
   try

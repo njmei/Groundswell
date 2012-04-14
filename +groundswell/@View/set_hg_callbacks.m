@@ -2,6 +2,7 @@ function set_hg_callbacks(self,controller)
 
 % file menu
 set(self.open_menu_h,'Callback',@(src,event)(controller.load_data()));
+set(self.import_roi_data_menu_h,'Callback',@(src,event)(controller.import_roi_data()));
 set(self.quit_menu_h,'Callback',@(src,event)(controller.quit()));
 % the x-axis menu
 set(self.time_ms_menu_h,'Callback',@(src,event)(controller.set_x_units('time_ms')));
