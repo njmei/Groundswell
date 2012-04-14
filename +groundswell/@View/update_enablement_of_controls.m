@@ -9,6 +9,8 @@ i_selected=self.i_selected;
 n_selected=length(i_selected);
 
 if n_chan==0
+  % file menu
+  set(self.import_roi_data_menu_h,'enable','off');
   % edit menu
   set(self.select_all_menu_h,'enable','off');
   set(self.select_none_menu_h,'enable','off');
@@ -87,11 +89,15 @@ else
     set(self.dx_over_x_menu_h,'enable','on');
   end
   if n_selected==1
+    % file menu
+    set(self.import_roi_data_menu_h,'enable','on');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','on');
     set(self.spectrogram_menu_h,'enable','on');  
     set(self.play_as_audio_menu_h,'enable','on');
   else
+    % file menu
+    set(self.import_roi_data_menu_h,'enable','off');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','off');
     set(self.spectrogram_menu_h,'enable','off');  

@@ -1,42 +1,40 @@
-function load_data(self)
+function load_data(self,filename,i_filter)
 
-% throw up the dialog box
-i_bayley_25=6;  % index of Bayley-style file at 2.5 um/pel
-[filename,pathname,i_filter]=...
-  uigetfile({'*.abf' 'Axon binary format file (*.abf)';...
-             '*.tcs' 'Traces file (*.tcs)';
-             '*.wav' 'Microsoft waveform audio file (*.wav)';
-             '*.txt' 'Text file (*.txt)';
-             '*.txt' 'Bayley-style text file, 5.0 um/pel (*.txt)';
-             '*.txt' 'Bayley-style text file, 2.5 um/pel (*.txt)';
-             '*.*'   'All files (*.*)'},...
-            'Load data from file...');
-if isnumeric(filename) || isnumeric(pathname)
-  % this happens if user hits Cancel
-  return;
+% filename is a filename, can be relative or absolute
+% i_filter, if present, is the index of the filter chosen in the
+% file finder dialog.  This is used to determine if we're dealing with
+% "Bayley-style" text files.
+
+% deal with args
+if nargin<2
+  i_filter=[];
 end
+
+% Constants.
+i_bayley_25=6;  % index of Bayley-style file at 2.5 um/pel
+
+% break up the file name
+[~,base_name,ext]=fileparts(filename);
+filename_local=[base_name ext];
 
 % might take a while...
 self.view.hourglass();
 
 % load the data
-len=length(filename);
-if strcmp(filename(len-3:len),'.abf')
-  full_filename=fullfile(pathname,filename);
+if strcmp(ext,'.abf')
   try
-    [t,data,names,units]=load_abf(full_filename);
+    [t,data,names,units]=load_abf(filename);
   catch  %#ok
     self.view.unhourglass();
-    errordlg(sprintf('Unable to open file %s',filename));  
+    errordlg(sprintf('Unable to open file %s',filename_local));  
     return;
   end
-elseif strcmp(filename(len-3:len),'.tcs')
-  full_filename=fullfile(pathname,filename);
+elseif strcmp(ext,'.tcs')
   try
-    [names,t_each,data_each,units]=read_tcs(full_filename);
+    [names,t_each,data_each,units]=read_tcs(filename);
   catch %#ok
     self.view.unhourglass();
-    errordlg(sprintf('Unable to open file %s',filename));  
+    errordlg(sprintf('Unable to open file %s',filename_local));  
     return;
   end
   % have to upsample data_each onto a common timeline, unless they're
@@ -57,13 +55,12 @@ elseif strcmp(filename(len-3:len),'.tcs')
       groundswell.upsample_to_common(t_each,data_each);
   end
   clear t_each data_each;
-elseif strcmp(filename(len-3:len),'.wav')
-  full_filename=fullfile(pathname,filename);
+elseif strcmp(ext,'.wav')
   try
-    [data,fs]=wavread(full_filename);
+    [data,fs]=wavread(filename);
   catch %#ok
     self.view.unhourglass();
-    errordlg(sprintf('Unable to open file %s',filename));  
+    errordlg(sprintf('Unable to open file %s',filename_local));  
     return;
   end
   dt=(1/fs);
@@ -80,25 +77,24 @@ elseif strcmp(filename(len-3:len),'.wav')
       % audio sample (as on a CD) to a line-level voltage.  But I think
       % this is correct.  I.e. -2^15 = -32768 => -1 V
   end
-elseif strcmp(filename(len-3:len),'.txt')
-  full_filename=fullfile(pathname,filename);
+elseif strcmp(ext,'.txt')
   try
     is_bayley_style_p= ...
-      groundswell.is_bayley_style(full_filename);
+      groundswell.is_bayley_style(filename);
     if is_bayley_style_p
       if i_filter==i_bayley_25        
         [t,data,names,units]= ...
-          groundswell.load_txt_bayley(full_filename,2.5);
+          groundswell.load_txt_bayley(filename,2.5);
       else
         [t,data,names,units]= ...
-          groundswell.load_txt_bayley(full_filename,5.0);
+          groundswell.load_txt_bayley(filename,5.0);
       end        
     else
-      data=load(full_filename);
+      data=load(filename);
     end
   catch exception  %#ok
     self.view.unhourglass();
-    errordlg(sprintf('Unable to open file %s',filename));  
+    errordlg(sprintf('Unable to open file %s',filename_local));  
     return;
   end
   [n_t,n_chan]=size(data);

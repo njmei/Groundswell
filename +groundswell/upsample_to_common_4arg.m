@@ -27,5 +27,11 @@ data(:,1:n_signals_1)= ...
   interp1(t_1,data_1,t,'linear','extrap');
 data(:,n_signals_1+1:end)= ...
   interp1(t_2,data_2,t,'linear','extrap');
-
-end
+% for i=1:n_signals_1
+%   data(:,i)=pchip(t_1,data_1(:,i),t);
+% end
+% j=1;
+% for i=n_signals_1+1:n_signals
+%   data(:,i)=pchip(t_2,data_2(:,j),t);
+%   j=j+1;
+% end

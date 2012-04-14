@@ -10,11 +10,16 @@ properties
 end  % properties
 
 methods
-  function self=Controller()
+  function self=Controller(varargin)
     self.fs_str='';
     self.model=[];
     self.view=groundswell.View(self);
     self.command_depressed=false;  % probably
+    % load the data, if given an arg
+    if nargin==1 && ischar(varargin{1})
+      filename=varargin{1};
+      self.load_data(filename);
+    end
   end  % constructor
   function center(self)
     self.model.center(self.view.i_selected);

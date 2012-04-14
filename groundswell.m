@@ -1,8 +1,6 @@
-function groundswell()
-% This is groundswell, a function for browsing multi-channel
-% electrophysiology data.
+function groundswell(varargin)
 
-% make the groundswell controller
-groundswell.Controller();
+% create the Controller instance
+groundswell.Controller(varargin{:});
 
 end
