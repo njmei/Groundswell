@@ -23,3 +23,8 @@ self.refresh_traces();
 
 % enable controls as necessary
 self.update_enablement_of_controls();
+
+% Notify the view that the filename/filename synch state has changed.
+self.update_title_bar();
+
+end

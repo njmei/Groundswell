@@ -23,23 +23,20 @@ methods
   end  % constructor
   function center(self)
     self.model.center(self.view.i_selected);
-    % update the view
-    force_resample=true;
-    self.view.refresh_traces(force_resample);
+    self.view.traces_changed();
   end 
   function rectify(self)
     self.model.rectify(self.view.i_selected);
-    % update the view
-    force_resample=true;
-    self.view.refresh_traces(force_resample);
+    self.view.traces_changed();
   end
   function dx_over_x(self)
     self.model.dx_over_x(self.view.i_selected);
     % update the view
+    self.view.traces_changed();
     self.view.units_changed();
+    % go ahead and re-optimize the y ranges of the modified traces, 
+    % because they've almost certainly moved out-of-range
     self.optimize_selected_y_axis_ranges();  % re-optimize range.
-    force_resample=true;
-    self.view.refresh_traces(force_resample);
   end
 end  % methods
   

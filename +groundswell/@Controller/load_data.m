@@ -13,8 +13,16 @@ end
 % Constants.
 i_bayley_25=6;  % index of Bayley-style file at 2.5 um/pel
 
+% Get the absolute filename
+if strcmp(filename(1),filesep)
+  filename_abs=filename;
+else
+  filename_abs=fullfile(pwd(),filename);
+end
+clear filename
+
 % break up the file name
-[~,base_name,ext]=fileparts(filename);
+[~,base_name,ext]=fileparts(filename_abs);
 filename_local=[base_name ext];
 
 % might take a while...
@@ -23,7 +31,7 @@ self.view.hourglass();
 % load the data
 if strcmp(ext,'.abf')
   try
-    [t,data,names,units]=load_abf(filename);
+    [t,data,names,units]=load_abf(filename_abs);
   catch  %#ok
     self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename_local));  
@@ -31,7 +39,7 @@ if strcmp(ext,'.abf')
   end
 elseif strcmp(ext,'.tcs')
   try
-    [names,t_each,data_each,units]=read_tcs(filename);
+    [names,t_each,data_each,units]=read_tcs(filename_abs);
   catch %#ok
     self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename_local));  
@@ -57,7 +65,7 @@ elseif strcmp(ext,'.tcs')
   clear t_each data_each;
 elseif strcmp(ext,'.wav')
   try
-    [data,fs]=wavread(filename);
+    [data,fs]=wavread(filename_abs);
   catch %#ok
     self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename_local));  
@@ -80,17 +88,17 @@ elseif strcmp(ext,'.wav')
 elseif strcmp(ext,'.txt')
   try
     is_bayley_style_p= ...
-      groundswell.is_bayley_style(filename);
+      groundswell.is_bayley_style(filename_abs);
     if is_bayley_style_p
       if i_filter==i_bayley_25        
         [t,data,names,units]= ...
-          groundswell.load_txt_bayley(filename,2.5);
+          groundswell.load_txt_bayley(filename_abs,2.5);
       else
         [t,data,names,units]= ...
-          groundswell.load_txt_bayley(filename,5.0);
+          groundswell.load_txt_bayley(filename_abs,5.0);
       end        
     else
-      data=load(filename);
+      data=load(filename_abs);
     end
   catch exception  %#ok
     self.view.unhourglass();
@@ -122,7 +130,8 @@ names=strtrim(names);
 units=strtrim(units);
 
 % store all the data-related stuff in a newly-created model
-self.model=groundswell.Model(t,data,names,units);
+self.model=groundswell.Model(t,data,names,units, ...
+                             filename_abs);
 
 % set fs_str
 fs=(length(t)-1)/(t(end)-t(1));  % Hz
@@ -130,9 +139,6 @@ self.fs_str=sprintf('%0.16g',fs);
 
 % make the view reflect the modified model
 self.view.completely_new_model(self.model);
-
-% set the filename shown in the view
-self.view.set_filename(filename);
 
 % ok, we're done
 self.view.unhourglass();

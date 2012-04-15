@@ -13,6 +13,11 @@ classdef Model < handle
     data;  % n_t x n_signals x n_sweeps
     names;
     units;
+    filename_abs;  % the filename associated with the data, if there is one.
+                   % otherwise, empty.  An absolute path.
+    saved;  % boolean, true if the information in the model is
+            % known to be the same as that in filename_abs, false if
+            % not.  Unspecified if filename_abs is empty.
   end  % properties
   
   properties (Dependent=true)
@@ -23,7 +28,7 @@ classdef Model < handle
   end
   
   methods
-    function self=Model(t,data,names,units)
+    function self=Model(t,data,names,units,filename_abs)
       n_t=size(data,1);
       if n_t==0
         t0=nan;
@@ -40,6 +45,8 @@ classdef Model < handle
       self.data=data;
       self.names=names;
       self.units=units;
+      self.filename_abs=filename_abs;
+      self.saved=true;  % irrelevant if isempty(filename_abs)
       self.sync_t();
     end  % function
     
@@ -92,6 +99,7 @@ classdef Model < handle
         self.data(:,i,:)=self.data(:,i,:)-...
           repmat(mean(self.data(:,i,:),1),[n_t 1 1]);
       end
+      self.saved=false;
     end
 
     function rectify(self,i_to_change)
@@ -100,6 +108,7 @@ classdef Model < handle
       for i=i_to_change
         self.data(:,i,:)=abs(self.data(:,i,:));
       end
+      self.saved=false;
     end  % function
 
     function dx_over_x(self,i_to_change)
@@ -112,7 +121,13 @@ classdef Model < handle
         self.data(:,i,:)=100*(self.data(:,i,:)-1);
         self.units{i}='%';
       end
+      self.saved=false;
     end  % function
+    
+    function saved_as(self,filename_abs)
+      self.filename_abs=filename_abs;
+      self.saved=true;
+    end
 
   end  % methods
 

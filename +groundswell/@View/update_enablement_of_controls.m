@@ -11,6 +11,8 @@ n_selected=length(i_selected);
 if n_chan==0
   % file menu
   set(self.import_roi_data_menu_h,'enable','off');
+  set(self.save_menu_h,'enable','off');
+  set(self.save_as_menu_h,'enable','off');  
   % edit menu
   set(self.select_all_menu_h,'enable','off');
   set(self.select_none_menu_h,'enable','off');
@@ -47,6 +49,13 @@ if n_chan==0
   set(self.coherency_at_f_probe_menu_h,'enable','off');
   set(self.play_as_audio_menu_h,'enable','off');
 else
+  % file menu
+  if ~isempty(self.model.filename_abs) && ~self.model.saved
+    set(self.save_menu_h,'enable','on');
+  else
+    set(self.save_menu_h,'enable','off');
+  end    
+  set(self.save_as_menu_h,'enable','on');  
   % edit menu
   set(self.select_all_menu_h,'enable','on');
   set(self.select_none_menu_h,'enable','on');
