@@ -13,11 +13,15 @@ classdef Model < handle
     data;  % n_t x n_signals x n_sweeps
     names;
     units;
-    filename_abs;  % the filename associated with the data, if there is one.
-                   % otherwise, empty.  An absolute path.
+    filename_abs;  % The filename associated with the data.  An absolute 
+                   % path.  Currently all data originates from some file, 
+                   % so this will always be set if n_signals>0.
     saved;  % boolean, true if the information in the model is
             % known to be the same as that in filename_abs, false if
-            % not.  Unspecified if filename_abs is empty.
+            % not.
+    file_native;  % Whether the file was loaded from a native file format. 
+                  % If true, the file is eligible for saving.  If not, 
+                  % file must be saved as a native format.
   end  % properties
   
   properties (Dependent=true)
@@ -28,7 +32,7 @@ classdef Model < handle
   end
   
   methods
-    function self=Model(t,data,names,units,filename_abs)
+    function self=Model(t,data,names,units,filename_abs,file_native)
       n_t=size(data,1);
       if n_t==0
         t0=nan;
@@ -46,7 +50,8 @@ classdef Model < handle
       self.names=names;
       self.units=units;
       self.filename_abs=filename_abs;
-      self.saved=true;  % irrelevant if isempty(filename_abs)
+      self.saved=true;
+      self.file_native=file_native;
       self.sync_t();
     end  % function
     
@@ -114,11 +119,12 @@ classdef Model < handle
     function dx_over_x(self,i_to_change)
       % i_to_change can be a vector
       % Subtract that time-average of each signal from the signal, then
-      % divide out the time-average, then convert to a percentage
+      % divide out the absolute value of the time-average, then convert 
+      % to a percentage.
       for i=i_to_change
-        d_hat=mean(self.data(:,i,:),1);
-        self.data(:,i,:)=bsxfun(@rdivide,self.data(:,i,:),d_hat);
-        self.data(:,i,:)=100*(self.data(:,i,:)-1);
+        d_mean=mean(self.data(:,i,:),1);
+        self.data(:,i,:)=bsxfun(@rdivide,self.data(:,i,:),abs(d_mean));
+        self.data(:,i,:)=100*(self.data(:,i,:)-sign(d_mean));
         self.units{i}='%';
       end
       self.saved=false;
@@ -127,6 +133,7 @@ classdef Model < handle
     function saved_as(self,filename_abs)
       self.filename_abs=filename_abs;
       self.saved=true;
+      self.file_native=true;
     end
 
   end  % methods

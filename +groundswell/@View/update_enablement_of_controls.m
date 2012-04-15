@@ -50,7 +50,8 @@ if n_chan==0
   set(self.play_as_audio_menu_h,'enable','off');
 else
   % file menu
-  if ~isempty(self.model.filename_abs) && ~self.model.saved
+  if ~isempty(self.model.filename_abs) && self.model.file_native && ...
+     ~self.model.saved
     set(self.save_menu_h,'enable','on');
   else
     set(self.save_menu_h,'enable','off');

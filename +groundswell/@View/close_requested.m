@@ -1,4 +1,4 @@
-function close(self)
+function close_requested(self)
 
 fpj=get(handle(self.fig_h),'JavaFrame');
 jw=fpj.fHG1Client.getWindow;
