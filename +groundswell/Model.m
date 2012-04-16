@@ -32,7 +32,7 @@ classdef Model < handle
   end
   
   methods
-    function self=Model(t,data,names,units,filename_abs,file_native)
+    function self=Model(t,data,names,units,filename_abs,file_native,saved)
       n_t=size(data,1);
       if n_t==0
         t0=nan;
@@ -50,7 +50,7 @@ classdef Model < handle
       self.names=names;
       self.units=units;
       self.filename_abs=filename_abs;
-      self.saved=true;
+      self.saved=saved;
       self.file_native=file_native;
       self.sync_t();
     end  % function

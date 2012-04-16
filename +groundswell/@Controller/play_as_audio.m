@@ -79,7 +79,7 @@ end
 player=audioplayer(data,fs);
 tic
 player.playblocking();
-toc
+toc;
 
 % % block while sound plays
 % while player.isplaying()

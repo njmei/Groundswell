@@ -62,7 +62,11 @@ names=vertcat(self.model.names,names_roi);
 units=vertcat(self.model.units,units_roi);
 
 % store all the data-related stuff in a newly-created model
-self.model=groundswell.Model(t,data,names,units);
+saved=false;
+self.model=groundswell.Model(t,data,names,units, ...
+                             self.model.filename_abs, ...
+                             self.model.file_native, ...
+                             saved);
 
 % set fs_str
 fs=(length(t)-1)/(t(end)-t(1));  % Hz

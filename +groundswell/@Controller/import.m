@@ -105,8 +105,10 @@ units=strtrim(units);
 
 % store all the data-related stuff in a newly-created model
 file_native=false;  % because it's an import
+saved=true;  % b/c just opened
 self.model=groundswell.Model(t,data,names,units, ...
-                             filename_abs,file_native);
+                             filename_abs,file_native, ...
+                             saved);
 
 % set fs_str
 fs=(length(t)-1)/(t(end)-t(1));  % Hz
