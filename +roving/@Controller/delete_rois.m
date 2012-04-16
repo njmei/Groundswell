@@ -13,7 +13,7 @@ if n_roi==0
 end
 
 % check that all is consistent
-n_roi_model=self.model.n_roi;
+n_roi_model=self.model.n_rois;
 n_roi_view=length(self.view.border_roi_h);
 if n_roi_model~=n_roi_view
   error('model and view out of sync');

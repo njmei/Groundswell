@@ -75,7 +75,7 @@ self.model.set_roi(borders,labels);
 self.view.all_new_rois();
 
 % modify self as needed
-n_rois=self.model.n_roi;
+n_rois=self.model.n_rois;
 self.card_birth_roi_next=n_rois+1;
 
 end

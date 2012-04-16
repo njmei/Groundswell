@@ -75,7 +75,10 @@ classdef View < handle
     cmap_name;
     colorbar_max_string;
     colorbar_min_string;
-    indexed_data;
+    colorbar_min;  % the colorbar min, derived from cb_min_string, 
+                   % dependent in spirit
+    colorbar_max;  % the colorbar max, derived from cb_min_string, 
+                   % dependent in spirit    
     % roi state
     selected_roi_index;
     hide_rois;
@@ -84,6 +87,7 @@ classdef View < handle
   end  % properties
   
   properties (Dependent=true)
+    indexed_frame
   end
   
   methods
@@ -207,7 +211,7 @@ classdef View < handle
                               figure_bottom_pad_size,...
                               colorbar_area_width,...
                               colorbar_area_height];
-      colorbar_increment=(colorbar_max-colorbar_min)/256;
+      %colorbar_increment=(colorbar_max-colorbar_min)/256;
       self.colorbar_axes_h = ...
         axes('Parent',self.figure_h,...
              'Tag','colorbar_axes_h',...
@@ -224,11 +228,9 @@ classdef View < handle
               'CData',(0:255)',...
               'Tag','colorbar_h',...
               'XData',[1 1],...
-              'YData',[colorbar_min+0.5*colorbar_increment...
-                       colorbar_max-0.5*colorbar_increment]);
+              'YData',[colorbar_min colorbar_max]);
 
       % create the image axes and the image
-      %indexed_data=[];
       image_axes_position=...
         [figure_left_pad_size+mode_button_width+button_image_pad_width,...
          figure_bottom_pad_size,...
@@ -349,7 +351,7 @@ classdef View < handle
                      vcr_button_width,...
                      vcr_button_height],...
                    'Callback', ...
-                     @(src,event)(controller.change_frame_abs(self.model.n_frame)));
+                     @(src,event)(controller.change_frame_abs(self.model.n_frames)));
 
       % Frame index counter
       self.frame_text_h = ...
@@ -743,7 +745,8 @@ classdef View < handle
       self.cmap_name=cmap_name;
       self.colorbar_max_string=colorbar_max_string;
       self.colorbar_min_string=colorbar_min_string;
-      self.indexed_data=[];
+      self.colorbar_max=colorbar_max;
+      self.colorbar_min=colorbar_min;
       % roi state
       self.selected_roi_index=zeros(0,1);
       self.hide_rois=false;
@@ -761,6 +764,14 @@ classdef View < handle
       yl=get(self.image_axes_h,'ylim');
     end
     
+    function indexed_frame=get.indexed_frame(self)
+      % Get the current indexed_frame, based on model, frame_index,
+      % colorbar_min, and colorbar_max.
+      frame=double(self.model.data(:,:,self.frame_index));
+      cb_min=self.colorbar_min;
+      cb_max=self.colorbar_max;
+      indexed_frame=uint8(round(255*(frame-cb_min)/(cb_max-cb_min)));
+    end
   end  % methods
 
   methods (Access=private)

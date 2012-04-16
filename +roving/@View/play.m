@@ -4,9 +4,8 @@ function play(self,direction)
 figure_h=self.figure_h;
 
 % play the movie
-indexed_data=self.indexed_data;
 start_frame_index=self.frame_index;
-n_frames=size(indexed_data,3);
+n_frames=self.model.n_frames;
 frame_index_edit_h=findobj(figure_h,'Tag','frame_index_edit_h');
 image_h = self.image_h;
 n_rois=length(self.model.roi);
@@ -23,8 +22,8 @@ end
 self.stop_button_hit=false;
 for frame_index=frame_sequence
   tic;
-  this_frame = indexed_data(:,:,frame_index);
-  set(image_h,'CData',this_frame);
+  self.frame_index=frame_index;
+  set(image_h,'CData',self.indexed_frame);
   set(frame_index_edit_h,'String',num2str(frame_index));
   drawnow;
   while (toc < spf)
@@ -34,7 +33,6 @@ for frame_index=frame_sequence
   end
 end
 self.stop_button_hit=false;
-self.frame_index=frame_index;
 if (n_rois>0)
   set(image_h,'EraseMode','normal');
 end

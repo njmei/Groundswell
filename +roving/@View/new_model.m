@@ -11,30 +11,28 @@ else
 end
 set(self.figure_h,'name',title_string);
 
-% sync up the indexed data
-data_min=min(self.model.data(:));
-data_max=max(self.model.data(:));
+% determine the colorbar bounds
+[data_min,data_max]=self.model.default_bounds();
 self.colorbar_min_string=sprintf('%.4e',data_min);
 self.colorbar_max_string=sprintf('%.4e',data_max);
-cb_min=str2double(self.colorbar_min_string);
-cb_max=str2double(self.colorbar_max_string);
-self.indexed_data=uint8(round(255*(self.model.data-cb_min)/...
-                                  (cb_max-cb_min)));
-
+self.colorbar_min=str2double(self.colorbar_min_string);
+self.colorbar_max=str2double(self.colorbar_max_string);
+ 
 % change the colorbar
-cb_increment=(cb_max-cb_min)/256;
+cb_min=self.colorbar_min;
+cb_max=self.colorbar_max;
 set(self.colorbar_axes_h,'YLim',[cb_min cb_max]);
-set(self.colorbar_h,'YData',[cb_min+0.5*cb_increment...
-                             cb_max-0.5*cb_increment]);
+% cb_increment=(cb_max-cb_min)/256;
+% set(self.colorbar_h,'YData',[cb_min+0.5*cb_increment...
+%                              cb_max-0.5*cb_increment]);
+set(self.colorbar_h,'YData',[cb_min cb_max]);
                            
 % reset the frame index
 self.frame_index=1;
 
-% extract the current frame
-this_frame=self.indexed_data(:,:,self.frame_index);
-
 % prepare the axes to hold the frame
-[n_row,n_col]=size(this_frame);
+indexed_frame=self.indexed_frame;
+[n_row,n_col]=size(indexed_frame);
 set(self.image_axes_h,'XLim',[0.5,n_col+0.5],...
                       'YLim',[0.5,n_row+0.5]);
 
@@ -44,7 +42,7 @@ if self.image_h
 end  
 self.image_h = ...
   image('Parent',self.image_axes_h,...
-        'CData',this_frame,...
+        'CData',indexed_frame,...
         'SelectionHighlight','off',...
         'EraseMode','none',...
         'ButtonDownFcn',@(~,~)(self.handle_image_mousing()));
@@ -65,7 +63,7 @@ self.label_roi_h=zeros(0,1);
 % update the frame counter stuff
 set(self.FPS_edit_h,'String',sprintf('%6.2f',self.model.fs));
 set(self.frame_index_edit_h,'String',sprintf('%d',self.frame_index));
-n_frame=size(self.indexed_data,3);
+n_frame=self.model.n_frames;
 set(self.of_n_frames_text_h,'String',sprintf(' of %d',n_frame));
 extent=get(self.of_n_frames_text_h,'Extent');
 pos=get(self.of_n_frames_text_h,'Position');
