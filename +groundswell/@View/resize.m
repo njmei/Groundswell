@@ -2,9 +2,9 @@ function resize(self)
 
 % IMPORTANT: Need to make sure we save the current
 % main figure units, set them to pels, then set them back at the end
-% Some functions, like errordlg() set them briefly to other things, and
+% Some functions, like errordlg(), set them briefly to other things, and
 % sometimes the resize callback gets called during this interval, and that
-% causes the figure to get messed-up
+% causes the figure to get messed-up.
 
 % get current units, save; set units to pels
 units_before=get(self.fig_h,'units');

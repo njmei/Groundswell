@@ -18,7 +18,12 @@ methods
     % load the data, if given an arg
     if nargin==1 && ischar(varargin{1})
       filename=varargin{1};
-      self.load_data(filename);
+      [~,~,ext]=fileparts(filename);
+      if strcmp(ext,'.tcs')
+        self.open(filename);
+      else
+        self.import(filename);
+      end
     end
   end  % constructor
   function center(self)

@@ -5,12 +5,16 @@ function completely_new_model(self,model)
 %
 % Causes the view to re-sync itself to the new model, re-drawing basically
 % everything.
+%
+% Note that model can be empty, as when the current file is closed.
 
 % Change self.model to point to the new model
 self.model=model;
 
 % set the view limits to the full time range
-self.tl_view=self.model.tl;
+if ~isempty(model)
+  self.tl_view=self.model.tl;
+end
 
 % renew the axes
 self.renew_axes();

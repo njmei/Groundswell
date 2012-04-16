@@ -1,4 +1,6 @@
-function quit(self)
+function close(self)
+
+% Close the current file.
 
 % Check for unsaved data
 if ~isempty(self.model) && ~self.model.saved
@@ -21,7 +23,10 @@ if ~isempty(self.model) && ~self.model.saved
   end
 end
 
-% Tell the view wassup.
-self.view.quit_requested();
+% clear the model
+self.model=[];
+
+% make the view reflect the "modified" model
+self.view.completely_new_model(self.model);
 
 end

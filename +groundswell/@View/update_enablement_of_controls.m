@@ -4,12 +4,12 @@ function update_enablement_of_controls(self)
 % reflect the current state of the view object
 
 % get vars we need
-n_chan=self.model.n_chan;
 i_selected=self.i_selected;
 n_selected=length(i_selected);
 
-if n_chan==0
+if isempty(self.model) || self.model.n_chan==0
   % file menu
+  set(self.close_menu_h,'enable','off');
   set(self.import_roi_data_menu_h,'enable','off');
   set(self.save_menu_h,'enable','off');
   set(self.save_as_menu_h,'enable','off');  
@@ -40,13 +40,13 @@ if n_chan==0
   set(self.center_menu_h,'enable','off');
   set(self.rectify_menu_h,'enable','off');
   % analysis menu
-  set(self.spectra_menu_h,'enable','off');  
-  set(self.spectrograms_menu_h,'enable','off');  
+  set(self.analysis_menu_h,'enable','off');  
   set(self.power_spectrum_menu_h,'enable','off');
+  set(self.spectrogram_menu_h,'enable','off');  
   set(self.coherency_menu_h,'enable','off');
+  set(self.coherency_at_f_probe_menu_h,'enable','off');
   set(self.coherogram_menu_h,'enable','off');
   set(self.transfer_function_menu_h,'enable','off');
-  set(self.coherency_at_f_probe_menu_h,'enable','off');
   set(self.play_as_audio_menu_h,'enable','off');
 else
   % file menu
@@ -57,6 +57,7 @@ else
     set(self.save_menu_h,'enable','off');
   end    
   set(self.save_as_menu_h,'enable','on');  
+  set(self.close_menu_h,'enable','on');
   % edit menu
   set(self.select_all_menu_h,'enable','on');
   set(self.select_none_menu_h,'enable','on');

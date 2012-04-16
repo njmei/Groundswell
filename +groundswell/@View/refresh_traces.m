@@ -1,8 +1,18 @@
 function refresh_traces(self,force_resample)
 
+% Function to re-draw the traces in the axes.  Called, for instance, when
+% the time limits are changed.  Managed the business of resampling the
+% traces so that we don't plot way for points than there are horizontal
+% pixels in the axeses.
+
 % args
 if nargin<2 || isempty(force_resample)
   force_resample=false;
+end
+
+% check for an empty model
+if isempty(self.model)
+  return;
 end
 
 % get vars we need
