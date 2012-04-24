@@ -34,6 +34,27 @@ N=length(data);
 % get sampling rate
 fs=self.model.fs;  % hz
 
+% can't play back all sampling rates---convert if sampling rate too low
+fs_min=80;  % Hz
+if fs<fs_min
+  t_raw=self.model.t;
+  data_raw=data;
+  t0=t_raw(1);
+  fs=1000;  % Hz 
+  dt=1/fs;  % s, reampling to 100 Hz
+  N=round((t_raw(end)-t0)/dt);
+  t=t0+dt*(0:(N-1))';
+  data=interp1(t_raw,data_raw,t,'linear','extrap');
+end
+
+% Can't play if too high-frequency
+fs_max=1e6;  % Hz
+if fs>fs_max
+  errordlg('Can only play signals sampled at < 1 MHz.',...
+           'Sampling rate too high');
+  return;
+end
+
 % if a long sample, make sure user wants to do this
 dt=1/fs;
 T=N*dt;
