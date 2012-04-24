@@ -40,7 +40,7 @@ if isempty(self.model) || self.model.n_chan==0
   set(self.center_menu_h,'enable','off');
   set(self.rectify_menu_h,'enable','off');
   % analysis menu
-  set(self.analysis_menu_h,'enable','off');  
+  %set(self.analysis_menu_h,'enable','off');  
   set(self.power_spectrum_menu_h,'enable','off');
   set(self.spectrogram_menu_h,'enable','off');  
   set(self.coherency_menu_h,'enable','off');
