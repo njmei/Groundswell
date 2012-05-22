@@ -9,8 +9,11 @@ n_selected=length(i_selected);
 
 if isempty(self.model) || self.model.n_chan==0
   % file menu
+  set(self.open_menu_h,'enable','on');
+  set(self.import_menu_h,'enable','on');
   set(self.close_menu_h,'enable','off');
   set(self.import_roi_data_menu_h,'enable','off');
+  set(self.import_ft_roi_data_menu_h,'enable','off');
   set(self.save_menu_h,'enable','off');
   set(self.save_as_menu_h,'enable','off');  
   % edit menu
@@ -48,13 +51,18 @@ if isempty(self.model) || self.model.n_chan==0
   set(self.coherogram_menu_h,'enable','off');
   set(self.transfer_function_menu_h,'enable','off');
   set(self.play_as_audio_menu_h,'enable','off');
+  set(self.count_ttl_edges_menu_h,'enable','off');
 else
   % file menu
   if ~isempty(self.model.filename_abs) && self.model.file_native && ...
      ~self.model.saved
     set(self.save_menu_h,'enable','on');
+    set(self.open_menu_h,'enable','off');
+    set(self.import_menu_h,'enable','off');
   else
     set(self.save_menu_h,'enable','off');
+    set(self.open_menu_h,'enable','on');
+    set(self.import_menu_h,'enable','on');
   end    
   set(self.save_as_menu_h,'enable','on');  
   set(self.close_menu_h,'enable','on');
@@ -102,24 +110,27 @@ else
   if n_selected==1
     % file menu
     set(self.import_roi_data_menu_h,'enable','on');
+    set(self.import_ft_roi_data_menu_h,'enable','on');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','on');
     set(self.spectrogram_menu_h,'enable','on');  
     set(self.play_as_audio_menu_h,'enable','on');
+    set(self.count_ttl_edges_menu_h,'enable','on');      
   else
     % file menu
     set(self.import_roi_data_menu_h,'enable','off');
+    set(self.import_ft_roi_data_menu_h,'enable','off');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','off');
     set(self.spectrogram_menu_h,'enable','off');  
     set(self.play_as_audio_menu_h,'enable','off');
+    set(self.count_ttl_edges_menu_h,'enable','off');
   end    
   if n_selected==2
     % analysis menu
     set(self.coherency_menu_h,'enable','on');
     set(self.coherogram_menu_h,'enable','on');
     set(self.transfer_function_menu_h,'enable','on');
-    set(self.play_as_audio_menu_h,'enable','off');
   else
     % analysis menu
     set(self.coherency_menu_h,'enable','off');
@@ -128,7 +139,6 @@ else
   end
   if n_selected>=2
     set(self.coherency_at_f_probe_menu_h,'enable','on');
-    set(self.play_as_audio_menu_h,'enable','off');
   else
     set(self.coherency_at_f_probe_menu_h,'enable','off');
   end  

@@ -148,6 +148,9 @@ This version relies upon Taylor Matlab Toolbox version 1.11.
 
 1.08 -> 1.09 (April 24, 2012)
 
-Many many changes and improvements, including the integration of Roving, a GUI for browsing and analyzing optical data.
+Many many changes and improvements, including the integration of Roving, 
+a GUI for browsing and analyzing optical data.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
