@@ -154,3 +154,13 @@ a GUI for browsing and analyzing optical data.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+
+
+1.09 -> 1.10 (May 22, 2012)
+
+Improved synching of ROI data, especially when there are many more exposure pulses than there are frames.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+
+
+
