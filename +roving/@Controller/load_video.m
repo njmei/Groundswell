@@ -1,11 +1,11 @@
-function load_video(self,data_raw,filename_local)
+function load_video(self,file,filename_local)
 
-% make up a dt, t0
-dt=0.050;  % s, => 20 Hz
+% make up a t0, get dt
 t0=0;
+dt=file.dt;  % s
 
 % set the model
-self.model=roving.Model(data_raw,dt,t0);
+self.model=roving.Model(file,dt,t0);
 
 % set the view
 self.view.new_model(self.model,filename_local);
