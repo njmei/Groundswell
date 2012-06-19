@@ -52,16 +52,16 @@ set(self.copy_menu_h,'Enable','off');
 
 % modify ancillary crap
 if n_rois>0
-  % need to set image erase mode to normal, since now there's something
-  % other than the image in that image axes
-  set(self.image_h,'EraseMode','normal');
   set(self.delete_all_rois_menu_h,'Enable','on');
   set(self.save_rois_to_file_menu_h,'Enable','on');
   set(self.hide_rois_menu_h,'Enable','on');
-  self.set_hide_rois(false);
   set(self.select_button_h,'Enable','on');
   set(self.move_all_button_h,'Enable','on');
   set(self.export_to_tcs_menu_h,'Enable','on');
+  self.sync_image_erase_mode();
+  % Object invariants are now satisfied, but we un-hide the ROIs
+  % as a courtesy at this point.
+  self.set_hide_rois(false);  
 end  
 
 end

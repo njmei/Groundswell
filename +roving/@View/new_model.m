@@ -38,16 +38,16 @@ set(self.image_axes_h,'XLim',[0.5,n_col+0.5],...
 
 % set the image to the current frame
 if self.image_h
-  set(self.image_h,'EraseMode','normal');
+%  set(self.image_h,'EraseMode','normal');
   delete(self.image_h)
 end  
 self.image_h = ...
   image('Parent',self.image_axes_h,...
         'CData',indexed_frame,...
         'SelectionHighlight','off',...
-        'EraseMode','normal',...
         'ButtonDownFcn',@(~,~)(self.handle_image_mousing()));      
-set(self.image_h,'EraseMode','none');
+%        'EraseMode','normal',...
+% tempargh set(self.image_h,'EraseMode','none');
 % Need to do this rigamarole with erase mode to make sure old movie
 % frames don't get left behind.
       
@@ -76,7 +76,7 @@ set(self.of_n_frames_text_h,'Position',pos_new);
 
 % need to set image erase mode to none, since now there are no 
 % more lines in front of the image
-set(self.image_h,'EraseMode','none');
+% tempargh set(self.image_h,'EraseMode','none');
 set(self.delete_all_rois_menu_h,'Enable','off');
 set(self.save_rois_to_file_menu_h,'Enable','off');  
 set(self.hide_rois_menu_h,'Label','Hide ROIs');
@@ -107,6 +107,7 @@ set(self.play_forward_button_h,'enable','on');
 set(self.to_end_button_h,'enable','on');
 set(self.mutation_menu_h,'enable','on');
 set(self.motion_correct_menu_h,'enable','on');
+set(self.load_overlay_menu_h,'enable','on');
 
 
 %

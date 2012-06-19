@@ -42,20 +42,17 @@ self.selected_roi_index=selected_roi_index;
 % modify ancillary crap
 n_roi=length(border_roi_h);
 if n_roi==0
-  % need to set image erase mode to none, since now there are no 
-  % more lines in front of the image
-  set(self.image_h,'EraseMode','none');
   set(self.delete_all_rois_menu_h,'Enable','off');
   set(self.save_rois_to_file_menu_h,'Enable','off');  
-  set(self.hide_rois_menu_h,'Enable','off');
-  self.set_hide_rois(0);
-  % disable the select ROI button
   set(self.select_button_h,'Enable','off');
-  % enable the move all ROIs button
+  set(self.hide_rois_menu_h,'enable','off');
   set(self.move_all_button_h,'Enable','off');  
-  % change the mode to elliptic_roi
   self.set_mode('elliptic_roi');
   set(self.export_to_tcs_menu_h,'Enable','off');
+  self.sync_image_erase_mode();
+  % Object invariants are now satisfied, but we un-hide the ROIs
+  % as a courtesy at this point.
+  self.set_hide_rois(false);
 end
 
 end

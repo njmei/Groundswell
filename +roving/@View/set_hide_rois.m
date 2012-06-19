@@ -13,8 +13,6 @@ if hide_rois_new
   set(self.rename_roi_menu_h,'enable','off');
   set(self.delete_roi_menu_h,'enable','off');
   set(self.delete_all_rois_menu_h,'enable','off');
-  % set the image erase mode
-  set(self.image_h,'EraseMode','none');
 else
   % show them
   for j=1:length(label_h)
@@ -31,8 +29,7 @@ else
     set(self.rename_roi_menu_h,'enable','on');
     set(self.delete_roi_menu_h,'enable','on');
   end
-  % set the image erase mode
-  set(self.image_h,'EraseMode','normal');
 end
+self.sync_image_erase_mode();
 
 end

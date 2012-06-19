@@ -3,14 +3,9 @@ classdef Model < handle
   properties
     t0;
     dt;
-    t;  % This property is dependent in spirit, and could be made
-        % dependent for real with no change in object semantics.  But we
-        % keep it around for speed, because it's used frequently.
-        % It's always equal to t0+dt*(0:(size(data,1)-1)'
     file;  % the handle of a VideoFile object, the current file    
-    %data;  % Data in native units.  Each element is whatever data type 
-    %       % it's in in the original file, usually uint8 or uint16.
     roi;  % n_roi x 1 struct with fields border and label
+    overlay_file;  % a MatFile object containing frame overlays, or empty
   end  % properties
   
   properties (Dependent=true)
@@ -20,6 +15,7 @@ classdef Model < handle
     n_frames;  % number of time samples
     tl;  % 2x1 matrix holding min, max time
     n_rois;
+    t;  % a complete timeline for all frames
   end
   
   methods
@@ -29,7 +25,12 @@ classdef Model < handle
       self.dt=dt;  % s
       self.roi=struct('border',cell(0,1), ...
                       'label',cell(0,1));
+      self.overlay_file=[];                    
     end  % function
+    
+    function t=get.t(self)
+      t=self.t0+self.dt*(0:(self.n_frames-1))';
+    end
     
     function fs=get.fs(self)
       fs=1/self.dt;
@@ -64,15 +65,14 @@ classdef Model < handle
     
     function set.dt(self,dt)
       self.dt=dt;
-      self.sync_t();
     end
     
-    function sync_t(self)
-      t0=self.t0;
-      dt=self.dt;
-      n_frame=self.n_frames;
-      self.t=t0+dt*(0:(n_frame-1))';
-    end
+%     function sync_t(self)
+%       t0=self.t0;
+%       dt=self.dt;
+%       n_frame=self.n_frames;
+%       self.t=t0+dt*(0:(n_frame-1))';
+%     end
 
     function set.fs(self,fs)
       self.dt=1/fs;
@@ -107,6 +107,11 @@ classdef Model < handle
 
     function frame=get_frame(self,i)
       frame=self.file.get_frame(i);
+    end
+
+    function frame_overlay=get_frame_overlay(self,i)
+      frame_overlay_cell=self.overlay_file.overlay(i,1);
+      frame_overlay=frame_overlay_cell{1};
     end
     
 %   Since we now are keeping the movie on-disk, mutating it becomes 
