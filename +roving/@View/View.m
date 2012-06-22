@@ -825,7 +825,6 @@ classdef View < handle
   end  % methods
 
   methods (Access=private)
-    sync_image_erase_mode(self)
   end  % methods
   
 end  % classdef

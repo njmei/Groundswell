@@ -1,4 +1,4 @@
-classdef Text
+classdef Text_overlay
 
   properties
     x;
@@ -11,7 +11,7 @@ classdef Text
   end
   
   methods
-    function self=Line(x,y,string,color)
+    function self=Text_overlay(x,y,string,color)
       self.x=x;
       self.y=y;
       self.string=string;

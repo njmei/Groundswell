@@ -1,4 +1,4 @@
-classdef Line
+classdef Line_overlay
 
   properties
     x;
@@ -11,7 +11,7 @@ classdef Line
   end
   
   methods
-    function self=Line(x,y,width,color)
+    function self=Line_overlay(x,y,width,color)
       self.x=x;
       self.y=y;
       self.width=width;

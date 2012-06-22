@@ -58,7 +58,6 @@ if n_rois>0
   set(self.select_button_h,'Enable','on');
   set(self.move_all_button_h,'Enable','on');
   set(self.export_to_tcs_menu_h,'Enable','on');
-  self.sync_image_erase_mode();
   % Object invariants are now satisfied, but we un-hide the ROIs
   % as a courtesy at this point.
   self.set_hide_rois(false);  

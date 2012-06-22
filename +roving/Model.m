@@ -5,7 +5,8 @@ classdef Model < handle
     dt;
     file;  % the handle of a VideoFile object, the current file    
     roi;  % n_roi x 1 struct with fields border and label
-    overlay_file;  % a MatFile object containing frame overlays, or empty
+    overlay_file;  
+      % an Overlay_file_reader object containing frame overlays, or empty
   end  % properties
   
   properties (Dependent=true)
@@ -110,8 +111,11 @@ classdef Model < handle
     end
 
     function frame_overlay=get_frame_overlay(self,i)
-      frame_overlay_cell=self.overlay_file.overlay(i,1);
-      frame_overlay=frame_overlay_cell{1};
+      if (1<=i) && (i<=self.overlay_file.n_frames)
+        frame_overlay=self.overlay_file.read_frame_overlay(i);
+      else
+        frame_overlay=cell(0,1);  % just return empty overlay
+      end
     end
     
 %   Since we now are keeping the movie on-disk, mutating it becomes 

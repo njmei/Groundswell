@@ -9,7 +9,7 @@ filename_local=[base_name ext];
 % load the optical data
 self.view.hourglass()
 try
-  file=roving.VideoFile(filename);
+  file=roving.Video_file(filename);
 catch err
   self.view.unhourglass();
   if strcmp(err.identifier,'MATLAB:imagesci:imfinfo:whatFormat')

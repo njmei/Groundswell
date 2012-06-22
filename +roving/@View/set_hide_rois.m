@@ -30,6 +30,5 @@ else
     set(self.delete_roi_menu_h,'enable','on');
   end
 end
-self.sync_image_erase_mode();
 
 end

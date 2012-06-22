@@ -1,4 +1,4 @@
-classdef VideoFile < handle
+classdef Video_file < handle
 
   properties
     ext;  % the file type extension, e.g. '.tif', '.mj2'
@@ -16,7 +16,7 @@ classdef VideoFile < handle
   end  % properties
   
   methods
-    function self=VideoFile(file_name)
+    function self=Video_file(file_name)
       [~,~,self.ext]=fileparts(file_name);
       switch self.ext
         case '.tif'
@@ -26,16 +26,16 @@ classdef VideoFile < handle
           self.file=Tiff(file_name,'r');
           frame=self.file.read();
           if ndims(frame)>2  %#ok
-            error('VideoFile:UnsupportedPixelType', ...
-                  'VideoFile only supports 8- and 16-bit grayscale videos.');
+            error('Video_file:UnsupportedPixelType', ...
+                  'Video_file only supports 8- and 16-bit grayscale videos.');
           end
           if isa(frame,'uint8')
             self.bits_per_pel=8;
           elseif isa(frame,'uint16')
             self.bits_per_pel=16;
           else
-            error('VideoFile:UnsupportedPixelType', ...
-                  'VideoFile only supports 8- and 16-bit grayscale videos.');
+            error('Video_file:UnsupportedPixelType', ...
+                  'Video_file only supports 8- and 16-bit grayscale videos.');
           end
           [self.n_row,self.n_col]=size(frame);
           self.file.close();
@@ -46,8 +46,8 @@ classdef VideoFile < handle
           self.file=VideoReader(file_name);
           self.bits_per_pel=get(self.file,'BitsPerPixel');
           if self.bits_per_pel~=8 && self.bits_per_pel~=16
-            error('VideoFile:UnsupportedPixelType', ...
-                  'VideoFile only supports 8- and 16-bit grayscale videos.');
+            error('Video_file:UnsupportedPixelType', ...
+                  'Video_file only supports 8- and 16-bit grayscale videos.');
           end          
           self.n_row=get(self.file,'Width');
           self.n_col=get(self.file,'Height');
@@ -55,7 +55,7 @@ classdef VideoFile < handle
           self.rate=get(self.file,'FrameRate');
           self.i_frame=0;
         otherwise
-          error('VideoFile:UnableToLoad','Unable to load that file type');
+          error('Video_file:UnableToLoad','Unable to load that file type');
       end
     end  % constructor method
 
@@ -71,7 +71,7 @@ classdef VideoFile < handle
         case '.mj2'
           frame=self.file.read(i);
         otherwise
-          error('VideoFile:InternalError','Internal error');
+          error('Video_file:InternalError','Internal error');
       end          
       self.i_frame=i;
     end
@@ -83,7 +83,7 @@ classdef VideoFile < handle
         case '.mj2'
           frame=self.file.read(self.i_frame+1);
         otherwise
-          error('VideoFile:InternalError','Internal error');
+          error('Video_file:InternalError','Internal error');
       end          
       self.i_frame=self.i_frame+1;
     end
@@ -112,7 +112,7 @@ classdef VideoFile < handle
             warning('on','MATLAB:imagesci:Tiff:libraryWarning');
           case '.mj2'
           otherwise
-            error('VideoFile:InternalError','Internal error');
+            error('Video_file:InternalError','Internal error');
         end
       end
     end

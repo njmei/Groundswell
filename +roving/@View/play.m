@@ -21,7 +21,7 @@ while (1<=frame_index) && (frame_index<=n_frames)
   set(self.image_h,'CData',self.indexed_frame);
   set(self.frame_index_edit_h,'String',num2str(frame_index));
   self.sync_overlay();
-  drawnow('expose');
+  drawnow;  % N.B.: this allows other callbacks to run!
   while (toc < spf)
   end
   if self.stop_button_hit
@@ -30,6 +30,5 @@ while (1<=frame_index) && (frame_index<=n_frames)
   frame_index=frame_index+direction;
 end
 self.stop_button_hit=false;
-self.sync_image_erase_mode();  % set this back to what it should be
 
 end
