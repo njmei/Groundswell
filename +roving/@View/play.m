@@ -15,7 +15,10 @@ spf=1/fps;
 self.stop_button_hit=false;
 frame_index=start_frame_index;
 %for frame_index=frame_sequence
+%tic;
 while (1<=frame_index) && (frame_index<=n_frames)
+  %dt_this=toc;
+  %fs=1/dt_this
   tic;
   self.frame_index=frame_index;
   set(self.image_h,'CData',self.indexed_frame);

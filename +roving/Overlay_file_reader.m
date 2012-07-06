@@ -19,7 +19,7 @@ classdef Overlay_file_reader < handle
               'Unable to open file %s',file_name);  %#ok
       end
       % check that the header is there
-      header=fread(self.fid,[1 8],'uchar=>char');
+      header=fread(self.fid,[1 8],'*char');
       if ~strcmp(header,'ovl00001')
         fclose(self.fid);
         self.fid=[];
@@ -175,12 +175,33 @@ classdef Overlay_file_reader < handle
     function txt=read_text_overlay(self)
       % reads the text object at the current file pointer location
       % assumes the single-letter object header has already been read
+      % read the font size, in pixels, assuming a 72 ppi monitor
+      [sz,count]=fread(self.fid,1,'*double');
+      if count~=1
+        self.close();
+        error('Overlay_file_reader.unable_to_read_text_font_size', ...
+              'Unable to read text font size in .ovl file');  %#ok
+      end
       % read the color
       [clr,count]=fread(self.fid,[1 3],'*double');
       if count~=3
         self.close();
         error('Overlay_file_reader.unable_to_read_text_color', ...
               'Unable to read text color in .ovl file');  %#ok
+      end
+      % read the x-coord
+      [x,count]=fread(self.fid,1,'*double');
+      if count~=1
+        self.close();
+        error('Overlay_file_reader.unable_to_read_text_x_coord', ...
+              'Unable to read x-coordinate of text in .ovl file');  %#ok
+      end
+      % read the y-coord
+      [y,count]=fread(self.fid,1,'*double');
+      if count~=1
+        self.close();
+        error('Overlay_file_reader.unable_to_read_text_y_coord', ...
+              'Unable to read y-coordinate of text in .ovl file');  %#ok
       end
       % read the number of chars in the line
       [n_chars,count]=fread(self.fid,1,'*uint64');
@@ -197,7 +218,7 @@ classdef Overlay_file_reader < handle
               'Unable to read string in text in .ovl file');  %#ok
       end
       % package stuff up
-      txt=roving.Text_overlay(x,y,str,clr);
+      txt=roving.Text_overlay(x,y,str,clr,sz);
     end    
     
   end  % private methods
