@@ -164,3 +164,12 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
 
+
+1.10 -> 1.11 (July 17, 2012)
+
+Roving now reads movies from disk, only loading a frame at a time into main memory.  Also fixed a bug in which the "Coherency at probe frequency" report that is written to the clipboard was in the order that signals were selected, not the order they appear on screen.  They now appear in the same order as onscreen.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+
+
+
