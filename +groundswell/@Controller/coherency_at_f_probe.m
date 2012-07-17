@@ -19,6 +19,10 @@ i_y=i_selected(1:end-1);  % the non-pivots are the test signals
 i_x=i_selected(end);  % the pivot is the reference signal
 n_y=length(i_y);
 
+% sort the test signals, b/c we want them in the same order as displayed,
+% not whatever random order they were selected in.
+i_y=sort(i_y);
+
 % extract the data we need
 n_t=length(t);
 n_sweeps=size(data,3);
