@@ -230,6 +230,33 @@ classdef Model < handle
       end
         
     end
+
+    function x_roi=mean_over_rois(self)
+      % get a mask for each roi
+      n_rows=self.n_rows;
+      n_cols=self.n_cols;
+      roi_stack= ...
+        roving.roi_list_to_stack(self.roi,n_rows,n_cols);
+      
+      % analyze each of the rois
+      n_frames=self.n_frames;
+      n_rois=self.n_rois;
+      n_pels=reshape(sum(sum(roi_stack,2),1),[n_rois 1]);  % pels in each roi
+      %n_ppf=n_row*n_col;  % pixels per frame
+      x_roi=zeros(n_frames,n_rois);
+
+      % is this faster?  yes.  screw you, JIT compiler.
+      for k=1:n_frames
+        frame_this=self.get_frame(k);
+        for l=1:n_rois
+          roi_mask=roi_stack(:,:,l);
+          s=sum(sum(roi_mask.*double(frame_this)));
+          x_roi(k,l)=s/n_pels(l);
+        end
+      end
+
+    end  % mean_over_rois()
+    
     
   end  % methods
 

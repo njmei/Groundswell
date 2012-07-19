@@ -181,3 +181,13 @@ In the "Coherency at probe frequency" report that is written to the clipboard, w
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
+
+
+
+
+1.12 -> 1.13 (July 18, 2012)
+
+Fixed a bug in which exporting ROI signals to a .tcs file didn't work.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+

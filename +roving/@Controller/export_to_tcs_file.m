@@ -12,18 +12,12 @@ file_name_abs=fullfile(dir_name,file_name);
 self.view.hourglass();
 
 try
-  % calc a roi_stack from the roi_list, and get labels
-  n_row=self.model.n_rows;
-  n_col=self.model.n_cols;
-  [roi_stack,roi_label]= ...
-    roving.roi_list_to_stack(self.model.roi,n_row,n_col);
-
-  % calc the ROI dF/Fs
-  % this could be faster
-  roi_mean=roving.mean_over_roi(self.model.data,roi_stack);
-
+  % calc the ROI means  
+  roi_mean=self.model.mean_over_rois();
+  
   % save to .tcs file
   t=self.model.t;  % s
+  roi_label={self.model.roi.label}';
   roving.write_o_to_tcs(file_name_abs,...
                         t,roi_mean,roi_label);
 catch excp
