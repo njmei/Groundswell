@@ -142,15 +142,17 @@ classdef View < handle
       % Want to know when we get/lose focus, so have to do some hacking.
       drawnow('update');
       drawnow('expose');
-      fpj=get(handle(self.fig_h),'JavaFrame');
-      jw=fpj.fHG1Client.getWindow;
-      jcb=handle(jw,'CallbackProperties');
-      set(jcb,'WindowGainedFocusCallback', ...
-          @(src,event)(controller.handle_focus_gained()));
-      %set(jcb,'WindowLostFocusCallback', ...
-      %    @(src,event)(controller.handle_focus_lost()));
-      clear fpj jw jcb;
-             
+      if ismac
+        fpj=get(handle(self.fig_h),'JavaFrame');
+        jw=fpj.fHG1Client.getWindow;
+        jcb=handle(jw,'CallbackProperties');
+        set(jcb,'WindowGainedFocusCallback', ...
+            @(src,event)(controller.handle_focus_gained()));
+        %set(jcb,'WindowLostFocusCallback', ...
+        %    @(src,event)(controller.handle_focus_lost()));
+        clear fpj jw jcb;
+      end  
+
 
 
       %

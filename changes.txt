@@ -191,3 +191,13 @@ Fixed a bug in which exporting ROI signals to a .tcs file didn't work.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
+
+
+
+
+1.13 -> 1.14 (August 13, 2012)
+
+Minor changes.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+

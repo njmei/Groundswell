@@ -7,6 +7,7 @@ properties
   view;
   fs_str;  % string holding the sampling rate, in Hz
   command_depressed;  % boolean, whether any mac command keys are depressed
+                      % undefined if not running on a macs
 end  % properties
 
 methods
