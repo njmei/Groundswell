@@ -21,5 +21,9 @@ for i=i_selected
     y_radius=1;
   end
   y_lo=y_mid-1.1*y_radius;  y_hi=y_mid+1.1*y_radius;
+  if ~isfinite(y_lo) || ~isfinite(y_hi)
+    y_lo=-1;
+    y_hi=+1;
+  end
   set(self.view.axes_hs(i),'YLim',[y_lo y_hi]);
 end

@@ -6,7 +6,7 @@ classdef Controller < handle
     card_birth_roi_next;  % the cardinality of the next ROI to be created
                           % e.g. if the next one will be the 1st one, this 
                           % would be one    
-    shift_depressed;  % boolean, whether any shift keys are depressed                      
+    %shift_depressed;  % boolean, whether any shift keys are depressed                      
   end  % properties
   
   properties (Dependent=true)
@@ -23,7 +23,7 @@ classdef Controller < handle
 
       % Init the ROI counter, etc.
       self.card_birth_roi_next=[];
-      self.shift_depressed=false;  % probably
+      %self.shift_depressed=false;  % probably
       
       % load the data, if given an arg
       if nargin>=1

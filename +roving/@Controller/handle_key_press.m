@@ -11,10 +11,10 @@ elseif strcmp(event.Key,'delete') || strcmp(event.Key,'backspace')
   self.delete_selected_roi();  
 end
 
-% update the shift state, if needed
-if strcmp(event.Key,'shift')
-  %fprintf('shift pressed\n');
-  self.shift_depressed=true;
-end
+% % update the shift state, if needed
+% if strcmp(event.Key,'shift')
+%   %fprintf('shift pressed\n');
+%   self.shift_depressed=true;
+% end
 
 end

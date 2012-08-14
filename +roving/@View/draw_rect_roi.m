@@ -4,6 +4,7 @@ persistent figure_h;
 persistent image_axes_h;
 persistent anchor;
 persistent rect_h;
+persistent square;
 
 switch(action)
   case 'start'
@@ -12,6 +13,7 @@ switch(action)
     cp=get(image_axes_h,'CurrentPoint');
     point=cp(1,1:2); 
     anchor=point;
+    square=strcmp(get(figure_h,'selectiontype'),'extend');
     % create a new rectangle
     rect_h=...
       line('Parent',image_axes_h,...
@@ -31,10 +33,10 @@ switch(action)
     point=cp(1,1:2);
     w=(point(1)-anchor(1));
     h=(point(2)-anchor(2));
-    if self.controller.shift_depressed
-      s=max(w,h);
-      w=s;
-      h=s;
+    if square
+      s=max(abs(w),(h));
+      w=sign(w)*s;
+      h=sign(h)*s;
     end
     set(rect_h,...
         'XData',anchor(1)+[0 w w 0 0]);
@@ -49,10 +51,10 @@ switch(action)
     point=cp(1,1:2); 
     w=(point(1)-anchor(1));
     h=(point(2)-anchor(2));
-    if self.controller.shift_depressed
-      s=max(w,h);
-      w=s;
-      h=s;
+    if square
+      s=max(abs(w),(h));
+      w=sign(w)*s;
+      h=sign(h)*s;
     end
     set(rect_h,...
         'XData',anchor(1)+[0 w w 0 0]);
@@ -64,9 +66,3 @@ switch(action)
     % now add the roi to the list
     self.controller.add_roi_given_line_gh(rect_h);
 end  % switch
-
-
-
-
-
-

@@ -210,3 +210,14 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 Fixed bug on Windows.  Re-enabled "Play as audio" function, because it's very useful when it works.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
+
+
+
+
+
+1.15 -> 1.16 (August 14, 2012)
+
+Made shift-drag for square/circle ROI in Roving less fragile.  Tested Roving on Windows XP.  Groundswell no longer chokes on reading an all-nan signal from a .tcs file.  Other minor changes.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+

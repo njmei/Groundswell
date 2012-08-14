@@ -228,7 +228,11 @@ methods
     switch self.mode_ll
       case 'linear'
         y_max=max(max(y),max(max(y_ci)));
-        yl=[0 1.05*y_max];
+        if isfinite(y_max)
+          yl=[0 1.05*y_max];
+        else
+          yl=[0 1];
+        end          
       case 'log10'
         y_max=max(max(log10(y)),max(max(log10(y_ci))));
         y_min=min(min(log10(y)),min(min(log10(y_ci))));
@@ -236,12 +240,18 @@ methods
         y_radius=(y_max-y_min)/2;
         yl=y_mid+1.05*y_radius*[-1 +1];
         yl=10.^yl;
+        if any(~isfinite(yl))
+          yl=[0.1 10];
+        end
       case 'db'
         y_max=max(max(y),max(max(y_ci)));
         y_min=min(min(y),min(min(y_ci)));
         y_mid=(y_max+y_min)/2;
         y_radius=(y_max-y_min)/2;
         yl=y_mid+1.05*y_radius*[-1 +1];
+        if any(~isfinite(yl))
+          yl=[-10 10];
+        end
     end
 
     % figure out x axis limits

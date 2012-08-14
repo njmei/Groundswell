@@ -7,6 +7,7 @@ persistent ellipse_h;
 persistent n_segs;
 persistent sintheta;
 persistent costheta;
+persistent circle;  % boolean
 
 % init the persistents that point to the image figure and the image axes, if
 % this is the first time through this function
@@ -29,6 +30,7 @@ switch(action)
     cp=get(image_axes_h,'CurrentPoint');
     point=cp(1,1:2); 
     anchor=point;
+    circle=strcmp(get(figure_h,'selectiontype'),'extend');
     % create a new 'ellipse'
     ellipse_h=...
       line('Parent',image_axes_h,...
@@ -48,7 +50,7 @@ switch(action)
     point=cp(1,1:2); 
     a=(point(1)-anchor(1)); 
     b=(point(2)-anchor(2));
-    if self.controller.shift_depressed
+    if circle
       r=max(a,b);
       a=r;
       b=r;
@@ -68,7 +70,7 @@ switch(action)
     point=cp(1,1:2); 
     a=(point(1)-anchor(1)); 
     b=(point(2)-anchor(2));
-    if self.controller.shift_depressed
+    if circle
       r=max(a,b);
       a=r;
       b=r;

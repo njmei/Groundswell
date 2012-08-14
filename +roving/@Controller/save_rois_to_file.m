@@ -8,7 +8,9 @@ label={self.model.roi.label}';
 % label_h=[self.roi_struct.label_h]';
 
 % throw up the dialog box
-[filename,pathname]=uiputfile('*.rpb','Save ROIs to File...');
+[filename,pathname]= ...
+  uiputfile({'*.rpb' 'ROI polygonal boundary file (*.rpb)'}, ...
+            'Save ROIs to File...');
 if isnumeric(filename) || isnumeric(pathname)
   % this happens if user hits Cancel
   return;

@@ -23,12 +23,12 @@ t=self.model.t;
 tl_view=self.view.tl_view;
 N=length(t);
 jl=interp1([t(1) t(end)],[1 N],tl_view,'linear','extrap');
-clear t;
 jl(1)=floor(jl(1));
 jl(2)= ceil(jl(2));
 jl(1)=max(1,jl(1));
 jl(2)=min(N,jl(2));
 data=data(jl(1):jl(2));
+t=t(jl(1):jl(2));
 N=length(data);
 
 % get sampling rate
@@ -37,7 +37,7 @@ fs=self.model.fs;  % hz
 % can't play back all sampling rates---convert if sampling rate too low
 fs_min=80;  % Hz
 if fs<fs_min
-  t_raw=self.model.t;
+  t_raw=t;
   data_raw=data;
   t0=t_raw(1);
   fs=1000;  % Hz 
