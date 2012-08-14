@@ -14,11 +14,7 @@ end
 i_bayley_25=5;  % index of Bayley-style file at 2.5 um/pel
 
 % Get the absolute filename
-if strcmp(filename(1),filesep)
-  filename_abs=filename;
-else
-  filename_abs=fullfile(pwd(),filename);
-end
+filename_abs=groundswell.absolute_filename(filename);
 clear filename
 
 % break up the file name

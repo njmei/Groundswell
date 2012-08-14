@@ -41,7 +41,7 @@ if fs<fs_min
   data_raw=data;
   t0=t_raw(1);
   fs=1000;  % Hz 
-  dt=1/fs;  % s, reampling to 100 Hz
+  dt=1/fs;  % s, reampling to 1000 Hz
   N=round((t_raw(end)-t0)/dt);
   t=t0+dt*(0:(N-1))';
   data=interp1(t_raw,data_raw,t,'linear','extrap');
@@ -98,9 +98,9 @@ end
 
 % play the sound, scaled
 player=audioplayer(data,fs);
-tic
+%tic
 player.playblocking();
-toc;
+%toc;
 
 % % block while sound plays
 % while player.isplaying()
