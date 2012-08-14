@@ -201,3 +201,12 @@ Minor changes.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
+
+
+
+
+1.14 -> 1.15 (August 14, 2012)
+
+Fixed bug on Windows.  Re-enabled "Play as audio" function, because it's very useful when it works.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
