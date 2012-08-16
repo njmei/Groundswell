@@ -17,12 +17,20 @@ selected=self.view.get_selected_axes();
 % get the index of the axes that was just clicked on
 i=find(axes_hs==axes_h);
 
+% modify the selection type to behave in a more platform-approprite way
+% on the mac.
+% On the mac, convert a normal selection with the command key depressed
+% into an 'alt' selection.
+% This is really how it should work by default.
+if ismac() && strcmp(selection_type,'normal') && self.command_depressed
+  selection_type='alt';
+end
+
 % change the selected set, and the order, as needed
 % Matlab, as of R2012a, doesn't map a command-click to
 % selection_type=='alt', which is lame.  So we have to hack it in
 % ourselves, at least for now.
-if strcmp(selection_type,'normal') && ...
-   ( ispc() || isunix() || ( ismac() && ~self.command_depressed ) )
+if strcmp(selection_type,'normal')
   % clicking without modifier key
   if selected(i)
     % if axes i is already selected
@@ -44,7 +52,7 @@ if strcmp(selection_type,'normal') && ...
     i_selected=i;
   end      
 elseif strcmp(selection_type,'extend')
-  % on windows or GNOME or Mac, shift-clicking
+  % on windows or Linux or Mac, shift-clicking
   n_selected=length(i_selected);
   if n_selected==0
     % if nothing selected, select just i
@@ -62,11 +70,8 @@ elseif strcmp(selection_type,'extend')
     i_to_add_new=setdiff_preserve_order(i_to_add,i_selected);
     i_selected=[i_selected i_to_add_new];
   end
-elseif ( ispc() && strcmp(selection_type,'alt') ) || ...
-       ( isunix() && strcmp(selection_type,'alt') ) || ...
-       ( ismac() && strcmp(selection_type,'normal') && ...
-         self.command_depressed )
-  % on windows or GNOME, ctrl-clicking
+elseif strcmp(selection_type,'alt')
+  % on windows or Linux, ctrl-clicking
   % on mac, command-clicking
   if selected(i)
     % if axes i is already selected, remove it
