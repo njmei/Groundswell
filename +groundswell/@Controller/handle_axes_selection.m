@@ -22,7 +22,7 @@ i=find(axes_hs==axes_h);
 % selection_type=='alt', which is lame.  So we have to hack it in
 % ourselves, at least for now.
 if strcmp(selection_type,'normal') && ...
-   ( ispc || ( ismac && ~self.command_depressed ) )
+   ( ispc() || isunix() || ( ismac() && ~self.command_depressed ) )
   % clicking without modifier key
   if selected(i)
     % if axes i is already selected
@@ -62,8 +62,10 @@ elseif strcmp(selection_type,'extend')
     i_to_add_new=setdiff_preserve_order(i_to_add,i_selected);
     i_selected=[i_selected i_to_add_new];
   end
-elseif ( ispc && strcmp(selection_type,'alt') ) || ...
-       ( ismac && strcmp(selection_type,'normal') && self.command_depressed )
+elseif ( ispc() && strcmp(selection_type,'alt') ) || ...
+       ( isunix() && strcmp(selection_type,'alt') ) || ...
+       ( ismac() && strcmp(selection_type,'normal') && ...
+         self.command_depressed )
   % on windows or GNOME, ctrl-clicking
   % on mac, command-clicking
   if selected(i)
