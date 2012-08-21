@@ -158,7 +158,8 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 1.09 -> 1.10 (May 22, 2012)
 
-Improved synching of ROI data, especially when there are many more exposure pulses than there are frames.
+Improved synching of ROI data, especially when there are many more
+exposure pulses than there are frames.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
@@ -167,7 +168,11 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 1.10 -> 1.11 (July 17, 2012)
 
-Roving now reads movies from disk, only loading a frame at a time into main memory.  Also fixed a bug in which the "Coherency at probe frequency" report that is written to the clipboard was in the order that signals were selected, not the order they appear on screen.  They now appear in the same order as onscreen.
+Roving now reads movies from disk, only loading a frame at a time into
+main memory.  Also fixed a bug in which the "Coherency at probe
+frequency" report that is written to the clipboard was in the order
+that signals were selected, not the order they appear on screen.  They
+now appear in the same order as onscreen.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
@@ -177,7 +182,9 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 1.11 -> 1.12 (July 18, 2012)
 
-In the "Coherency at probe frequency" report that is written to the clipboard, when the coherency magnitude is not significant, the coherency phase (and associated CI bounds) are reported as NaN.
+In the "Coherency at probe frequency" report that is written to the
+clipboard, when the coherency magnitude is not significant, the
+coherency phase (and associated CI bounds) are reported as NaN.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
@@ -207,7 +214,8 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 1.14 -> 1.15 (August 14, 2012)
 
-Fixed bug on Windows.  Re-enabled "Play as audio" function, because it's very useful when it works.
+Fixed bug on Windows.  Re-enabled "Play as audio" function, because
+it's very useful when it works.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
@@ -217,7 +225,20 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 
 1.15 -> 1.16 (August 14, 2012)
 
-Made shift-drag for square/circle ROI in Roving less fragile.  Tested Roving on Windows XP.  Groundswell no longer chokes on reading an all-nan signal from a .tcs file.  Other minor changes.
+Made shift-drag for square/circle ROI in Roving less fragile.  Tested
+Roving on Windows XP.  Groundswell no longer chokes on reading an
+all-nan signal from a .tcs file.  Other minor changes.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
+
+
+
+
+
+1.16 -> 1.17 (August 21, 2012)
+
+The various menu items for automatically setting the colorbar bounds
+now look only at the current frame, not the whole movie.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
