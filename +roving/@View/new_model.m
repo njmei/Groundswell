@@ -12,9 +12,9 @@ end
 set(self.figure_h,'name',title_string);
 
 % determine the colorbar bounds
-[data_min,data_max]=self.model.default_bounds();
-self.colorbar_min_string=sprintf('%.4e',data_min);
-self.colorbar_max_string=sprintf('%.4e',data_max);
+[data_min,data_max]=self.model.pixel_data_type_min_max();
+self.colorbar_min_string=sprintf('%d',data_min);
+self.colorbar_max_string=sprintf('%d',data_max);
 self.colorbar_min=str2double(self.colorbar_min_string);
 self.colorbar_max=str2double(self.colorbar_max_string);
  
@@ -92,6 +92,7 @@ set(self.FPS_edit_h,'enable','on');
 set(self.elliptic_roi_button_h,'enable','on');
 set(self.rect_roi_button_h,'enable','on');
 set(self.zoom_button_h,'enable','on');
+set(self.pixel_data_type_min_max_menu_h,'enable','on');
 set(self.min_max_menu_h,'enable','on');
 set(self.five_95_menu_h,'enable','on');
 set(self.abs_max_menu_h,'enable','on');

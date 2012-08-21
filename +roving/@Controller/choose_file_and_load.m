@@ -12,6 +12,6 @@ end
 
 % load the optical data
 file_name_full=fullfile(pathname,filename);
-self.load_video_from_file(file_name_full);
+self.load_video_given_file_name(file_name_full);
 
 end

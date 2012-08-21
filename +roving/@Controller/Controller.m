@@ -29,10 +29,7 @@ classdef Controller < handle
       if nargin>=1
         if ischar(varargin{1})
           file_name=varargin{1};
-          self.load_video_from_file(file_name);
-        else
-          % Assume the argument is a 3D array
-          self.load_video(varargin{1});
+          self.load_video_given_file_name(file_name);
         end
       end
     end  % constructor

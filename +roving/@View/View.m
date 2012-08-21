@@ -44,6 +44,7 @@ classdef View < handle
     paste_menu_h
     
     color_menu_h;
+    pixel_data_type_min_max_menu_h;
     min_max_menu_h;
     five_95_menu_h;
     abs_max_menu_h;
@@ -77,7 +78,8 @@ classdef View < handle
     % this is the current selection mode
     mode;
     cmap_name;
-    colorbar_max_string;
+    % colorbar_min and colorbar_max are constrained to be integers
+    colorbar_max_string;  
     colorbar_min_string;
     colorbar_min;  % the colorbar min, derived from cb_min_string, 
                    % dependent in spirit
@@ -638,6 +640,14 @@ classdef View < handle
         uimenu(self.figure_h,...
                'Tag','color_menu_h',...
                'Label','Color');
+      self.pixel_data_type_min_max_menu_h= ...
+        uimenu(self.color_menu_h,...
+               'Tag','pixel_data_type_min_max_menu_h',...
+               'enable','off',...
+               'Label','Pixel data type min/max',...
+               'Callback', ...
+                 @(~,~)(controller.handle_colorbar_menus(...
+                                              'pixel_data_type_min_max')));
       self.min_max_menu_h= ...
         uimenu(self.color_menu_h,...
                'Tag','min_max_menu_h',...
@@ -824,6 +834,15 @@ classdef View < handle
       cb_max=self.colorbar_max;
       indexed_frame=uint8(round(255*(frame-cb_min)/(cb_max-cb_min)));
     end
+    
+%     function cb_min=get.colorbar_min(self)
+%       cb_min=str2double(self.cb_min_string);
+%     end
+% 
+%     function cb_max=get.colorbar_max(self)
+%       cb_max=str2double(self.cb_max_string);
+%     end
+% 
   end  % methods
 
   methods (Access=private)

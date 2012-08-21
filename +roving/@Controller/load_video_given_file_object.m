@@ -1,4 +1,4 @@
-function load_video(self,file,filename_local)
+function load_video_given_file_object(self,file,filename_local)
 
 % make up a t0, get dt
 t0=0;

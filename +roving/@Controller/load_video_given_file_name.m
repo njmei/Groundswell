@@ -1,4 +1,4 @@
-function load_video_from_file(self,filename)
+function load_video_given_file_name(self,filename)
 
 % filename is a filename, can be relative or absolute
 
@@ -32,7 +32,8 @@ catch err
              'File Error');
     return;    
   elseif strcmp(err.identifier,'VideoFile:UnsupportedPixelType')
-    errordlg(sprintf('Error opening %s: Unsupported pixel type.',filename_local),...
+    errordlg(sprintf('Error opening %s: Unsupported pixel type.', ...
+                     filename_local),...
              'File Error');
     return;    
   else
@@ -41,7 +42,7 @@ catch err
 end
 
 % OK, now actually store the data in ourselves
-self.load_video(file,filename_local);
+self.load_video_given_file_object(file,filename_local);
 
 % OK, we're done.
 self.view.unhourglass()

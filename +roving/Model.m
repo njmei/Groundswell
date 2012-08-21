@@ -149,74 +149,47 @@ classdef Model < handle
 %       end      
 %     end  % motion_correct
     
-    function [d_min,d_max]=data_bounds(self)
+    function [d_min,d_max]=min_max(self,i)
+      % get the max and min values of frame i
       % d_min and d_max are doubles, regardless the type of self.data
-      d_min=+inf;
-      d_max=-inf;
-      self.file.to_start();
-      for i=1:self.n_frames
-        frame=double(self.file.get_next());
-        d_min=min(d_min,min(min(frame)));
-        d_max=max(d_max,max(max(frame)));
-      end
+      frame=double(self.get_frame(i));
+      d_min=min(min(frame));
+      d_max=max(max(frame));
     end  % data_bounds
     
-    function [h,t]=hist(self,n_bins)
-      self.file.to_start();
-      for i=1:self.n_frames
-        frame=double(self.file.get_next());
-        [h_this,t_this]=hist(frame(:),n_bins);
-        if i==1
-          t=t_this;  h=h_this;
-        else
-          h=h+h_this;
-        end
-      end
-    end
+%     function [h,t]=hist(self,i,n_bins)
+%       % construct a histogram of the data values in frame i
+%       frame=double(self.get_frame(i));
+%       [h,t]=hist(frame(:),n_bins);
+%     end
 
-    function [h,t]=hist_abs(self,n_bins)
-      self.file.to_start();
-      for i=1:self.n_frames
-        frame=double(self.file.get_next());
-        [h_this,t_this]=hist(abs(frame(:)),n_bins);
-        if i==1
-          t=t_this;  h=h_this;
-        else
-          h=h+h_this;
-        end
-      end
-    end
+%     function [h,t]=hist_abs(self,i,n_bins)
+%       frame=double(self.get_frame(i));
+%       frame=abs(frame);
+%       [h,t]=hist(frame(:),n_bins);
+%     end
 
-    function [d_05,d_95]=five_95(self)
+    function [d_05,d_95]=five_95(self,i)
       % d_05 and d_95 are doubles, regardless the type of self.data
-      n_bins=1000;
-      [h,t]=self.hist(n_bins);
-      ch=cumsum(h);
-      % figure; plot(t,ch);
-      d_05=crossing_times(t,ch,0.05*ch(n_bins));
-      d_95=crossing_times(t,ch,0.95*ch(n_bins));
+      frame=double(self.get_frame(i));
+      d=roving.quantile_mine(frame(:),[0.05 0.95]');
+      d_05=d(1);
+      d_95=d(2);
     end  % five_95
     
-    function d_max=max_abs(self)
+    function d_max=max_abs(self,i)
       % d_max is a double, regardless of the type of self.data
-      d_max=-inf;
-      self.file.to_start();
-      for i=1:self.n_frames
-        frame=double(self.file.get_next());
-        d_max=max(d_max,max(max(abs(frame))));
-      end
+      frame=double(self.get_frame(i));
+      d_max=max(max(abs(frame)));
     end  % max_abs
     
-    function d_90=abs_90(self)
+    function d_90=abs_90(self,i)
       % d_90 is a double, regardless the type of self.data
-      n_bins=1000;
-      [h,t]=self.hist_abs(n_bins);
-      ch=cumsum(h);
-      % figure; plot(t,ch);
-      d_90=crossing_times(t,ch,0.90*ch(n_bins));
+      frame=abs(double(self.get_frame(i)));
+      d_90=roving.quantile_mine(frame(:),0.9);
     end  % five_95
     
-    function [d_min,d_max]=default_bounds(self)
+    function [d_min,d_max]=pixel_data_type_min_max(self)
       if self.file.bits_per_pel==8
         d_min=0;
         d_max=255;
