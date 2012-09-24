@@ -1,5 +1,5 @@
 function modpath()
-  addpath(desvn(genpath('~/taylor_matlab_toolbox/svn/tags/release_1.13')))
+  addpath(genpath('~/taylor_matlab_toolbox/113'))
   root_dir_name=fileparts(mfilename('fullpath'));
   addpath(root_dir_name);
 end

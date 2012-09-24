@@ -1,4 +1,15 @@
-function [data,t,names,units]=load_traces(filename)
+function [data,t,names,units]=load_traces(filename,file_type_str)
+
+% file_type_str is an optional argument containing additional
+% info about how to parse the file, beyond that provided by the
+% file name extension.  Currently handled values include
+% 'Bayley-style text, 2.5 um/pel', 'Bayley-style text, 5.0 um/pel',
+% and 'Tracked muscles text'
+
+% process args
+if nargin<2 || isempty(file_type_str)
+  file_type_str='';
+end
 
 % parse the filename
 [~,base_name,ext]=fileparts(filename);
@@ -59,24 +70,22 @@ elseif strcmp(ext,'.wav')
   end
 elseif strcmp(ext,'.txt')
   try
-    data=load(filename);
+    if strcmp(file_type_str,'Bayley-style text, 2.5 um/pel')
+      [t,data,names,units]= ...
+        groundswell.load_txt_bayley(filename,2.5);
+    elseif strcmp(file_type_str,'Bayley-style text, 5.0 um/pel')
+      [t,data,names,units]= ...
+        groundswell.load_txt_bayley(filename,5.0);
+    elseif strcmp(file_type_str,'Tracked muscles text')
+      [t,data,names,units]= ...
+        groundswell.load_txt_tracked_muscles(filename);
+    else
+      [t,data,names,units]= ...
+        groundswell.load_txt_plain_old(filename);
+    end
   catch exception  %#ok
-    %self.view.unhourglass();
     errordlg(sprintf('Unable to open file %s',filename_local));  
     return;
-  end
-  [n_t,n_chan]=size(data);
-  % For plain=old text files, we assume the data is sampled at 1 kHz, for
-  % lack of a better assumption.
-  dt=0.001;  % s
-  t=dt*(0:(n_t-1))';  % s
-  names=cell(n_chan,1);
-  for i=1:n_chan
-    names{i}=sprintf('x%d',i);
-  end
-  units=cell(n_chan,1);
-  for i=1:n_chan
-    units{i}='?';
   end
 else
   errordlg('Don''t know how to open a file with that extension');
