@@ -1,4 +1,4 @@
-function import_roi_data(self,import_mode_str)
+function handle_add_synced_data_menu_item(self,import_mode_str)
 
 % deal with args
 if nargin<2
@@ -25,11 +25,11 @@ if isnumeric(filename) || isnumeric(pathname)
 end
 
 % Translate filter index to a file type string
-if i_filter==4
+if i_filter==5
   file_type_str='Bayley-style text, 5.0 um/pel';
-elseif i_filter==5
-  file_type_str='Bayley-style text, 2.5 um/pel';
 elseif i_filter==6
+  file_type_str='Bayley-style text, 2.5 um/pel';
+elseif i_filter==7
   file_type_str='Tracked muscles text';
 else
   file_type_str='';
@@ -40,9 +40,9 @@ self.view.hourglass();
 
 % load the data to be synched
 full_filename=fullfile(pathname,filename);
-[data_roi,~,names_roi,units_roi]= ...
+[data_new,~,names_new,units_new]= ...
   groundswell.load_traces(full_filename,file_type_str);
-if isempty(data_roi)
+if isempty(data_new)
   self.view.unhourglass();
   return;
 end
@@ -59,7 +59,7 @@ t_exposure_raw= ...
 
 % Sort out the exposure times, given the number of frames and 
 % the camera acquisition mode.
-n_frame=size(data_roi,1);
+n_frame=size(data_new,1);
 [t_exposure,success] = ...
   groundswell.rectify_exposure_times(t_exposure_raw,n_frame,normal_mode);
 if ~success
@@ -71,11 +71,11 @@ end
 % time base.
 [t,data]=...
   groundswell.upsample_to_common_4arg(self.model.t,self.model.data, ...
-                                      t_exposure,data_roi);
+                                      t_exposure,data_new);
 
 % merge names, units
-names=vertcat(self.model.names,names_roi);
-units=vertcat(self.model.units,units_roi);
+names=vertcat(self.model.names,names_new);
+units=vertcat(self.model.units,units_new);
 
 % store all the data-related stuff in a newly-created model
 saved=false;

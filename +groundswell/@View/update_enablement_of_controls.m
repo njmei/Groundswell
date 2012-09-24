@@ -12,8 +12,8 @@ if isempty(self.model) || self.model.n_chan==0
   set(self.open_menu_h,'enable','on');
   set(self.import_menu_h,'enable','on');
   set(self.close_menu_h,'enable','off');
-  set(self.import_roi_data_menu_h,'enable','off');
-  set(self.import_ft_roi_data_menu_h,'enable','off');
+  set(self.add_synced_data_menu_item_h,'enable','off');
+  set(self.add_synced_data_ft_menu_item_h,'enable','off');
   %set(self.add_presynched_traces_menu_item_h,'enable','off');
   set(self.save_menu_h,'enable','off');
   set(self.save_as_menu_h,'enable','off');  
@@ -111,8 +111,8 @@ else
   end
   if n_selected==1
     % file menu
-    set(self.import_roi_data_menu_h,'enable','on');
-    set(self.import_ft_roi_data_menu_h,'enable','on');
+    set(self.add_synced_data_menu_item_h,'enable','on');
+    set(self.add_synced_data_ft_menu_item_h,'enable','on');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','on');
     set(self.spectrogram_menu_h,'enable','on');  
@@ -120,8 +120,8 @@ else
     set(self.count_ttl_edges_menu_h,'enable','on');      
   else
     % file menu
-    set(self.import_roi_data_menu_h,'enable','off');
-    set(self.import_ft_roi_data_menu_h,'enable','off');
+    set(self.add_synced_data_menu_item_h,'enable','off');
+    set(self.add_synced_data_ft_menu_item_h,'enable','off');
     % analysis menu
     set(self.power_spectrum_menu_h,'enable','off');
     set(self.spectrogram_menu_h,'enable','off');  
