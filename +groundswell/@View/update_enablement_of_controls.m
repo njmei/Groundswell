@@ -14,7 +14,7 @@ if isempty(self.model) || self.model.n_chan==0
   set(self.close_menu_h,'enable','off');
   set(self.import_roi_data_menu_h,'enable','off');
   set(self.import_ft_roi_data_menu_h,'enable','off');
-  set(self.add_presynched_traces_menu_item_h,'enable','off');
+  %set(self.add_presynched_traces_menu_item_h,'enable','off');
   set(self.save_menu_h,'enable','off');
   set(self.save_as_menu_h,'enable','off');  
   % edit menu
@@ -65,7 +65,7 @@ else
     set(self.open_menu_h,'enable','on');
     set(self.import_menu_h,'enable','on');
   end
-  set(self.add_presynched_traces_menu_item_h,'enable','on');  
+  %set(self.add_presynched_traces_menu_item_h,'enable','on');  
   set(self.save_as_menu_h,'enable','on');  
   set(self.close_menu_h,'enable','on');
   % edit menu
