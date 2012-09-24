@@ -16,10 +16,10 @@ end
 filename_local=[base_name ext];
 
 % fall-back return values
-data=[];
-t=[];
-names=[];
-units=[];
+data=zeros(0,0);
+t=zeros(0,1);
+names=cell(0,1);
+units=cell(0,1);
 
 % load the data
 if strcmp(ext,'.abf')

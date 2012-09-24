@@ -1,4 +1,4 @@
-function [t,data,trace_name,units]=load_txt_bayley(filename,s)
+function [t,data,trace_names,units]=load_txt_bayley(filename,s)
 
 % s is a scaling factor, in um/pixel
 % units in the file are pixels, and we convert before returning
@@ -6,9 +6,9 @@ function [t,data,trace_name,units]=load_txt_bayley(filename,s)
 f_s=30;  % Hz
 data_fid = fopen(filename,'r');
 first_line=fgetl(data_fid);
-trace_name=textscan(first_line,'%s');
-trace_name=trace_name{1}';
-n_col=length(trace_name);
+trace_names_boxed=textscan(first_line,'%s');
+trace_names=trace_names_boxed{1};
+n_col=length(trace_names);
 data_trans=fscanf(data_fid,'%f',[n_col inf]);
 fclose(data_fid);
 data=data_trans';
@@ -16,9 +16,9 @@ i_frame=data(:,1);
 data=data(:,2:end);
 data=s*data;  % pixels->um
 t=(i_frame-1)/f_s;
-trace_name=trace_name(2:end);
+trace_names=trace_names(2:end);
 n_chan=size(data,2);
-units=cell(1,n_chan);
+units=cell(n_chan,1);
 for i=1:n_chan
   units{i}='um';
 end

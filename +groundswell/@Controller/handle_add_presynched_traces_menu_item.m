@@ -20,7 +20,7 @@ if i_filter==4
   file_type_str='Bayley-style text, 5.0 um/pel';
 elseif i_filter==5
   file_type_str='Bayley-style text, 2.5 um/pel';
-elseif i_filter==5
+elseif i_filter==6
   file_type_str='Tracked muscles text';
 else
   file_type_str='';
@@ -31,33 +31,29 @@ self.view.hourglass();
 
 % load the data to be synched
 full_filename=fullfile(pathname,filename);
-[data_roi,t_roi,names_roi,units_roi]= ...
+[data_new,~,names_new,units_new]= ...
   groundswell.load_traces(full_filename,file_type_str);
-if isempty(data_roi)
+if isempty(data_new)
   self.view.unhourglass();
   return;
 end
 
-% Upsample the ROI data, trim the data data to put everything on a common
+% Upsample the new data to put everything on a common
 % time base.
-[t,data]=...
-  groundswell.upsample_to_common_3arg(self.model.t,self.model.data, ...
-                                      data_roi);
+data=...
+  groundswell.resample_to_common(self.model.t,self.model.data, ...
+                                 data_new);
                                     
 % merge names, units
-names=vertcat(self.model.names,names_roi);
-units=vertcat(self.model.units,units_roi);
+names=vertcat(self.model.names,names_new);
+units=vertcat(self.model.units,units_new);
 
 % store all the data-related stuff in a newly-created model
 saved=false;
-self.model=groundswell.Model(t,data,names,units, ...
+self.model=groundswell.Model(self.model.t,data,names,units, ...
                              self.model.filename_abs, ...
                              self.model.file_native, ...
                              saved);
-
-% set fs_str
-fs=(length(t)-1)/(t(end)-t(1));  % Hz
-self.fs_str=sprintf('%0.16g',fs);
 
 % make the view reflect the modified model
 self.view.completely_new_model(self.model);
