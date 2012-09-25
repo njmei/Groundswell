@@ -242,3 +242,13 @@ now look only at the current frame, not the whole movie.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
+
+
+
+
+1.17 -> 1.18 (September 24, 2012)
+
+Made the functions for adding ROI data more robust and more general, 
+and renamed themto reflect this.
+
+This version relies upon Taylor Matlab Toolbox version 1.13.
