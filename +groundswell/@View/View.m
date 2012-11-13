@@ -24,7 +24,8 @@ classdef View < handle
     colors=[];
     x_units='time_s';
     
-    %filename='';
+    % scrollbar object
+    scrollbar
     
     % keep handles for all the widgets
     file_menu_h
@@ -82,6 +83,7 @@ classdef View < handle
     zoom_way_out_button_h
     zoom_out_button_h
     zoom_in_button_h
+    
   end  % properties
   
   methods
@@ -423,6 +425,11 @@ classdef View < handle
                   'Enable','off',...
                   'Tag','zoom_in_button_h');
 
+      
+                
+      % add a scrollbar (which starts out invisble)
+      self.scrollbar=groundswell.Scrollbar(self);
+                
       % set up the instance variables that are non-trivial to init
       self.colors=groundswell.make_color_sequence();
       

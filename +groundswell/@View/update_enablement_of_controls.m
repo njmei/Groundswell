@@ -53,6 +53,8 @@ if isempty(self.model) || self.model.n_chan==0
   set(self.transfer_function_menu_h,'enable','off');
   set(self.play_as_audio_menu_h,'enable','off');
   set(self.count_ttl_edges_menu_h,'enable','off');
+  % scrollbar
+  self.scrollbar.set_visible('off');
 else
   % file menu
   if ~isempty(self.model.filename_abs) && self.model.file_native && ...
@@ -144,4 +146,6 @@ else
   else
     set(self.coherency_at_f_probe_menu_h,'enable','off');
   end  
+  % scrollbar
+  self.scrollbar.set_visible('on');
 end

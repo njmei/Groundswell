@@ -25,7 +25,6 @@ if ~isempty(self.model)
   [n_t,n_chan,n_sweeps]=size(data);
   tl=[t(1) t(end)];
 
-
   % make the callbacks
   axes_cb=@(src,evt)(self.draw_zoom_limits('start'));
   chan_label_cb=@(src,evt)(self.controller.handle_axes_selection(src));
@@ -41,7 +40,7 @@ if ~isempty(self.model)
                     'Layer','Top',...
                     'visible','off',...
                     'color','w',...
-                    'ButtonDownFcn',axes_cb);
+                    'ButtonDownFcn',axes_cb);  %#ok
     if i<n_chan
       set(gca,'XTickLabel',{});
     else
