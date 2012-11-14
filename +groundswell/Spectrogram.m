@@ -83,12 +83,11 @@ methods
     self.item_y_linear= ...
       uimenu(self.menu_y_axis, ...
              'label','Linear', ...
-             'Callback',@(~,~)(self.set_mode_ll_f('linear')));
+             'Callback',@(~,~)(self.set_mode_ll_y('linear')));
     self.item_y_log10= ...
       uimenu(self.menu_y_axis, ...
              'label','Logarithmic', ...
-             'enable','off', ...
-             'Callback',@(~,~)(self.set_mode_ll_f('log10')));
+             'Callback',@(~,~)(self.set_mode_ll_y('log10')));
            
     % add Y axis menu
     self.menu_z_axis=uimenu(self.fig,'label','Z axis');
@@ -178,8 +177,8 @@ methods
     self.mode_rn=mode_new;
   end
 
-  function set_mode_ll_f(self,mode_new)
-    self.mode_ll_f=mode_new;
+  function set_mode_ll_y(self,mode_new)
+    self.mode_ll_y=mode_new;
   end
 
   function sync_view(self)
@@ -214,15 +213,21 @@ methods
       z=10*z./log(10);
     end
 
-    %% if freq axis is log-scale, resample z
-    %if strcmp(self.mode_ll_y,'log10')
-    %  fl=[self.W_smear_fw/2 self.f_max_keep];
-    %  fl_log=log10(fl);
-    %  
-    %  f_log=log10(f);
-    %  f_log(1)=[];  % get rid of f==0 <=> log10(f)==-inf
-    %  z=interp1
-    %end
+    % if freq axis is log-scale, resample z
+    if strcmp(self.mode_ll_y,'linear')
+      y=f;      
+    elseif strcmp(self.mode_ll_y,'log10')      
+      df=f(2);
+      n_f=length(f);
+      n_f_ac=n_f-1;
+      f_max=f(end);
+      dlog10f=log10(f_max/(f_max-df));
+      n_line=floor((log10(f_max)-log10(df))/dlog10f)+1;
+      log10f=log10(df)+dlog10f*(0:(n_line-1))';
+      log10f_un=10.^log10f;
+      z=interp1(f,z,log10f_un);
+      y=log10f;
+    end
       
     % figure out z axis limits
     switch self.mode_ll
@@ -257,8 +262,8 @@ methods
     switch self.mode_ll_y
       case 'linear'
         yl=[0 self.f_max_keep];
-      otherwise
-        yl=[self.W_smear_fw/2 self.f_max_keep];
+      case 'log10'
+        yl=log10([self.W_smear_fw/2 self.f_max_keep]);
     end
     
     % figure out x axis limits
@@ -298,7 +303,7 @@ methods
       z_str=sprintf('Amplitude density (%s)',units_str);
     end
     if strcmp(self.mode_ll,'log10')
-      z_str=sprintf('log %s',z_str);
+      z_str=sprintf('log_{10} %s',z_str);
     end
 
     % build y-axis label
@@ -306,7 +311,7 @@ methods
       case 'linear'
         y_str='Frequency (Hz)';
       otherwise
-        y_str='Frequency (Hz)';
+        y_str='log_{10} Frequency (Hz)';
     end
     
     % build x-axis label
@@ -318,7 +323,7 @@ methods
     
     % sync each plot object
     set(self.im,'xdata',[t(1) t(end)], ....
-                'ydata',[f(1) f(end)], ...
+                'ydata',[y(1) y(end)], ...
                 'cdata',z, ...
                 'cdatamapping','scaled');
     set(self.plot,'xlim',xl);
