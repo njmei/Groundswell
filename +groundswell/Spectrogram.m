@@ -23,11 +23,15 @@ properties
   item_z_raw;
   item_z_unit_area;
   item_z_wn_unit;
+  item_z_blue_to_yellow;
+  item_z_jet;
+  item_z_hot;
+  item_z_gray;
   
   menu_y_axis;
   item_y_linear;
   item_y_log10;
-
+  
   % model stuff
   f;
   t;
@@ -44,6 +48,7 @@ properties
   mode_ll='linear';  % z-axis: linear, log10, decibels
   mode_rn='raw';  % z-axis: raw, unit_area (==Z-scored), WN is unity
   mode_ll_y='linear';  % y-axis (freq) scale: linear, log10
+  cmap_name='blue_to_yellow';
 end  % properties
 
 methods
@@ -78,7 +83,7 @@ methods
     self.im_cb=findobj(self.plot_cb,'type','image');
     self.ylabel_cb=ylabel(self.plot_cb,'');  %#ok
        
-    % add y axis menu
+    % add Y axis menu
     self.menu_y_axis=uimenu(self.fig,'label','Y axis');
     self.item_y_linear= ...
       uimenu(self.menu_y_axis, ...
@@ -89,7 +94,7 @@ methods
              'label','Logarithmic', ...
              'Callback',@(~,~)(self.set_mode_ll_y('log10')));
            
-    % add Y axis menu
+    % add Z axis menu
     self.menu_z_axis=uimenu(self.fig,'label','Z axis');
     self.item_z_power= ...
       uimenu(self.menu_z_axis, ...
@@ -125,6 +130,23 @@ methods
       uimenu(self.menu_z_axis, ...
              'label','White noise implies unit density', ...
              'Callback',@(~,~)(self.set_mode_rn('wn_unity')));
+    self.item_z_blue_to_yellow= ...
+      uimenu(self.menu_z_axis, ...
+             'label','Blue-yellow', ...
+             'separator','on', ...
+             'Callback',@(~,~)(self.set_cmap_name('blue_to_yellow')));
+    self.item_z_jet= ...
+      uimenu(self.menu_z_axis, ...
+             'label','Jet', ...
+             'Callback',@(~,~)(self.set_cmap_name('jet')));
+    self.item_z_hot= ...
+      uimenu(self.menu_z_axis, ...
+             'label','Hot', ...
+             'Callback',@(~,~)(self.set_cmap_name('hot')));
+    self.item_z_gray= ...
+      uimenu(self.menu_z_axis, ...
+             'label','Grayscale', ...
+             'Callback',@(~,~)(self.set_cmap_name('gray')));
 
     % store stuff
     self.t=t;
@@ -163,6 +185,11 @@ methods
     self.sync_view();    
   end
 
+  function set.cmap_name(self,cmap_name_new)
+    self.cmap_name=cmap_name_new;
+    self.sync_view();    
+  end
+
   % this exists only because "self.set_mode_pa(whatever)" can be used
   % inside an anon function, but "self.mode_pa=whatever" can't
   function set_mode_pa(self,mode_new)
@@ -179,6 +206,10 @@ methods
 
   function set_mode_ll_y(self,mode_new)
     self.mode_ll_y=mode_new;
+  end
+
+  function set_cmap_name(self,cmap_name_new)
+    self.cmap_name=cmap_name_new;
   end
 
   function sync_view(self)
@@ -218,15 +249,13 @@ methods
       y=f;      
     elseif strcmp(self.mode_ll_y,'log10')      
       df=f(2);
-      n_f=length(f);
-      n_f_ac=n_f-1;
       f_max=f(end);
       dlog10f=log10(f_max/(f_max-df));
       n_line=floor((log10(f_max)-log10(df))/dlog10f)+1;
       log10f=log10(df)+dlog10f*(0:(n_line-1))';
       log10f_un=10.^log10f;
       z=interp1(f,z,log10f_un);
-      y=log10f;
+      y=log10f_un;
     end
       
     % figure out z axis limits
@@ -263,7 +292,7 @@ methods
       case 'linear'
         yl=[0 self.f_max_keep];
       case 'log10'
-        yl=log10([self.W_smear_fw/2 self.f_max_keep]);
+        yl=[self.W_smear_fw/2 self.f_max_keep];
     end
     
     % figure out x axis limits
@@ -311,7 +340,8 @@ methods
       case 'linear'
         y_str='Frequency (Hz)';
       otherwise
-        y_str='log_{10} Frequency (Hz)';
+        y_str='Frequency (Hz)';
+        %y_str='log_{10} Frequency (Hz)';
     end
     
     % build x-axis label
@@ -319,7 +349,7 @@ methods
     
     % make the colormap
     n_cmap=256;
-    cmap=blue_to_yellow(n_cmap);
+    cmap=feval(self.cmap_name,n_cmap);
     
     % sync each plot object
     set(self.im,'xdata',[t(1) t(end)], ....
@@ -328,12 +358,18 @@ methods
                 'cdatamapping','scaled');
     set(self.plot,'xlim',xl);
     set(self.plot,'ylim',yl);
+    switch self.mode_ll_y
+      case 'linear'
+        set(self.plot,'yscale','linear');
+      otherwise
+        set(self.plot,'yscale','log');
+    end
     set(self.plot,'clim',zl);
     set(self.xlabel,'string',x_str);
     set(self.ylabel,'string',y_str);
     set(self.ylabel_cb,'string',z_str);
     set(self.fig,'colormap',cmap);
-        
+    
     % sync the checkboxes to the model mode variables
     switch self.mode_pa
       case 'power'
@@ -379,7 +415,28 @@ methods
         set(self.item_y_linear,'checked','off');
         set(self.item_y_log10,'checked','on');
     end
-    
+    switch self.cmap_name
+      case 'blue_to_yellow'
+        set(self.item_z_blue_to_yellow,'checked','on');
+        set(self.item_z_jet,'checked','off');
+        set(self.item_z_hot,'checked','off');        
+        set(self.item_z_gray,'checked','off');
+      case 'jet'
+        set(self.item_z_blue_to_yellow,'checked','off');
+        set(self.item_z_jet,'checked','on');
+        set(self.item_z_hot,'checked','off');        
+        set(self.item_z_gray,'checked','off');
+      case 'hot'
+        set(self.item_z_blue_to_yellow,'checked','off');
+        set(self.item_z_jet,'checked','off');
+        set(self.item_z_hot,'checked','on');        
+        set(self.item_z_gray,'checked','off');
+      case 'gray'
+        set(self.item_z_blue_to_yellow,'checked','off');
+        set(self.item_z_jet,'checked','off');
+        set(self.item_z_hot,'checked','off');        
+        set(self.item_z_gray,'checked','on');        
+    end
   end
   
 end  % methods
