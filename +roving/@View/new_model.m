@@ -74,10 +74,10 @@ set(self.FPS_edit_h,'String',FPS_edit_string);
 set(self.frame_index_edit_h,'String',sprintf('%d',self.frame_index));
 n_frame=self.model.n_frames;
 set(self.of_n_frames_text_h,'String',sprintf(' of %d',n_frame));
-extent=get(self.of_n_frames_text_h,'Extent');
-pos=get(self.of_n_frames_text_h,'Position');
-pos_new=[pos(1:2) extent(3:4)];
-set(self.of_n_frames_text_h,'Position',pos_new);
+%of_n_frames_text_extent=get(self.of_n_frames_text_h,'Extent');
+%of_n_frames_text_position=get(self.of_n_frames_text_h,'Position');
+%pos_new=[of_n_frames_text_position(1:2) of_n_frames_text_extent(3:4)];
+%set(self.of_n_frames_text_h,'Position',pos_new);
 
 % need to set image erase mode to none, since now there are no 
 % more lines in front of the image
