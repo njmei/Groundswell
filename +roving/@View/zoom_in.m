@@ -14,6 +14,7 @@ if ((min_corner(1)<max_corner(1))&&(min_corner(2)<max_corner(2)))
   set(image_axes_h,'YLim',[min_corner(2) max_corner(2)]);
 %   fprintf(1,'Current view:  xlim:[%f %f]  ylim:[%f %f]\n',...
 %           min_corner(1),max_corner(1),min_corner(2),max_corner(2));
+  self.resize();  % have to re-do layout
 end    
 
 end

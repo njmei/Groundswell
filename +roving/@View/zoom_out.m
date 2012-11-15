@@ -41,5 +41,6 @@ set(image_axes_h,'YLim',[new_min_corner(2) new_max_corner(2)]);
 % fprintf(1,'Current view:  xlim:[%f %f]  ylim:[%f %f]\n',...
 %         new_min_corner(1),new_max_corner(1),...
 %         new_min_corner(2),new_max_corner(2));
+self.resize();  % have to re-do layout
 
 end
