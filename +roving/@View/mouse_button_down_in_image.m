@@ -1,4 +1,4 @@
-function handle_image_mousing(self)
+function mouse_button_down_in_image(self)
 
 % get the current mode
 mode=self.mode;
