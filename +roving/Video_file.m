@@ -40,7 +40,7 @@ classdef Video_file < handle
           [self.n_row,self.n_col]=size(frame);
           self.file.close();
           self.file=Tiff(file_name,'r');
-          self.rate=20;  % Hz, a guess
+          self.rate=NaN;  % Hz, NaN signifies frame rate is unknown
           self.i_frame=0;
         case '.mj2'
           self.file=VideoReader(file_name);

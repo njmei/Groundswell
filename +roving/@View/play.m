@@ -6,6 +6,10 @@ n_frames=self.model.n_frames;
 %n_rois=length(self.model.roi);
 % tempargh set(self.image_h,'EraseMode','none');
 fps=self.model.fs;
+% sometimes self.model.fs is nan, b/c the frame rate was not specified.
+if ~isfinite(fps)
+  fps=20;  % just for playback purposes
+end
 spf=1/fps;
 % if (direction>0)
 %   frame_sequence=start_frame_index:n_frames;

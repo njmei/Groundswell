@@ -54,7 +54,7 @@ self.image_h = ...
 % clear the existing ROI border lines, labels
 delete(self.border_roi_h);
 delete(self.label_roi_h);
-      
+
 % init roi state
 self.selected_roi_index=zeros(0,1);
 self.hide_rois=false;
@@ -65,7 +65,12 @@ self.label_roi_h=zeros(0,1);
 %                        'label_h',cell(0,1));
       
 % update the frame counter stuff
-set(self.FPS_edit_h,'String',sprintf('%6.2f',self.model.fs));
+if isfinite(self.model.fs)
+  FPS_edit_string=sprintf('%6.2f',self.model.fs);
+else
+  FPS_edit_string='   ?  ';
+end  
+set(self.FPS_edit_h,'String',FPS_edit_string);
 set(self.frame_index_edit_h,'String',sprintf('%d',self.frame_index));
 n_frame=self.model.n_frames;
 set(self.of_n_frames_text_h,'String',sprintf(' of %d',n_frame));

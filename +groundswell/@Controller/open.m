@@ -18,9 +18,19 @@ try
   [names,t_each,data_each,units]=read_tcs(filename_abs);
 catch %#ok
   self.view.unhourglass();
-  errordlg(sprintf('Unable to open file %s',filename_local));  
+  errordlg(sprintf('Unable to open file %s',filename_local), ...
+           'Unable to open file');  
   return;
 end
+
+% check that all the time bases are valid (no nan's, etc.)
+if ~groundswell.all_time_bases_valid(t_each)
+  errordlg('At least one signal has an invalid time base.',...
+           'Invalid time base');
+  self.view.unhourglass();
+  return;
+end
+
 % have to upsample data_each onto a common timeline, unless they're
 % already like that
 if groundswell.all_on_same_time_base(t_each)

@@ -15,3 +15,5 @@ fid=open_tcs_for_writing(file_name);
 write_int32_to_tcs(fid,n_o);  % write number of traces
 write_traces_to_tcs(fid,roi_label,t_o,roi,units_o);
 close_tcs(fid);
+
+end

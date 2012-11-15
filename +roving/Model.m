@@ -10,7 +10,8 @@ classdef Model < handle
   end  % properties
   
   properties (Dependent=true)
-    fs;  % Hz, sampling rate for playback, possibly different from that in file
+    fs;  % Hz, sampling rate for playback & export, possibly different from 
+         % that in file
     n_rows;
     n_cols;
     n_frames;  % number of time samples
