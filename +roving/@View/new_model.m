@@ -96,6 +96,7 @@ set(self.frame_index_edit_h,'enable','on');
 set(self.FPS_edit_h,'enable','on');
 set(self.elliptic_roi_button_h,'enable','on');
 set(self.rect_roi_button_h,'enable','on');
+set(self.polygonal_roi_button_h,'enable','on');
 set(self.zoom_button_h,'enable','on');
 set(self.pixel_data_type_min_max_menu_h,'enable','on');
 set(self.min_max_menu_h,'enable','on');
@@ -116,22 +117,7 @@ set(self.motion_correct_menu_h,'enable','on');
 set(self.load_overlay_menu_h,'enable','on');
 
 
-%
-% change the mode to elliptic_roi
-%
-new_mode='elliptic_roi';
-
-% untoggle the old mode button
-old_button_h=...
-  findobj(self.figure_h,'Tag',sprintf('%s_button_h',self.mode));
-set(old_button_h,'Value',0);
-
-% check the new menu item
-new_button_h=...
-  findobj(self.figure_h,'Tag',sprintf('%s_button_h',new_mode));
-set(new_button_h,'value',1);
-
-% set the chosen mode
-self.mode=new_mode;
+% set the mode to elliptic_roi
+self.set_mode('elliptic_roi');
 
 end

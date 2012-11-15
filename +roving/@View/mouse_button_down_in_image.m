@@ -8,6 +8,8 @@ switch(mode)
     self.draw_rect_roi('start');
   case 'elliptic_roi'
     self.draw_elliptic_roi('start');
+  case 'polygonal_roi'
+    self.draw_polygonal_roi('down');
   case 'select'
     roi_index=self.find_roi(gcbo);
     if isempty(roi_index)

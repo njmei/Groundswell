@@ -4,6 +4,14 @@ function set_mode(self,new_mode)
 % uncheck that menu item
 old_mode=self.mode;
 
+% if there's a polygonal ROI draw in progress, cancel it
+if strcmp(old_mode,'polygonal_roi') && ~strcmp(new_mode,'polygonal_roi')
+  if ~isempty(self.polygonal_roi)
+    self.polygonal_roi.clear();
+    self.polygonal_roi=[];
+  end
+end
+
 % untoggle the old mode button
 old_button_h=...
   findobj(self.figure_h,'Tag',sprintf('%s_button_h',old_mode));

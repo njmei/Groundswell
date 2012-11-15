@@ -62,7 +62,7 @@ switch(action)
     set(ellipse_h,'XData',center(1)+dx);
     set(ellipse_h,'YData',center(2)+dy);
   case 'stop'
-    % change the move and buttonup calbacks
+    % change the move and buttonup callbacks
     set(figure_h,'WindowButtonMotionFcn',@(src,event)(self.update_pointer()));
     set(figure_h,'WindowButtonUpFcn',[]);
     % now do the stuff we'd do for a move also
