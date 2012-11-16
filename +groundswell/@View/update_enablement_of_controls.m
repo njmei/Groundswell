@@ -17,6 +17,7 @@ if isempty(self.model) || self.model.n_chan==0
   %set(self.add_presynched_traces_menu_item_h,'enable','off');
   set(self.save_menu_h,'enable','off');
   set(self.save_as_menu_h,'enable','off');  
+  set(self.revert_menu_h,'enable','off');
   % edit menu
   set(self.select_all_menu_h,'enable','off');
   set(self.select_none_menu_h,'enable','off');
@@ -62,10 +63,12 @@ else
     set(self.save_menu_h,'enable','on');
     set(self.open_menu_h,'enable','off');
     set(self.import_menu_h,'enable','off');
+    set(self.revert_menu_h,'enable','on');  
   else
     set(self.save_menu_h,'enable','off');
     set(self.open_menu_h,'enable','on');
     set(self.import_menu_h,'enable','on');
+    set(self.revert_menu_h,'enable','off');  
   end
   %set(self.add_presynched_traces_menu_item_h,'enable','on');  
   set(self.save_as_menu_h,'enable','on');  
