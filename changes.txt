@@ -249,6 +249,23 @@ This version relies upon Taylor Matlab Toolbox version 1.13.
 1.17 -> 1.18 (September 24, 2012)
 
 Made the functions for adding ROI data more robust and more general, 
-and renamed themto reflect this.
+and renamed them to reflect this.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
+
+
+
+
+
+1.18 -> 1.19 (November 16, 2012)
+
+Added scrollbar for time axis in Groundswell.  Added options for
+modifying various aspects of the view in spectrogram, coherency plots.
+Added ability to resize Roving window.  Implemented a minimum window
+size in Groundswell, Roving.  Improved handling of videos with no
+frame rate information.  Now use shaded backdrop for displaying power
+spectrum confidence interval.  Added "Revert" function to Groundswell.
+Added ability to draw arbitrary polygonal ROIs in Roving.
+
+This version relies upon Taylor Matlab Toolbox version 1.14.
+
