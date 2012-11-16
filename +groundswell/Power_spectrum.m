@@ -7,8 +7,9 @@ properties
   fig;
   plot;
   line;
-  line_ci1;
-  line_ci2;
+%   line_ci1;
+%   line_ci2;
+  patches_eb;
   xlabel;
   ylabel;
   title;
@@ -47,8 +48,8 @@ methods
   function self=Power_spectrum(f,S_log,S_log_ci,name,units, ...
                                fs,f_max_keep,W_smear_fw,N_fft)
     % define colors
-    blue=[0 0 1];
-    light_blue=[0.8 0.8 1];
+    %blue=[0 0 1];
+    %light_blue=[0.8 0.8 1];
 
     % make HG objects
     self.fig=figure('name',sprintf('Spectrum of %s',name), ...
@@ -56,18 +57,19 @@ methods
     self.plot=axes('parent',self.fig,...
                    'layer','top',...
                    'box','on');
-    self.line_ci1=line('parent',self.plot,...
-                       'xdata',[],...
-                       'ydata',[],...
-                       'color',light_blue);  %#ok
-    self.line_ci2=line('parent',self.plot,...
-                       'xdata',[],...
-                       'ydata',[],...
-                       'color',light_blue);  %#ok
+%     self.line_ci1=line('parent',self.plot,...
+%                        'xdata',[],...
+%                        'ydata',[],...
+%                        'color',light_blue);  %#ok
+%     self.line_ci2=line('parent',self.plot,...
+%                        'xdata',[],...
+%                        'ydata',[],...
+%                        'color',light_blue);  %#ok
+    self.patches_eb=[];                 
     self.line=line('parent',self.plot,...
                    'xdata',[],...
                    'ydata',[],...
-                   'color',blue);  %#ok
+                   'color','k');  %#ok
     self.ylabel=ylabel(self.plot,'');  %#ok
     self.xlabel=xlabel(self.plot,'');  %#ok
     self.title=title(self.plot,...
@@ -224,6 +226,14 @@ methods
       y_ci=10*y_ci./log(10);
     end
 
+    % if the x-axis will be a log axis, need to get rid of the f==0 point,
+    % since that will break the patches.
+    if strcmp(self.mode_ll_x,'log10')
+      f=f(2:end);
+      y=y(2:end);
+      y_ci=y_ci(2:end,:);
+    end
+    
     % figure out y axis limits
     switch self.mode_ll
       case 'linear'
@@ -328,9 +338,14 @@ methods
     end
     
     % sync each plot object
-    set(self.line,'xdata',f,'ydata',y);
-    set(self.line_ci1,'xdata',f,'ydata',y_ci(:,1));
-    set(self.line_ci2,'xdata',f,'ydata',y_ci(:,2));
+    set(self.line,'xdata',f,'ydata',y,'zdata',repmat(2,size(f)));
+    %set(self.line_ci1,'xdata',f,'ydata',y_ci(:,1));
+    %set(self.line_ci2,'xdata',f,'ydata',y_ci(:,2));
+    delete(self.patches_eb);
+    self.patches_eb=patch_eb(f,...
+                             y_ci,...
+                             [0.75 0.75 0.75],...
+                             'EdgeColor','none');
     set(self.plot,'xlim',xl);
     set(self.plot,'ylim',yl);
     set(self.ylabel,'string',y_str);
