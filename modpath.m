@@ -1,5 +1,5 @@
 function modpath()
-  addpath(genpath('~/taylor_matlab_toolbox/113'))
+  addpath(desvn(genpath('~/taylor_matlab_toolbox/repo/trunk')));
   root_dir_name=fileparts(mfilename('fullpath'));
   addpath(root_dir_name);
 end
