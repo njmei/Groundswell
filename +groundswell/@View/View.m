@@ -105,6 +105,10 @@ classdef View < handle
       % spec out the initial size of the figure
       %
 
+      % minimum figure dimensions
+      figure_width_min=850;  % pels
+      figure_height_min=500;
+            
       % layout of the figure on the screen
       screen_left_pad_size=60;
       screen_right_pad_size=60;
@@ -140,7 +144,17 @@ classdef View < handle
                'color',get(0,'defaultUicontrolBackgroundColor'), ...
                'CloseRequestFcn',@(src,event)(controller.quit()), ...
                'Resize','on');
-            
+
+      % Do some hacking to set the minimum figure size
+      drawnow('update');
+      drawnow('expose');
+      fpj=get(handle(self.fig_h),'JavaFrame');
+      jw=fpj.fHG1Client.getWindow();
+      if ~isempty(jw)
+        jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
+                                             figure_height_min));
+      end
+             
       % Want to know when we get/lose focus, so have to do some hacking.
       drawnow('update');
       drawnow('expose');
@@ -154,7 +168,7 @@ classdef View < handle
         %    @(src,event)(controller.handle_focus_lost()));
         clear fpj jw jcb;
       end  
-
+      
 
 
       %

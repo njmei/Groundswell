@@ -137,11 +137,16 @@ classdef View < handle
       %
       % spec out the initial size, position of the figure
       %
+            
       screen_left_pad_size=20;
       screen_top_pad_size=50;
       % these are designed to just accomodate a 512x512 image
       figure_width=722;  
       figure_height=602;
+
+      % minimum figure dimensions
+      figure_width_min=600;  % pels
+      figure_height_min=400;
 
       %
       % Image figure and children
@@ -171,9 +176,19 @@ classdef View < handle
       %         'WindowKeyReleaseFcn', ...
       %           @(src,event)(controller.handle_key_release(event)),...
 
-      % Want to know when we get/lose focus, so have to do some hacking.
+      % Do some hacking to set the minimum figure size
       drawnow('update');
       drawnow('expose');
+      fpj=get(handle(self.figure_h),'JavaFrame');
+      jw=fpj.fHG1Client.getWindow();
+      if ~isempty(jw)
+        jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
+                                             figure_height_min));
+      end
+      
+      % Want to know when we get/lose focus, so have to do some hacking.
+      %drawnow('update');
+      %drawnow('expose');
       % % this code relies on undocumented features, and doesn't seem to
       % % work reliably on Windows XP 32-bit -- ALT, 2012-08-14
       % fpj=get(handle(self.figure_h),'JavaFrame');
