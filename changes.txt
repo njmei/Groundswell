@@ -269,3 +269,13 @@ Added ability to draw arbitrary polygonal ROIs in Roving.
 
 This version relies upon Taylor Matlab Toolbox version 1.14.
 
+
+
+
+
+
+1.19 -> 1.20 (December 11, 2012)
+
+Fixed bug in Scrollbar that occurred when t0!=0.
+
+This version relies upon Taylor Matlab Toolbox version 1.14.
