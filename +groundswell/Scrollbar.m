@@ -48,7 +48,8 @@ classdef Scrollbar < handle
       if T_window==T
         slider_value=0.5;
       else
-        slider_value=(t_window-(T_window/2))/(T-T_window);
+        slider_value=(t_window-t0-(T_window/2))/(T-T_window);
+        slider_value=max(0,min(slider_value,1));  % in case of round-off error
       end  
       if isfinite(slider_step_major)  
         slider_step=slider_step_major*[0.1 1];
@@ -70,10 +71,13 @@ classdef Scrollbar < handle
     end
     
     function something_manipulated_you(self)
+      tl=self.model.tl;
+      t0=tl(1);
+      tf=tl(2);
+      T=tf-t0;
       slider_value=get(self.scrollbar_h,'value');
       T_window=diff(self.view.tl_view);
-      T=diff(self.model.tl);
-      t_window=slider_value*(T-T_window)+T_window/2;
+      t_window=slider_value*(T-T_window)+T_window/2+t0;
       tl_view_new=t_window+T_window/2*[-1 +1];
       self.view.set_tl_view(tl_view_new);
         % this will lead to self.time_limits_changed() being called,
