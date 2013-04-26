@@ -29,7 +29,7 @@ classdef Controller < handle
       if nargin>=1
         if ischar(varargin{1})
           file_name=varargin{1};
-          self.load_video_given_file_name(file_name);
+          self.open_video_given_file_name(file_name);
         end
       end
     end  % constructor

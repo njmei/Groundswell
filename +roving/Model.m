@@ -297,11 +297,6 @@ classdef Model < handle
       file=roving.Video_file(filename);
 
       % OK, now actually store the data in ourselves
-      self.open_video_given_file_object(file);
-    end  % method
-    
-    % ---------------------------------------------------------------------
-    function open_video_given_file_object(self,file)
       % make up a t0, get dt
       self.t0=0;
       self.dt=file.dt;  % s

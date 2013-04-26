@@ -1,4 +1,4 @@
-function choose_file_and_load(self)
+function choose_file_and_open(self)
 
 % throw up the dialog box
 [filename,pathname]= ...
@@ -12,6 +12,6 @@ end
 
 % load the optical data
 file_name_full=fullfile(pathname,filename);
-self.load_video_given_file_name(file_name_full);
+self.open_video_given_file_name(file_name_full);
 
 end

@@ -1,4 +1,4 @@
-function load_video_given_file_name(self,filename)
+function open_video_given_file_name(self,filename)
 
 % filename is a filename, can be relative or absolute
 
@@ -9,7 +9,8 @@ filename_local=[base_name ext];
 % load the optical data
 self.view.hourglass()
 try
-  file=roving.Video_file(filename);
+  self.model=roving.Model();
+  self.model.open_video_given_file_name(filename)
 catch err
   self.view.unhourglass();
   if strcmp(err.identifier,'MATLAB:imagesci:imfinfo:whatFormat')
@@ -41,8 +42,11 @@ catch err
   end
 end
 
-% OK, now actually store the data in ourselves
-self.load_video_given_file_object(file,filename_local);
+% set the view
+self.view.new_model(self.model,filename_local);
+
+% set self
+self.card_birth_roi_next=1;
 
 % OK, we're done.
 self.view.unhourglass()
