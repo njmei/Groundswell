@@ -279,3 +279,14 @@ This version relies upon Taylor Matlab Toolbox version 1.14.
 Fixed bug in Scrollbar that occurred when t0!=0.
 
 This version relies upon Taylor Matlab Toolbox version 1.14.
+
+
+
+
+
+
+1.20 -> 1.21 (April 26, 2013)
+
+Refactored parts of Roving to improve scriptability.
+
+This version relies upon Taylor Matlab Toolbox version 1.14.

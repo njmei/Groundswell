@@ -28,7 +28,7 @@ self.colorbar_min=cb_min;
 self.colorbar_max=cb_max;
 
 % recalculate indexed_frame, set in figure
-if ~isempty(self.model)
+if self.model.a_video_is_open ,
   % change the displayed image
   set(self.image_h,'CData',self.indexed_frame);
 end

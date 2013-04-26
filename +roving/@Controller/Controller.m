@@ -16,10 +16,10 @@ classdef Controller < handle
   methods
     function self=Controller(varargin)
       % Leave the model empty until we load data
-      self.model=[];
+      self.model=roving.Model();
       
       % Make the view
-      self.view=roving.View(self);
+      self.view=roving.View(self,self.model);
 
       % Init the ROI counter, etc.
       self.card_birth_roi_next=[];

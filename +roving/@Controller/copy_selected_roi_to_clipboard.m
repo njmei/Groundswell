@@ -10,5 +10,6 @@ border=roi_selected.border;
 border_centered=border-repmat(mean(border,2),[1 n_vertex]);
 border_str=sprintf('%27.17g ',border_centered);
 clipboard('copy',border_str);
+self.view.roi_put_in_clipboard();
 
 end

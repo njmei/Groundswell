@@ -9,8 +9,8 @@ filename_local=[base_name ext];
 % load the optical data
 self.view.hourglass()
 try
-  self.model=roving.Model();
-  self.model.open_video_given_file_name(filename)
+  %self.model=roving.Model();  % now done during controller construction
+  self.model.open_video_given_file_name(filename);
 catch err
   self.view.unhourglass();
   if strcmp(err.identifier,'MATLAB:imagesci:imfinfo:whatFormat')
@@ -42,8 +42,8 @@ catch err
   end
 end
 
-% set the view
-self.view.new_model(self.model,filename_local);
+% update the view to match the changed model
+self.view.newly_opened_file();
 
 % set self
 self.card_birth_roi_next=1;

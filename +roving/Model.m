@@ -3,6 +3,7 @@ classdef Model < handle
   properties
     t0;
     dt;
+    file_name  % the name of the video file currently open
     file;  % the handle of a VideoFile object, the current file (or empty)   
     roi;  % n_roi x 1 struct with fields border and label
     overlay_file;  
@@ -18,23 +19,16 @@ classdef Model < handle
     tl;  % 2x1 matrix holding min, max time
     n_rois;
     t;  % a complete timeline for all frames
+    a_video_is_open;  % true iff a video is currently open
   end
   
   methods
     % ---------------------------------------------------------------------
-    function self=Model(file,dt,t0)
-      if ~exist('file','var')
-        file=[];
-      end
-      if ~exist('dt','var')
-        dt=[];
-      end
-      if ~exist('t0','var')
-        t0=[];
-      end
-      self.file=file;
-      self.t0=t0;  % s
-      self.dt=dt;  % s
+    function self=Model()
+      self.file_name='';
+      self.file=[];
+      self.t0=[];  % s
+      self.dt=[];  % s
       self.roi=struct('border',cell(0,1), ...
                       'label',cell(0,1));
       self.overlay_file=[];                    
@@ -286,7 +280,7 @@ classdef Model < handle
     end  % mean_over_rois()
     
     % ---------------------------------------------------------------------
-    function open_video_given_file_name(self,filename)
+    function open_video_given_file_name(self,file_name)
       % filename is a filename, can be relative or absolute
       
       % break up the file name
@@ -294,7 +288,7 @@ classdef Model < handle
       %filename_local=[base_name ext];
 
       % load the optical data
-      file=roving.Video_file(filename);
+      file=roving.Video_file(file_name);
 
       % OK, now actually store the data in ourselves
       % make up a t0, get dt
@@ -303,6 +297,7 @@ classdef Model < handle
 
       % set the model
       self.file=file;
+      self.file_name=file_name;
     end  % method
     
     % ---------------------------------------------------------------------
@@ -311,6 +306,7 @@ classdef Model < handle
         self.file.close();
         self.file=[];
       end
+      self.file_name='';
       self.t0=[];
       self.dt=[];  % s
       self.roi=struct('border',cell(0,1), ...
@@ -321,6 +317,11 @@ classdef Model < handle
       end
     end  % method
     
+    % ---------------------------------------------------------------------
+    function result=get.a_video_is_open(self)
+      result=~isempty(self.file);
+    end  % method
+
     % ---------------------------------------------------------------------
     function load_rois_from_rpb(self,full_filename)
       %
