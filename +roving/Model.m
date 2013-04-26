@@ -3,7 +3,7 @@ classdef Model < handle
   properties
     t0;
     dt;
-    file;  % the handle of a VideoFile object, the current file    
+    file;  % the handle of a VideoFile object, the current file (or empty)   
     roi;  % n_roi x 1 struct with fields border and label
     overlay_file;  
       % an Overlay_file_reader object containing frame overlays, or empty
@@ -21,7 +21,17 @@ classdef Model < handle
   end
   
   methods
+    % ---------------------------------------------------------------------
     function self=Model(file,dt,t0)
+      if ~exist('file','var')
+        file=[];
+      end
+      if ~exist('dt','var')
+        dt=[];
+      end
+      if ~exist('t0','var')
+        t0=[];
+      end
       self.file=file;
       self.t0=t0;  % s
       self.dt=dt;  % s
@@ -30,41 +40,73 @@ classdef Model < handle
       self.overlay_file=[];                    
     end  % function
     
+    % ---------------------------------------------------------------------
     function t=get.t(self)
-      t=self.t0+self.dt*(0:(self.n_frames-1))';
+      if ~isempty(self.t0) && ~isempty(self.dt) && ~isempty(self.n_frames)
+        t=self.t0+self.dt*(0:(self.n_frames-1))';
+      else
+        t=[];
+      end
     end
     
+    % ---------------------------------------------------------------------
     function fs=get.fs(self)
-      fs=1/self.dt;
+      if isempty(self.dt)
+        fs=[];
+      else
+        fs=1/self.dt;
+      end
     end
     
+    % ---------------------------------------------------------------------
     function n_row=get.n_rows(self)
-      n_row=self.file.n_row;
+      if isempty(self.file)
+        n_row=[];
+      else
+        n_row=self.file.n_row;
+      end
     end
     
+    % ---------------------------------------------------------------------
     function n_col=get.n_cols(self)
-      n_col=self.file.n_col;
+      if isempty(self.file)
+        n_col=[];
+      else
+        n_col=self.file.n_col;
+      end
     end
     
+    % ---------------------------------------------------------------------
     function n_frame=get.n_frames(self)
-      n_frame=self.file.n_frame;
+      if isempty(self.file)
+        n_frame=[];
+      else
+        n_frame=self.file.n_frame;
+      end
     end
     
+    % ---------------------------------------------------------------------
     function n_roi=get.n_rois(self)
       n_roi=length(self.roi);
     end
 
+    % ---------------------------------------------------------------------
     function tl=get.tl(self)
       t0=self.t0;
       dt=self.dt;
-      n_frame=self.n_frames;
-      if n_frame==0
-        tl=[];
+      if ~isempty(self.t0) && ~isempty(self.dt)
+        n_frame=self.n_frames;
+        if isempty(n_frame) || (n_frame==0) ,
+          tl=[];
+        else
+          tl=t0+[0 dt*(n_frame-1)];
+        end
       else
-        tl=t0+[0 dt*(n_frame-1)];
+        tl=[];
       end
     end
     
+    % ---------------------------------------------------------------------
     function set.dt(self,dt)
       self.dt=dt;
     end
@@ -76,10 +118,12 @@ classdef Model < handle
 %       self.t=t0+dt*(0:(n_frame-1))';
 %     end
 
+    % ---------------------------------------------------------------------
     function set.fs(self,fs)
       self.dt=1/fs;
     end
     
+    % ---------------------------------------------------------------------
     function add_roi(self,border,label)
       % border 2 x n_vertex, label a string
       n_roi_old=length(self.roi);
@@ -87,12 +131,14 @@ classdef Model < handle
       self.roi(n_roi_old+1).label=label;
     end
     
+    % ---------------------------------------------------------------------
     function delete_rois(self,i_to_delete)
       keep=true(size(self.roi));
       keep(i_to_delete)=false;
       self.roi=self.roi(keep);
     end
     
+    % ---------------------------------------------------------------------
     function set_roi(self,border,label)
       % border, label cell arrays
       n_roi=length(border);
@@ -102,15 +148,18 @@ classdef Model < handle
       [self.roi.label]=deal(label{:});
     end
     
+    % ---------------------------------------------------------------------
     function in_use=label_in_use(self,label_test)
       labels={self.roi.label};
       in_use=any(strcmp(label_test,labels));
     end
 
+    % ---------------------------------------------------------------------
     function frame=get_frame(self,i)
       frame=self.file.get_frame(i);
     end
 
+    % ---------------------------------------------------------------------
     function frame_overlay=get_frame_overlay(self,i)
       if (1<=i) && (i<=self.overlay_file.n_frames)
         frame_overlay=self.overlay_file.read_frame_overlay(i);
@@ -150,6 +199,7 @@ classdef Model < handle
 %       end      
 %     end  % motion_correct
     
+    % ---------------------------------------------------------------------
     function [d_min,d_max]=min_max(self,i)
       % get the max and min values of frame i
       % d_min and d_max are doubles, regardless the type of self.data
@@ -170,6 +220,7 @@ classdef Model < handle
 %       [h,t]=hist(frame(:),n_bins);
 %     end
 
+    % ---------------------------------------------------------------------
     function [d_05,d_95]=five_95(self,i)
       % d_05 and d_95 are doubles, regardless the type of self.data
       frame=double(self.get_frame(i));
@@ -178,18 +229,21 @@ classdef Model < handle
       d_95=d(2);
     end  % five_95
     
+    % ---------------------------------------------------------------------
     function d_max=max_abs(self,i)
       % d_max is a double, regardless of the type of self.data
       frame=double(self.get_frame(i));
       d_max=max(max(abs(frame)));
     end  % max_abs
     
+    % ---------------------------------------------------------------------
     function d_90=abs_90(self,i)
       % d_90 is a double, regardless the type of self.data
       frame=abs(double(self.get_frame(i)));
       d_90=roving.quantile_mine(frame(:),0.9);
     end  % five_95
     
+    % ---------------------------------------------------------------------
     function [d_min,d_max]=pixel_data_type_min_max(self)
       if self.file.bits_per_pel==8
         d_min=0;
@@ -205,6 +259,7 @@ classdef Model < handle
         
     end
 
+    % ---------------------------------------------------------------------
     function x_roi=mean_over_rois(self)
       % get a mask for each roi
       n_rows=self.n_rows;
@@ -228,10 +283,132 @@ classdef Model < handle
           x_roi(k,l)=s/n_pels(l);
         end
       end
-
     end  % mean_over_rois()
     
+    % ---------------------------------------------------------------------
+    function open_video_given_file_name(self,filename)
+      % filename is a filename, can be relative or absolute
+      
+      % break up the file name
+      %[~,base_name,ext]=fileparts(filename);
+      %filename_local=[base_name ext];
+
+      % load the optical data
+      file=roving.Video_file(filename);
+
+      % OK, now actually store the data in ourselves
+      self.open_video_given_file_object(file);
+    end  % method
     
+    % ---------------------------------------------------------------------
+    function open_video_given_file_object(self,file)
+      % make up a t0, get dt
+      self.t0=0;
+      self.dt=file.dt;  % s
+
+      % set the model
+      self.file=file;
+    end  % method
+    
+    % ---------------------------------------------------------------------
+    function close_video(self)
+      if ~isempty(self.file)
+        self.file.close();
+        self.file=[];
+      end
+      self.t0=[];
+      self.dt=[];  % s
+      self.roi=struct('border',cell(0,1), ...
+                      'label',cell(0,1));
+      if ~isempty(self.overlay_file)
+        self.overlay_file.close();
+        self.overlay_file=[];
+      end
+    end  % method
+    
+    % ---------------------------------------------------------------------
+    function load_rois_from_rpb(self,full_filename)
+      %
+      % load in the ROI data from the file, w/ error checking
+      %
+
+      % open the file
+      %full_filename=strcat(pathname,filename);
+      [~,basename,ext]=fileparts(full_filename);
+      filename=[basename ext];
+      fid=fopen(full_filename,'r','ieee-be');
+      if (fid == -1)
+        error('roving.Model:unableToOpenFile', ...
+              sprintf('Unable to open file %s',filename));  %#ok
+      end
+
+      % read the number of rois
+      [n_rois,count]=fread(fid,1,'uint32');
+      %n_rois
+      if (count ~= 1)
+        fclose(fid);
+        error('roving.Model:unableToLoadROIs', ...
+              sprintf('Error loading ROIs from file %s',filename));  %#ok
+      end
+
+      % dimension cell arrays to hold the ROI labels and vertex lists
+      labels=cell(n_rois,1);
+      borders=cell(n_rois,1);
+
+      % for each ROI, read the label and the vertex list
+      for j=1:n_rois
+        % the label
+        [n_chars,count]=fread(fid,1,'uint32');
+        if (count ~= 1)
+          fclose(fid);
+          error('roving.Model:unableToLoadROIs', ...
+                sprintf('Error loading ROIs from file %s',filename));  %#ok
+        end
+        [temp,count]=fread(fid,[1 n_chars],'uchar');
+        if (count ~= n_chars)
+          fclose(fid);
+          error('roving.Model:unableToLoadROIs', ...
+                sprintf('Error loading ROIs from file %s',filename));  %#ok
+        end
+        labels{j}=char(temp);
+        % the vertex list
+        [n_vertices,count]=fread(fid,1,'uint32');
+        if (count ~= 1)
+          fclose(fid);
+          error('roving.Model:unableToLoadROIs', ...
+                sprintf('Error loading ROIs from file %s',filename));  %#ok
+        end
+        %this_border=zeros(2,n_vertices);
+        [this_border,count]=fread(fid,[2 n_vertices],'float32');
+        %this_border
+        if (count ~= 2*n_vertices)
+          fclose(fid);
+          error('roving.Model:unableToLoadROIs', ...
+                sprintf('Error loading ROIs from file %s',filename));  %#ok
+        end
+        borders{j}=this_border;
+      end
+
+      % close the file
+      fclose(fid);
+
+      % put the new rois in the model
+      self.set_roi(borders,labels);
+    end
+
+    % ---------------------------------------------------------------------
+    function export_to_tcs_file(self,file_name_abs)
+      % calc the ROI means  
+      roi_mean=self.mean_over_rois();
+
+      % save to .tcs file
+      t=self.t;  % s
+      roi_label={self.roi.label}';
+      roving.write_o_to_tcs(file_name_abs,...
+                            t,roi_mean,roi_label);
+    end  % method
+    
+    % ---------------------------------------------------------------------
   end  % methods
 
 end  % classdef

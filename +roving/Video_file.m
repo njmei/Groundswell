@@ -60,7 +60,11 @@ classdef Video_file < handle
     end  % constructor method
 
     function dt=get.dt(self)
-      dt=1/self.rate;
+      if isempty(self.rate)
+        dt=[];
+      else
+        dt=1/self.rate;
+      end
     end
     
     function frame=get_frame(self,i)
@@ -104,7 +108,7 @@ classdef Video_file < handle
       self.i_frame=0;
     end
     
-    function delete(self)
+    function close(self)
       if ~isempty(self.file)
         switch self.ext
           case '.tif'
@@ -115,6 +119,10 @@ classdef Video_file < handle
             error('Video_file:InternalError','Internal error');
         end
       end
+    end
+    
+    function delete(self)
+      self.close();
     end
   end  % methods
 

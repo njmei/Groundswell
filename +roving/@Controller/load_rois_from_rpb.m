@@ -1,11 +1,13 @@
-function load_rois_from_rpb(self,filename,pathname)
+function load_rois_from_rpb(self,full_filename)
 
 %
 % load in the ROI data from the file, w/ error checking
 %
 
 % open the file
-full_filename=strcat(pathname,filename);
+%full_filename=strcat(pathname,filename);
+[~,basename,ext]=fileparts(full_filename);
+filename=[basename ext];
 fid=fopen(full_filename,'r','ieee-be');
 if (fid == -1)
   errordlg(sprintf('Unable to open file %s',filename),...

@@ -10,4 +10,5 @@ if isnumeric(filename) || isnumeric(pathname)
 end
 
 % call the appropriate loader
-self.load_rois_from_rpb(filename,pathname);
+filename_abs=fullfile(pathname,filename);
+self.load_rois_from_rpb(filename_abs);

@@ -1,6 +1,10 @@
-function roving(varargin)
+function varargout=roving(varargin)
 
 % create the Controller instance
-roving.Controller(varargin{:});
+rc=roving.Controller(varargin{:});
+
+if nargout>=1
+  varargout{1}=rc;
+end
 
 end

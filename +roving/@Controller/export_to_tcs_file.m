@@ -1,14 +1,4 @@
-function export_to_tcs_file(self)
-
-% throw up the dialog box to get file name
-[file_name,dir_name]= ...
-  uiputfile({'*.tcs' 'Traces file (*.tcs)'}, ...
-            'Export ROIs to file...');
-if isnumeric(file_name) || isnumeric(dir_name)
-  % this happens if user hits Cancel
-  return;
-end
-file_name_abs=fullfile(dir_name,file_name);
+function export_to_tcs_file(self,file_name_abs)
 
 % could take a while
 self.view.hourglass();
