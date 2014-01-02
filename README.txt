@@ -1,4 +1,12 @@
-To install it:
+Groundswell
+===========
+
+A Matlab application for browsing and analysis of electrophysiology
+data, optionally in concert with video data.
+
+
+To install
+----------
 
 1.  Unzip the .zip file to a place of your choosing.
 
@@ -14,4 +22,4 @@ To install it:
 
 5.  Type "groundswell" or "roving" at the Matlab prompt to run the
     desired application.
-    
+

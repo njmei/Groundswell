@@ -290,3 +290,14 @@ This version relies upon Taylor Matlab Toolbox version 1.14.
 Refactored parts of Roving to improve scriptability.
 
 This version relies upon Taylor Matlab Toolbox version 1.14.
+
+
+
+
+
+
+1.21 -> 1.22 (January 2, 2013)
+
+Included a Spike2 script for importing .tcs files into Spike2.
+
+This version relies upon Taylor Matlab Toolbox version 1.14.
