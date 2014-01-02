@@ -1,6 +1,6 @@
 To install it:
 
-1.  Download that file and unzip it to a place of your choosing.
+1.  Unzip the .zip file to a place of your choosing.
 
 2.  In Matlab, go to File > Set Path... 
 
