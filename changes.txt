@@ -301,3 +301,17 @@ This version relies upon Taylor Matlab Toolbox version 1.14.
 Included a Spike2 script for importing .tcs files into Spike2.
 
 This version relies upon Taylor Matlab Toolbox version 1.14.
+
+
+
+
+
+
+1.22 -> 1.23 (January 3, 2013)
+
+Changed git repository to automatically include TMT 1.14 as a
+submodule.  
+
+Updated installation insttructions to match the .zip file names that
+GitHub assigns automatically.
+

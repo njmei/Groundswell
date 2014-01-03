@@ -15,7 +15,7 @@ To install
 3.  Remove any paths for older versions of Groundswell.
 
 3.  Still in File > Set Path, click on "Add with Subfolders..." and
-    select the groundswell_rel_<whatever> folder that was created when
+    select the Groundswell-release_<whatever> folder that was created when
     you unzipped the .zip file.
 
 4.  Restart Matlab.
