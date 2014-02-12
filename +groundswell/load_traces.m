@@ -84,7 +84,7 @@ elseif strcmp(ext,'.txt')
         groundswell.load_txt_plain_old(filename);
     end
   catch exception  %#ok
-    errordlg(sprintf('Unable to open file %s',filename_local));  
+    errordlg(sprintf('Unable to open file %s: %s',filename_local,exception.message));  
     return;
   end
 else

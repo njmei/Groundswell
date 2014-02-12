@@ -1,12 +1,12 @@
 function [t,data,names,units]=load_txt_plain_old(filename)
 
-try
-  data=load(filename);
-catch exception  %#ok
-  %self.view.unhourglass();
-  errordlg(sprintf('Unable to open file %s',filename_local));  
-  return;
-end
+%try
+data=load(filename);
+%catch exception
+%  %self.view.unhourglass();
+%  errordlg(sprintf('Unable to open file %s: %s',filename_local,exception.message));  
+%  return;
+%end
 [n_t,n_chan]=size(data);
 % For plain=old text files, we assume the data is sampled at 1 kHz, for
 % lack of a better assumption.
