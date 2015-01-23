@@ -70,7 +70,10 @@ elseif strcmp(ext,'.wav')
   end
 elseif strcmp(ext,'.txt')
   try
-    if strcmp(file_type_str,'Bayley-style text, 2.5 um/pel')
+    if strcmp(file_type_str,'Text file with labels and time stamps')
+      [t,data,names,units]= ...
+        groundswell.load_txt_with_labels_and_time_stamps(filename);
+    elseif strcmp(file_type_str,'Bayley-style text, 2.5 um/pel')
       [t,data,names,units]= ...
         groundswell.load_txt_bayley(filename,2.5);
     elseif strcmp(file_type_str,'Bayley-style text, 5.0 um/pel')

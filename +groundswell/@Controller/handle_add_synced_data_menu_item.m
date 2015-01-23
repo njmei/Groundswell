@@ -14,6 +14,7 @@ normal_mode=~ft_mode;
              '*.tcs' 'Traces file (*.tcs)'; ...
              '*.wav' 'Microsoft waveform audio file (*.wav)'; ...
              '*.txt' 'Text file (*.txt)'; ...
+             '*.txt' 'Text file with labels and time stamps (*.txt)';
              '*.txt' 'Bayley-style text file, 5.0 um/pel (*.txt)'; ...
              '*.txt' 'Bayley-style text file, 2.5 um/pel (*.txt)'; ...
              '*.txt' 'Tracked muscles file (*.txt)'; ...
@@ -26,10 +27,12 @@ end
 
 % Translate filter index to a file type string
 if i_filter==5
-  file_type_str='Bayley-style text, 5.0 um/pel';
+  file_type_str='Text file with labels and time stamps';
 elseif i_filter==6
-  file_type_str='Bayley-style text, 2.5 um/pel';
+  file_type_str='Bayley-style text, 5.0 um/pel';
 elseif i_filter==7
+  file_type_str='Bayley-style text, 2.5 um/pel';
+elseif i_filter==8
   file_type_str='Tracked muscles text';
 else
   file_type_str='';
