@@ -324,3 +324,16 @@ GitHub assigns automatically.
 
 Added ability to import text files with column labels and time stamps.
 
+
+
+
+
+
+1.24 -> 1.25 (May 3, 2015)
+
+Changed to TMT 1.16, to get bugfixes relating to underspecification of
+character sets in load_abf() and .tcs functions.
+
+
+
+
