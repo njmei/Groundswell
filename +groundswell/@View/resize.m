@@ -21,7 +21,11 @@ n=length(axes_hs);
 
 % spec out sizes, given the figure width and height
 %x_label_area_height=50;
-x_label_area_height=40;
+% if verLessThan('matlab','8.4.0') ,  % aka R2014b, the first release of HG2
+%     x_label_area_height=40;
+% else
+x_label_area_height=50;  % This looks better in all versions
+%end    
 y_label_area_width=50;
 y_label_offset_width=40;  % distance in pels from y-axis to y-axis labels
 bottom_button_height=30;

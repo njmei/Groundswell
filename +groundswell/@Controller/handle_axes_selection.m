@@ -17,14 +17,16 @@ selected=self.view.get_selected_axes();
 % get the index of the axes that was just clicked on
 i=find(axes_hs==axes_h);
 
-% modify the selection type to behave in a more platform-approprite way
-% on the mac.
-% On the mac, convert a normal selection with the command key depressed
-% into an 'alt' selection.
-% This is really how it should work by default.
-if ismac() && strcmp(selection_type,'normal') && self.command_depressed
-  selection_type='alt';
-end
+% This relies on some hacks which break in R2015a.  Going to stop trying so
+% hard to make up for Matlab's limitations.
+% % modify the selection type to behave in a more platform-approprite way
+% % on the mac.
+% % On the mac, convert a normal selection with the command key depressed
+% % into an 'alt' selection.
+% % This is really how it should work by default.
+% if ismac() && strcmp(selection_type,'normal') && self.command_depressed
+%   selection_type='alt';
+% end
 
 % change the selected set, and the order, as needed
 % Matlab, as of R2012a, doesn't map a command-click to

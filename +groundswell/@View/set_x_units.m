@@ -20,5 +20,5 @@ set(menu_h,'Checked','on');
 % change the x-axis label, if there is one
 axes_hs=self.axes_hs;
 if ~isempty(axes_hs)
-  xlabel(axes_hs(end),get(menu_h,'label'));
+  xlabel(axes_hs(end),get(menu_h,'label'),'tag','x_axis_label','FontSize',10);
 end

@@ -106,9 +106,9 @@ classdef View < handle
       % spec out the initial size of the figure
       %
 
-      % minimum figure dimensions
-      figure_width_min=850;  % pels
-      figure_height_min=500;
+%       % minimum figure dimensions
+%       figure_width_min=850;  % pels
+%       figure_height_min=500;
             
       % layout of the figure on the screen
       screen_left_pad_size=60;
@@ -137,38 +137,41 @@ classdef View < handle
                'MenuBar','none',...
                'PaperPositionMode','auto',...
                'Renderer','zbuffer',...
-               'WindowKeyPressFcn', ...
-                 @(src,event)(controller.handle_key_press(event)),...
-               'WindowKeyReleaseFcn', ...
-                 @(src,event)(controller.handle_key_release(event)),...               
-               'ResizeFcn',@(src,event)(self.resize()),...
                'color',get(0,'defaultUicontrolBackgroundColor'), ...
-               'CloseRequestFcn',@(src,event)(controller.quit()), ...
                'Resize','on');
 
-      % Do some hacking to set the minimum figure size
-      drawnow('update');
-      drawnow('expose');
-      fpj=get(handle(self.fig_h),'JavaFrame');
-      jw=fpj.fHG1Client.getWindow();
-      if ~isempty(jw)
-        jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
-                                             figure_height_min));
-      end
-             
-      % Want to know when we get/lose focus, so have to do some hacking.
-      drawnow('update');
-      drawnow('expose');
-      if ismac
-        fpj=get(handle(self.fig_h),'JavaFrame');
-        jw=fpj.fHG1Client.getWindow;
-        jcb=handle(jw,'CallbackProperties');
-        set(jcb,'WindowGainedFocusCallback', ...
-            @(src,event)(controller.handle_focus_gained()));
-        %set(jcb,'WindowLostFocusCallback', ...
-        %    @(src,event)(controller.handle_focus_lost()));
-        clear fpj jw jcb;
-      end  
+      % Do this stuff after, because at same time causes problems in R2015a
+      set(self.fig_h, ...
+          'ResizeFcn',@(src,event)(self.resize()),...
+          'CloseRequestFcn',@(src,event)(controller.quit()));
+%           'WindowKeyPressFcn', ...
+%             @(src,event)(controller.handle_key_press(event)),...
+%           'WindowKeyReleaseFcn', ...
+%             @(src,event)(controller.handle_key_release(event)),...               
+           
+%       % Do some hacking to set the minimum figure size
+%       drawnow('update');
+%       drawnow('expose');
+%       fpj=get(handle(self.fig_h),'JavaFrame');
+%       jw=fpj.fHG1Client.getWindow();
+%       if ~isempty(jw)
+%         jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
+%                                              figure_height_min));
+%       end
+%              
+%       % Want to know when we get/lose focus, so have to do some hacking.
+%       drawnow('update');
+%       drawnow('expose');
+%       if ismac
+%         fpj=get(handle(self.fig_h),'JavaFrame');
+%         jw=fpj.fHG1Client.getWindow;
+%         jcb=handle(jw,'CallbackProperties');
+%         set(jcb,'WindowGainedFocusCallback', ...
+%             @(src,event)(controller.handle_focus_gained()));
+%         %set(jcb,'WindowLostFocusCallback', ...
+%         %    @(src,event)(controller.handle_focus_lost()));
+%         clear fpj jw jcb;
+%       end  
       
 
 
@@ -451,6 +454,9 @@ classdef View < handle
                 
       % set up the instance variables that are non-trivial to init
       self.colors=groundswell.make_color_sequence();
+      
+      % Do a resize, to position buttons properly
+      self.resize();
       
       % register the callbacks
       self.set_hg_callbacks(controller);

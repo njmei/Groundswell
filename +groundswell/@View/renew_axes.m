@@ -44,7 +44,7 @@ if ~isempty(self.model)
     if i<n_chan
       set(gca,'XTickLabel',{});
     else
-      xlabel('Time (s)','tag','x_axis_label')
+      xlabel('Time (s)','tag','x_axis_label','FontSize',10)
     end
   end
 
@@ -78,6 +78,7 @@ if ~isempty(self.model)
                         'tag','y_axis_label',...
                         'verticalalignment','baseline',...
                         'units','pixels',...
+                        'FontSize',10, ...
                         'buttondownfcn',chan_label_cb);
     n_sweeps=size(data_this,2);
     for j=1:n_sweeps

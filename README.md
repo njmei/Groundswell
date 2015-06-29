@@ -1,15 +1,101 @@
+Groundswell
+===========
+
+Groundswell is a Matlab application for browsing and analysis of
+electrophysiology data, optionally in concert with video data.  It was
+developed by Adam L. Taylor, under the direction of Stefan R. Pulver,
+while Dr. Pulver was a fellow at HHMI Janelia.
+
+
+System Requirements
+-------------------
+
+Matlab R2013b or later (64-bit)
+
+
+Installation
+------------
+
+1.  Unzip the .zip file to a place of your choosing.
+
+2.  In Matlab, go to File > Set Path... 
+
+3.  Remove any paths for older versions of Groundswell.
+
+3.  Still in File > Set Path, click on "Add with Subfolders..." and
+    select the Groundswell-release_<whatever\> folder that was created when
+    you unzipped the .zip file.
+
+4.  Restart Matlab.
+
+5.  Type "groundswell" or "roving" at the Matlab prompt to run the
+    desired application.
+
+
+Copyright
+---------
+
+Except where noted, all code, documentation, images, and anything else
+in Groundswell is copyright 2009-2015 by Adam L. Taylor.
+
+
+License
+-------
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+
+* Neither the name of HHMI nor the names of its contributors may be
+  used to endorse or promote products derived from this software
+  without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Authors
+-------
+
+[Adam L. Taylor](http://www.janelia.org/people/research-resources-staff/adam-taylor), taylora@hhmi.org  
+[Scientific Computing](http://www.janelia.org/research-resources/computing-resources)  
+[Janelia Research Campus](http://www.janelia.org)  
+[Howard Hughes Medical Institute](http://www.hhmi.org)
+
+[![Picture](/hhmi_janelia_160px.png)](http://www.janelia.org)
+
+
+Version History
+---------------
+
 1.00
 Original version.  Includes Taylor Matlab Toolbox v1.06.
 
 
-
+-----
 
 
 1.00->1.01  (August 31, 2011)
 Updated to use TMT v1.10.
 
 
-
+-----
 
 
 1.01->1.02  (September 7, 2011)
@@ -20,6 +106,7 @@ same time, since those often have very different sampling rates.  Also
 added the ability to load data from a .tcs file.
 
 
+-----
 
 
 
@@ -33,6 +120,7 @@ Aborted this one.  Doing coherences, etc. with different sampling
 rates is a royal pain, and I think not worth the effort.
 
 
+-----
 
 
 
@@ -63,6 +151,7 @@ Added ability to set arbitrary y ranges on axes, and optimize the y
 ranges just on the selected axes.
 
 
+-----
 
 
 
@@ -76,6 +165,7 @@ eliminate use of blkproc(), which is deprecated.  Re-coded in JIT-able
 Matlab.  Is now ~2x faster.
 
  
+-----
 
 
 
@@ -104,6 +194,7 @@ Made it so y axis labels all line up w/ each other.
 Deleted leading spaces from names & units on data load.
 
 
+-----
 
 
 
@@ -121,6 +212,7 @@ As with all versions since 1.01, groundswell 1.07 relies upon the
 Taylor Matlab Toolbox, version 1.10.
 
 
+-----
 
 
 
@@ -144,6 +236,7 @@ Added display of f_res_diam, N_fft for all spectral plots.
 This version relies upon Taylor Matlab Toolbox version 1.11.
 
 
+-----
 
 
 1.08 -> 1.09 (April 24, 2012)
@@ -154,6 +247,7 @@ a GUI for browsing and analyzing optical data.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 1.09 -> 1.10 (May 22, 2012)
@@ -163,6 +257,7 @@ exposure pulses than there are frames.
 
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
+-----
 
 
 
@@ -177,6 +272,7 @@ now appear in the same order as onscreen.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -189,6 +285,7 @@ coherency phase (and associated CI bounds) are reported as NaN.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -199,6 +296,7 @@ Fixed a bug in which exporting ROI signals to a .tcs file didn't work.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -209,6 +307,7 @@ Minor changes.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -220,6 +319,7 @@ it's very useful when it works.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -232,6 +332,7 @@ all-nan signal from a .tcs file.  Other minor changes.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -243,6 +344,7 @@ now look only at the current frame, not the whole movie.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -254,6 +356,7 @@ and renamed them to reflect this.
 This version relies upon Taylor Matlab Toolbox version 1.13.
 
 
+-----
 
 
 
@@ -270,6 +373,7 @@ Added ability to draw arbitrary polygonal ROIs in Roving.
 This version relies upon Taylor Matlab Toolbox version 1.14.
 
 
+-----
 
 
 
@@ -281,6 +385,7 @@ Fixed bug in Scrollbar that occurred when t0!=0.
 This version relies upon Taylor Matlab Toolbox version 1.14.
 
 
+-----
 
 
 
@@ -292,6 +397,7 @@ Refactored parts of Roving to improve scriptability.
 This version relies upon Taylor Matlab Toolbox version 1.14.
 
 
+-----
 
 
 
@@ -303,6 +409,7 @@ Included a Spike2 script for importing .tcs files into Spike2.
 This version relies upon Taylor Matlab Toolbox version 1.14.
 
 
+-----
 
 
 
@@ -317,6 +424,7 @@ GitHub assigns automatically.
 
 
 
+-----
 
 
 
@@ -326,6 +434,7 @@ Added ability to import text files with column labels and time stamps.
 
 
 
+-----
 
 
 
@@ -333,6 +442,18 @@ Added ability to import text files with column labels and time stamps.
 
 Changed to TMT 1.16, to get bugfixes relating to underspecification of
 character sets in load_abf() and .tcs functions.
+
+
+
+-----
+
+
+1.25 -> 1.26 (June 29, 2015)
+
+Consolided README.txt, copyright.txt into README.md.  Added BSD 
+3-clause license.  Added support for R2014b and later.  Had to 
+remove a couple of UI hacks, including support for Mac command key 
+instead of Alt/Option key.
 
 
 

@@ -6,8 +6,8 @@ properties
   model;
   view;
   fs_str;  % string holding the sampling rate, in Hz
-  command_depressed;  % boolean, whether any mac command keys are depressed
-                      % undefined if not running on a macs
+%   command_depressed;  % boolean, whether any mac command keys are depressed
+%                       % undefined if not running on a macs
 end  % properties
 
 methods
@@ -15,7 +15,7 @@ methods
     self.fs_str='';
     self.model=[];
     self.view=groundswell.View(self);
-    self.command_depressed=false;  % probably
+%    self.command_depressed=false;  % probably
     % load the data, if given an arg
     if nargin==1 && ischar(varargin{1})
       filename=varargin{1};
