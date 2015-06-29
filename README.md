@@ -23,7 +23,7 @@ Installation
 3.  Remove any paths for older versions of Groundswell.
 
 3.  Still in File > Set Path, click on "Add with Subfolders..." and
-    select the Groundswell-release_<whatever\> folder that was created when
+    select the Groundswell-release_(whatever) folder that was created when
     you unzipped the .zip file.
 
 4.  Restart Matlab.
@@ -444,7 +444,6 @@ Changed to TMT 1.16, to get bugfixes relating to underspecification of
 character sets in load_abf() and .tcs functions.
 
 
-
 -----
 
 
@@ -456,5 +455,13 @@ remove a couple of UI hacks, including support for Mac command key
 instead of Alt/Option key.
 
 
+-----
 
+
+1.27 (June 29, 2015)
+
+Included TMT 1.16 "by-hand", not as a submodule.  GitHub doesn't 
+include submodules in their automatic .zip files, which is how we 
+currently distribute Groundswell.  Fixed bug in README install 
+instructions.
 
