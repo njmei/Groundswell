@@ -1,3 +1,4 @@
+
 classdef View < handle
 
   properties
@@ -167,24 +168,30 @@ classdef View < handle
                'InvertHardcopy','off',...
                'DoubleBuffer','on', ...
                'color',get(0,'defaultUicontrolBackgroundColor'), ...
-               'CloseRequestFcn',@(src,event)(controller.quit()), ...
-               'ResizeFcn',@(src,event)(self.resize()),...
                'Resize','on');
+           
+           
+      % Do this stuff after, because at same time causes problems in R2015a
+      % Moving this stuff after also seems to fix errors in R2014b -NJM
+      set(self.figure_h, ...
+          'ResizeFcn',@(src,event)(self.resize()),...
+          'CloseRequestFcn',@(src,event)(controller.quit()));
       %         'Color',[236 233 216]/255,...
       %         'WindowKeyPressFcn', ...
       %           @(src,event)(controller.handle_key_press(event)),...
       %         'WindowKeyReleaseFcn', ...
       %           @(src,event)(controller.handle_key_release(event)),...
-
+      
       % Do some hacking to set the minimum figure size
-      drawnow('update');
-      drawnow('expose');
-      fpj=get(handle(self.figure_h),'JavaFrame');
-      jw=fpj.fHG1Client.getWindow();
-      if ~isempty(jw)
-        jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
-                                             figure_height_min));
-      end
+      % The following code causes a fatal error in R2014b -NJM
+%      drawnow('update');
+%      drawnow('expose');
+%      fpj=get(handle(self.figure_h),'JavaFrame');
+%      jw=fpj.fHG1Client.getWindow();
+%      if ~isempty(jw)
+%        jw.setMinimumSize(java.awt.Dimension(figure_width_min, ...
+%                                             figure_height_min));
+%      end
       
       % Want to know when we get/lose focus, so have to do some hacking.
       %drawnow('update');
